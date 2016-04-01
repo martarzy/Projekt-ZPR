@@ -1,4 +1,4 @@
-from tornado import web, ioloop
+from tornado import web, websocket, ioloop
 
 
 class MainHandler(web.RequestHandler):
@@ -6,8 +6,23 @@ class MainHandler(web.RequestHandler):
         self.render("../client/index.html")
 
 
+class CommunicationHandler(websocket.WebSocketHandler):
+    def open(self):
+        print('New connection!')
+
+    def on_message(self, message):
+        self.write_message("Hello, I'm Server! You said: " + message)
+
+    def on_close(self):
+        print('Closed connection!')
+
+    def check_origin(self, origin):
+        return True
+
+
 app = web.Application([
         ('/', MainHandler),
+        ('/ws', CommunicationHandler),
         ('/js/(.*)', web.StaticFileHandler, dict(path='../client/js')),
         ('/css/(.*)', web.StaticFileHandler, dict(path='../client/css')),
         ('/images/(.*)', web.StaticFileHandler, dict(path='../client/images'))
@@ -23,4 +38,3 @@ def _main_loop():
 
 if __name__ == '__main__':
     _main_loop()
- 
