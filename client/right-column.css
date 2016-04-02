@@ -1,0 +1,57 @@
+﻿.current-player-box,
+.other-players-box {
+    display: table;
+}
+
+.current-player-first-row,
+.current-player-second-row,
+.player-first-row,
+.player-second-row,
+.player-third-row {
+    display: table-row;
+}
+
+.current-player-name,
+.current-player-money,
+.player-name,
+.player-color,
+.player-money {
+    display: table-cell;
+}
+
+.current-player-name {
+    font-size: large;
+}
+
+.current-player-money {
+    font-size: medium;
+}
+
+.player-color {
+    border-width: 1px 1px 1px 1px;
+    border-style: solid;
+    border-color: black;
+    background-color: red;
+    width: 20px;
+    height: 20px;
+}
+
+.operation-box {
+
+}
+
+.tabs-content {
+    border-bottom: 1px solid lightgray;
+    border-left: 1px solid lightgray;
+    border-right: 1px solid lightgray;
+    border-radius: 5px 5px 5px 5px;
+    padding: 5px 5px 5px 5px;
+}
+
+.history-box {
+    border-width: 1px 1px 1px 1px;
+    border-style: solid; 
+    border-color: lightgray;
+    border-radius: 5px 5px 5px 5px;
+    padding: 5px 5px 5px 5px;
+}
