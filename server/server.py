@@ -23,6 +23,7 @@ class CommunicationHandler(websocket.WebSocketHandler):
 app = web.Application([
         ('/', MainHandler),
         ('/ws', CommunicationHandler),
+        ('/(.*)', web.StaticFileHandler, dict(path='../client')),   # Not a good solution, should be changed in the future
         ('/js/(.*)', web.StaticFileHandler, dict(path='../client/js')),
         ('/css/(.*)', web.StaticFileHandler, dict(path='../client/css')),
         ('/images/(.*)', web.StaticFileHandler, dict(path='../client/images'))
