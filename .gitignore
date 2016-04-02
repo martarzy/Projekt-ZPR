@@ -30,3 +30,7 @@
 # Hidden Linux files
 .*
 !/.gitignore
+
+# Visual Studio build files
+client/bin
+client/obj
