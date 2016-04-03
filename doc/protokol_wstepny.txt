@@ -1,0 +1,49 @@
+Protokół wersja wstępna
+
+Gracz podaje swoją nazwę: 
+{   "message": "myName", 
+    "myName": "NAZWAGRACZA" 
+}
+
+Serwer ocenia, czy dobra nazwa (unikalna):
+{   "message": "nameAccepted", 
+    "valid": true / false 
+}
+
+Serwer zwraca listę uzytkownikow:
+{   "message": "userList", 
+    "userList": [ 
+        "Nazwa1", 
+        "Nazwa2"
+    ] 
+}
+
+Użytkownik gotowy do rozpoczęcia: 
+{   "message": "ready"    
+}
+
+Serwer daje sygnał startu: 
+{   "message": "start" 
+}
+
+Serwer daje sygnał reset: 
+{   "message": "reset" 
+}
+
+Serwer inicjuje turę użytkownika: 
+{   "message": "yourTurn" 
+}
+
+Użytkownik rzuca kostką
+{   "message": "rollDice" 
+}
+
+Serwer podaje wylosowaną wartość
+{   "message": "rollResult", 
+    "rollResult": LICZBA 
+}
+
+Serwer podaje ruch innego użytkownika
+{   "message": "anotherPlayerMove", 
+    "player": "NAZWA", "move": LICZBA
+}
