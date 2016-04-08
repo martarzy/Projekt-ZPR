@@ -38,12 +38,7 @@ Użytkownik rzuca kostką
 {   "message": "rollDice" 
 }
 
-Serwer podaje wylosowaną wartość
-{   "message": "rollResult", 
-    "rollResult": LICZBA 
-}
-
-Serwer podaje ruch innego użytkownika
-{   "message": "anotherPlayerMove", 
+Serwer podaje ruch użytkownika
+{   "message": "playerMove", 
     "player": "NAZWA", "move": LICZBA
 }
