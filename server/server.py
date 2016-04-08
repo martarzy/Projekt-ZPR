@@ -1,4 +1,6 @@
 from tornado import web, websocket, ioloop
+import json
+from random import randint
 
 
 class MainHandler(web.RequestHandler):
@@ -6,23 +8,71 @@ class MainHandler(web.RequestHandler):
         self.render("../client/index.html")
 
 
-class CommunicationHandler(websocket.WebSocketHandler):
+class Player:
+    def __init__(self):
+        self.name = ''
+        self.ready = False
+
+
+class WSHandler(websocket.WebSocketHandler):
+    __handlers = []
+    __turn = 0
+
     def open(self):
-        print('New connection!')
+        self.__player = Player()
+        WSHandler.__handlers.append(self)
 
     def on_message(self, message):
-        self.write_message("Hello, I'm Server! You said: " + message)
+        msg = json.loads(message)
+
+        if msg['message'] == 'myName':
+            name = msg['myName']
+            if name not in [handler.__player.name for handler in WSHandler.__handlers]:
+                self.__player.name = msg['myName']
+                self.write_message(json.dumps({'message': 'nameAccepted', 'valid': True}))
+                WSHandler.__broadcast({'message': 'reset'})
+                WSHandler.__broadcast_pnames()
+            else:
+                self.write_message({'message': 'nameAccepted', 'valid': False})
+
+        elif msg['message'] == 'ready':
+            self.__player.ready = True
+            unready = [handler.__player.name for handler in WSHandler.__handlers if handler.__player.ready is False]
+            if len(unready) == 0:
+                WSHandler.__broadcast({'message': 'start'})
+
+        elif msg['message'] == 'rollDice':
+            msg = dict(message='playerMove', player=self.__player.name, move=randint(1, 20))
+            WSHandler.__broadcast(msg)
+            WSHandler.__next_turn()
 
     def on_close(self):
-        print('Closed connection!')
+        self.__handlers.remove(self)
+        WSHandler.__broadcast({'message': 'reset'})
+        WSHandler.__broadcast_pnames()
 
     def check_origin(self, origin):
         return True
 
+    @staticmethod
+    def __next_turn():
+        WSHandler.__turn = (WSHandler.__turn + 1) % len(WSHandler.__handlers)
+        WSHandler.__handlers[WSHandler.__turn].write_message(json.dumps({'message': 'yourTurn'}))
+
+    @staticmethod
+    def __broadcast(msg):
+        for handler in WSHandler.__handlers:
+            handler.write_message(json.dumps(msg))
+
+    @staticmethod
+    def __broadcast_pnames():
+        pnames = [handler.__player.name for handler in WSHandler.__handlers]
+        WSHandler.__broadcast({'message': 'userList', 'userList': pnames})
+
 
 app = web.Application([
         ('/', MainHandler),
-        ('/ws', CommunicationHandler),
+        ('/ws', WSHandler),
         ('/js/(.*)', web.StaticFileHandler, dict(path='../client/js')),
         ('/css/(.*)', web.StaticFileHandler, dict(path='../client/css')),
         ('/images/(.*)', web.StaticFileHandler, dict(path='../client/images')),
