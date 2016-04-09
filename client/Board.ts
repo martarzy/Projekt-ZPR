@@ -14,12 +14,14 @@ module View {
                 this.pawns[i] = new Pawn(this.fields[0]);
         }
 
-        public movePawn(pawnNumber: number, fieldNumber: number) {
+        public movePawn(pawnNumber: number, fieldNumber: number, onMovingEnd: () => any) {
+            var sequencenumber = 0;
             for (var i = (this.pawns[pawnNumber].getPawnField().getFieldId() + 1) % 40;
                 i <= fieldNumber;
                 i = (i + 1) % 40) {
-                this.pawns[pawnNumber].move(this.fields[i]);
+                this.pawns[pawnNumber].move(this.fields[i], sequencenumber++);
             }
+            setTimeout(onMovingEnd, sequencenumber*200);
         }
     }
 }

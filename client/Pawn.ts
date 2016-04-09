@@ -13,11 +13,12 @@
                 .style("fill", "lightblue");
         }
 
-        public move(target: Field) {
+        public move(target: Field, sequencenumber: number) {
             this.field = target;
             this.element
                 .transition()
-                .duration(100)
+                .delay(200*sequencenumber)
+                .duration(200)
                 .attr("cx", this.field.getCoordX() + "px")
                 .attr("cy", this.field.getCoordY() + "px");
         }
