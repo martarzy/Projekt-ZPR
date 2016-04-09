@@ -41,6 +41,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="Board.ts" />
     <TypeScriptCompile Include="Field.ts" />
+    <TypeScriptCompile Include="lib\d3.d.ts" />
     <TypeScriptCompile Include="Pawn.ts" />
   </ItemGroup>
   <ItemGroup>
