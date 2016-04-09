@@ -2955,10 +2955,7 @@ var logic;
             this.handlers.setValue(prot.MyTurn.message, this.myTurn.bind(this));
         };
         // everything below should be moved to other controllers
-<<<<<<< HEAD
         // the UserActions class may be extracted 
-=======
->>>>>>> b5c035b127be20beabaa885681d1f68477901c33
         Controller.prototype.chooseName = function (name) {
             this.events.enqueue(new events.UsernameChoiceEvent(name));
         };
