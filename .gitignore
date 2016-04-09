@@ -38,3 +38,6 @@ client/obj
 # Typescript and Js temp files
 client/ts/*.js
 client/ts/*.js.map
+client/Scripts/*.js
+client/Scripts/*.d.ts
+client/Scripts/*.js.map
