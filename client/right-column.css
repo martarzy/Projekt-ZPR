@@ -12,32 +12,75 @@
 }
 
 .current-player-name,
+.current-player-color,
 .current-player-money,
-.player-name,
-.player-color,
-.player-money {
+.playerB-name,
+.playerB-color,
+.playerB-money,
+.playerC-name,
+.playerC-color,
+.playerC-money,
+.playerD-name,
+.playerD-color,
+.playerD-money {
     display: table-cell;
 }
 
+.all-players {
+    padding-top: 30px;
+    padding-bottom: 20px;
+}
+
+.current-player-box {
+}
+
+.other-players-box {
+    padding-top: 10px;
+}
+
 .current-player-name {
-    font-size: large;
+    font-size: xx-large;
+    padding-left: 250px;
+}
+
+.current-player-color {
+    float:left;
+    width: 30px;
+    height: 30px;
+    margin-left: 55px;
+    border: 1px solid;
+    background-color: red;
 }
 
 .current-player-money {
+    font-size: x-large;
+}
+
+.playerB-name,
+.playerC-name,
+.playerD-name {
     font-size: medium;
 }
 
-.player-color {
-    border-width: 1px 1px 1px 1px;
-    border-style: solid;
-    border-color: black;
-    background-color: red;
+.playerB-money,
+.playerC-money,
+.playerD-money {
+    font-size: medium;
+}
+
+.playerB-color,
+.playerC-color,
+.playerD-color {
+    float:left;
     width: 20px;
     height: 20px;
+    border: 1px solid;
+    background-color: red;
+    margin-left: 5 0px;
 }
 
 .operation-box {
-
+    padding-bottom: 20px;
 }
 
 .tabs-content {
@@ -46,12 +89,14 @@
     border-right: 1px solid lightgray;
     border-radius: 5px 5px 5px 5px;
     padding: 5px 5px 5px 5px;
+    height: 200px;
 }
 
 .history-box {
-    border-width: 1px 1px 1px 1px;
+    border-width: 1px;
     border-style: solid; 
     border-color: lightgray;
     border-radius: 5px 5px 5px 5px;
     padding: 5px 5px 5px 5px;
+    height: 150px;
 }

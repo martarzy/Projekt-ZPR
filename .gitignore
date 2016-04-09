@@ -34,3 +34,7 @@
 # Visual Studio build files
 client/bin
 client/obj
+
+# Client build
+client/client.js
+client/client.js.map
