@@ -41,3 +41,7 @@ client/ts/*.js.map
 client/Scripts/*.js
 client/Scripts/*.d.ts
 client/Scripts/*.js.map
+
+# Client build
+client/js/app.js
+client/js/app.js.map

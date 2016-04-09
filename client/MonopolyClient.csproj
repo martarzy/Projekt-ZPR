@@ -45,6 +45,10 @@
     <TypeScriptCompile Include="ts\player.ts" />
     <TypeScriptCompile Include="ts\protocol.ts" />
     <TypeScriptCompile Include="ts\server.ts" />
+    <TypeScriptCompile Include="Board.ts" />
+    <TypeScriptCompile Include="Field.ts" />
+    <TypeScriptCompile Include="lib\d3.d.ts" />
+    <TypeScriptCompile Include="Pawn.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="lib\bootstrap\css\bootstrap-theme.css.map" />
