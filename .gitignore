@@ -34,3 +34,7 @@
 # Visual Studio build files
 client/bin
 client/obj
+
+# Typescript and Js temp files
+client/ts/*.js
+client/ts/*.js.map

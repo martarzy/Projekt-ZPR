@@ -79,6 +79,7 @@ namespace logic {
         }
 
         // everything below should be moved to other controllers
+        // the UserActions class may be extracted 
 
         chooseName(name: string) {
             this.events.enqueue(new events.UsernameChoiceEvent(name));
