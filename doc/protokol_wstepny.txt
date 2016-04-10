@@ -31,7 +31,8 @@ Serwer daje sygnał reset:
 }
 
 Serwer inicjuje turę użytkownika: 
-{   "message": "yourTurn" 
+{   "message": "newTurn"
+    "player": "NAZWA"
 }
 
 Użytkownik rzuca kostką
