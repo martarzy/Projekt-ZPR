@@ -1,5 +1,7 @@
 ﻿namespace protocols {
 
+    export const eventTitle = 'message';
+
     export class UsernameChoice {
         static get message(): string {
             return 'myName';
@@ -42,13 +44,17 @@
         }
     }
 
-    export class MyTurn {
+    export class NewTurn {
         static get message(): string {
-            return 'yourTurn';
+            return 'newTurn';
+        }
+
+        static get activePlayer(): string {
+            return 'player';
         }
     }
 
-    export class PlayersConnected {
+    export class UsernamesObtained {
         static get message(): string {
             return 'userList';
         }
@@ -60,7 +66,7 @@
 
     export class OtherPlayerMoved {
         static get message(): string {
-            return 'anotherPlayerMove';
+            return 'playerMove';
         }
 
         static get playerName(): string {

@@ -1,7 +1,8 @@
 ﻿/// <reference path="../Scripts/collections.ts" />
+/// <reference path="../model/model.ts" />
 /// <reference path="protocol.ts" />
 /// <reference path="server.ts" />
-/// <reference path="event.ts" />
+/// <reference path="events/Event.ts" />
 
 "use strict";
 
@@ -10,24 +11,24 @@ namespace logic {
     import prot = protocols;
     import Queue = collections.Queue;
     import Dict = collections.Dictionary;
-    import Set = collections.Set;
     import Event = events.Event;
-    import EvType = events.EventType;
     type EventQueue = Queue<Event>;
     type EventHandler = (ev: Event) => void;
     type HandlerMap = Dict<string, EventHandler>;
 
     export class Controller {
         private server: server.SocketServer;
+        private model: model.Model;
         private mainLoopTimerID: number;
         private events: EventQueue;
         private handlers: HandlerMap;
-        private players: Set<model.Player>;
+        private myUsername: string;
 
         constructor() {
             this.events = new Queue<Event>();
             this.handlers = new Dict<string, EventHandler>();
             this.prepareHandlers();
+            this.model = new model.Model();
         }
 
         connect(uri: string): void {
@@ -55,7 +56,9 @@ namespace logic {
         }
 
         private handleEvent(event: Event) {
-            if (event.type === EvType.TO_SEND) {
+            if (event.shouldBeSendToServer()) {
+                console.log('Enqueueing');
+                console.log(event);
                 this.sendToServer(event.toJson());
             }                
             else {
@@ -70,18 +73,19 @@ namespace logic {
 
         private prepareHandlers(): void {
             this.handlers.setValue(prot.UsernameValidation.message, this.nameAccepted.bind(this));
-            this.handlers.setValue(prot.PlayersConnected.message, this.otherPlayersInfo.bind(this));
+            this.handlers.setValue(prot.UsernamesObtained.message, this.otherPlayersInfo.bind(this));
             this.handlers.setValue(prot.GameStart.message, this.gameStarts.bind(this));
             this.handlers.setValue(prot.GameReset.message, this.gameResets.bind(this));
             this.handlers.setValue(prot.RollResult.message, this.rolledValue.bind(this));
             this.handlers.setValue(prot.OtherPlayerMoved.message, this.someoneMoved.bind(this));
-            this.handlers.setValue(prot.MyTurn.message, this.myTurn.bind(this));
+            this.handlers.setValue(prot.NewTurn.message, this.newTurn.bind(this));
         }
 
         // everything below should be moved to other controllers
         // the UserActions class may be extracted 
 
         chooseName(name: string) {
+            this.myUsername = name;
             this.events.enqueue(new events.UsernameChoiceEvent(name));
         }
 
@@ -94,15 +98,15 @@ namespace logic {
         } 
 
         private nameAccepted(event: events.UsernameValidationEvent) {
-            console.log('Was my name accepted? ' + event.isValid);
+            this.model.updateUserList([this.myUsername]);
         }
 
-        private otherPlayersInfo(event: events.PlayersConnectedEvent) {
-            console.log('Other players: ' + event.getUsersInfo());
+        private otherPlayersInfo(event: events.UsernamesObtainedEvent) {
+            this.model.updateUserList(event.getUsernames());
         }
 
         private gameStarts(event: events.GameStartEvent) {
-            console.log('Game has started');
+            this.model.gameStarted();
         }
 
         private gameResets(event: events.GameResetEvent) {
@@ -110,15 +114,15 @@ namespace logic {
         }
 
         private rolledValue(event: events.RollResultEvent) {
-            console.log('Rolled value is ' + event.getResult());
+            this.model.movePawn(this.myUsername, event.getResult());
         }
 
         private someoneMoved(event: events.OtherPlayerMovedEvent) {
-            console.log(event.getPlayerName() + ' moved by ' + event.movedBy());
+            this.model.movePawn(event.getPlayerName(), event.movedBy());
         }
 
-        private myTurn(event: events.MyTurnEvent) {
-            console.log('Its my turn now!');
+        private newTurn(event: events.NewTurnEvent) {
+            this.model.updateTurn(event.getActivePlayer());
         }
 
     }
