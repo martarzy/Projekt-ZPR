@@ -16,7 +16,7 @@ class Player:
 
 class WSHandler(websocket.WebSocketHandler):
     __handlers = []
-    __turn = 0
+    __turn = -1
 
     def open(self):
         self.__player = Player()
@@ -40,6 +40,7 @@ class WSHandler(websocket.WebSocketHandler):
             unready = [handler.__player.name for handler in WSHandler.__handlers if handler.__player.ready is False]
             if len(unready) == 0:
                 WSHandler.__broadcast({'message': 'start'})
+                WSHandler.__next_turn()
 
         elif msg['message'] == 'rollDice':
             msg = dict(message='playerMove', player=self.__player.name, move=randint(1, 20))
@@ -57,7 +58,8 @@ class WSHandler(websocket.WebSocketHandler):
     @staticmethod
     def __next_turn():
         WSHandler.__turn = (WSHandler.__turn + 1) % len(WSHandler.__handlers)
-        WSHandler.__handlers[WSHandler.__turn].write_message(json.dumps({'message': 'yourTurn'}))
+        msg = { 'message': 'newTurn', 'player': WSHandler.__handlers[WSHandler.__turn].__player.name }
+        WSHandler.__broadcast(msg)
 
     @staticmethod
     def __broadcast(msg):
@@ -66,7 +68,7 @@ class WSHandler(websocket.WebSocketHandler):
 
     @staticmethod
     def __broadcast_pnames():
-        pnames = [handler.__player.name for handler in WSHandler.__handlers]
+        pnames = [handler.__player.name for handler in WSHandler.__handlers if handler.__player.name != '']
         WSHandler.__broadcast({'message': 'userList', 'userList': pnames})
 
 
