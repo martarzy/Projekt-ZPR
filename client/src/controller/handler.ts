@@ -26,7 +26,7 @@ namespace controller {
         handle(msgFromServer: any): void {
             this.handlers
                 .getValue(msgFromServer[message.messageTitle])
-                .call(this, msgFromServer); 
+                .call(this, msgFromServer);
         }
 
         private nameAccepted(object: any) {

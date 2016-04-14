@@ -7,13 +7,11 @@ window.onload = () => {
     // adding function from controller to html element
     const usernameField = <HTMLInputElement>document.getElementById("username");
     const usernameButton = document.getElementById("submit-username");
-
-    //usernameButton.onclick =
-    //    (event: Event) => control.chooseName.call(control, usernameField.value);
+    
     usernameButton.onclick =
         (event: Event) => {
             control.chooseName(usernameField.value);
             control.playerIsReady();
             control.rollDice();
-        }
+        };
 };

@@ -17,10 +17,11 @@
         }
 
         sendMessage(message: string): void {
-            if (this.socketIsReady())
+            if (this.socketIsReady()) {
                 this.socket.send(message);
-            else
+            } else {
                 this.delayMessage(message);
+            }
         }
 
         private socketIsReady(): boolean {
