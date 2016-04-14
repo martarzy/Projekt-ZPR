@@ -1,6 +1,6 @@
 ﻿namespace controller {
 
-    type MessageConsumer = (message: any) => void;
+    export type MessageConsumer = (message: any) => void;
 
     export class SocketServer {
         private socket: WebSocket;
@@ -9,7 +9,7 @@
         constructor(uri: string, consumer: MessageConsumer) {
             this.socket = new WebSocket(uri);
             this.onMessageCallback = consumer;
-            this.socket.onmessage = this.messageConsumerAdapter;
+            this.socket.onmessage = this.messageConsumerAdapter.bind(this);
         }
 
         messageConsumerAdapter(ev: MessageEvent): void {

@@ -45,11 +45,6 @@
     <TypeScriptCompile Include="src\model\field.ts" />
     <TypeScriptCompile Include="src\model\model.ts" />
     <TypeScriptCompile Include="src\model\pawn.ts" />
-    <TypeScriptCompile Include="src\model_old\board.ts" />
-    <TypeScriptCompile Include="src\model_old\field.ts" />
-    <TypeScriptCompile Include="src\model_old\model.ts" />
-    <TypeScriptCompile Include="src\model_old\pawn.ts" />
-    <TypeScriptCompile Include="src\model_old\player.ts" />
     <TypeScriptCompile Include="scripts\collections.ts" />
     <TypeScriptCompile Include="src\app.ts" />
     <TypeScriptCompile Include="src\controller\message.ts" />

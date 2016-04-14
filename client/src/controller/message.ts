@@ -34,16 +34,6 @@
         }
     }
 
-    export class RollResult {
-        static get message(): string {
-            return "rollResult";
-        }
-
-        static get result(): string {
-            return "rollResult";
-        }
-    }
-
     export class NewTurn {
         static get message(): string {
             return "newTurn";
@@ -59,7 +49,7 @@
             return "userList";
         }
 
-        static get info(): string {
+        static get usernamesList(): string {
             return "userList";
         }
     }

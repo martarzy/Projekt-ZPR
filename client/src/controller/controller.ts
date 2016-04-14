@@ -24,7 +24,8 @@ namespace controller {
         }
 
         private delegateMessageToHandler(message: any): void {
-			this.handler.handle(JSON.parse(message));
+            console.log(message);
+            this.handler.handle(JSON.parse(message));
         }
 
         // Methods below could be moved to UserActions class.
@@ -32,23 +33,27 @@ namespace controller {
         // of this class and it would be passed to controller.
 
         chooseName(name: string) {
-            let toSend: any;
+            let toSend: any = { };
             toSend[message.messageTitle] = message.UsernameChoice.message;
             toSend[message.UsernameChoice.name] = name;
             this.model.players.setMyUsername(name);
-            this.sendMessage(toSend);
+            this.sendMessage(this.prepareToSend(toSend));
         }
 
         rollDice() {
-            let toSend: any;
+            let toSend: any = {};
             toSend[message.messageTitle] = message.RollDice.message;
-            this.sendMessage(toSend);
+            this.sendMessage(this.prepareToSend(toSend));
         }
 
         playerIsReady() {
-            let toSend: any;
+            let toSend: any = {};
             toSend[message.messageTitle] = message.UserIsReady.message;
-            this.sendMessage(toSend);
+            this.sendMessage(this.prepareToSend(toSend));
+        }
+
+        private prepareToSend(object: any): string {
+            return JSON.stringify(object);
         }
     }
 

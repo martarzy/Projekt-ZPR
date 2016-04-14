@@ -8,6 +8,12 @@ window.onload = () => {
     const usernameField = <HTMLInputElement>document.getElementById("username");
     const usernameButton = document.getElementById("submit-username");
 
+    //usernameButton.onclick =
+    //    (event: Event) => control.chooseName.call(control, usernameField.value);
     usernameButton.onclick =
-        (event: Event) => control.chooseName.bind(control, usernameField.value);
+        (event: Event) => {
+            control.chooseName(usernameField.value);
+            control.playerIsReady();
+            control.rollDice();
+        }
 };
