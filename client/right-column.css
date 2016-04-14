@@ -26,6 +26,10 @@
     display: table-cell;
 }
 
+.buttons {
+    margin-top: 20px;
+}
+
 .all-players {
     padding-top: 30px;
     padding-bottom: 20px;
