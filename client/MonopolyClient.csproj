@@ -21,7 +21,7 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="app.css" />
+    <Content Include="lib\css\app.css" />
     <Content Include="board.jpg" />
     <Content Include="index.html" />
     <Content Include="lib\bootstrap\css\bootstrap-theme.css" />
@@ -38,17 +38,20 @@
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Scripts\collections.ts" />
-    <TypeScriptCompile Include="ts\app.ts" />
-    <TypeScriptCompile Include="ts\controller.ts" />
-    <TypeScriptCompile Include="ts\event.ts" />
-    <TypeScriptCompile Include="ts\player.ts" />
-    <TypeScriptCompile Include="ts\protocol.ts" />
-    <TypeScriptCompile Include="ts\server.ts" />
-    <TypeScriptCompile Include="Board.ts" />
-    <TypeScriptCompile Include="Field.ts" />
+    <TypeScriptCompile Include="src\controller\controller.ts" />
+    <TypeScriptCompile Include="src\controller\handler.ts" />
+    <TypeScriptCompile Include="src\controller\websocket.ts" />
+    <TypeScriptCompile Include="src\model\board.ts" />
+    <TypeScriptCompile Include="src\model\field.ts" />
+    <TypeScriptCompile Include="src\model\model.ts" />
+    <TypeScriptCompile Include="src\model\pawn.ts" />
+    <TypeScriptCompile Include="scripts\collections.ts" />
+    <TypeScriptCompile Include="src\app.ts" />
+    <TypeScriptCompile Include="src\controller\message.ts" />
+    <TypeScriptCompile Include="src\view\Board.ts" />
+    <TypeScriptCompile Include="src\view\Field.ts" />
     <TypeScriptCompile Include="lib\d3.d.ts" />
-    <TypeScriptCompile Include="Pawn.ts" />
+    <TypeScriptCompile Include="src\view\Pawn.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="lib\bootstrap\css\bootstrap-theme.css.map" />
@@ -101,7 +104,8 @@
     <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
     <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
     <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
-    <TypeScriptModuleKind>None</TypeScriptModuleKind>
+    <TypeScriptModuleKind>
+    </TypeScriptModuleKind>
     <TypeScriptOutFile>js/app.js</TypeScriptOutFile>
     <TypeScriptOutDir />
     <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
