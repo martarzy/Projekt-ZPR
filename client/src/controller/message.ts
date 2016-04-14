@@ -1,6 +1,6 @@
-﻿namespace protocols {
+﻿namespace message {
 
-    export const eventTitle = "message";
+    export const messageTitle = "message";
 
     export class UsernameChoice {
         static get message(): string {

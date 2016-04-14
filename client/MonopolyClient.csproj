@@ -21,7 +21,7 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="app.css" />
+    <Content Include="lib\css\app.css" />
     <Content Include="board.jpg" />
     <Content Include="index.html" />
     <Content Include="lib\bootstrap\css\bootstrap-theme.css" />
@@ -38,29 +38,25 @@
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="controller\command.ts" />
-    <TypeScriptCompile Include="controller\events\concreteClientEvents.ts" />
-    <TypeScriptCompile Include="controller\events\clientEvent.ts" />
-    <TypeScriptCompile Include="controller\events\concreteServerEvents.ts" />
-    <TypeScriptCompile Include="controller\events\serverEvent.ts" />
-    <TypeScriptCompile Include="controller\observer.ts" />
-    <TypeScriptCompile Include="controller\model.ts" />
-    <TypeScriptCompile Include="controller\view.ts" />
-    <TypeScriptCompile Include="model\board.ts" />
-    <TypeScriptCompile Include="model\field.ts" />
-    <TypeScriptCompile Include="model\model.ts" />
-    <TypeScriptCompile Include="model\pawn.ts" />
-    <TypeScriptCompile Include="model\player.ts" />
+    <TypeScriptCompile Include="src\controller\controller.ts" />
+    <TypeScriptCompile Include="src\controller\handler.ts" />
+    <TypeScriptCompile Include="src\controller\websocket.ts" />
+    <TypeScriptCompile Include="src\model\board.ts" />
+    <TypeScriptCompile Include="src\model\field.ts" />
+    <TypeScriptCompile Include="src\model\model.ts" />
+    <TypeScriptCompile Include="src\model\pawn.ts" />
+    <TypeScriptCompile Include="src\model_old\board.ts" />
+    <TypeScriptCompile Include="src\model_old\field.ts" />
+    <TypeScriptCompile Include="src\model_old\model.ts" />
+    <TypeScriptCompile Include="src\model_old\pawn.ts" />
+    <TypeScriptCompile Include="src\model_old\player.ts" />
     <TypeScriptCompile Include="scripts\collections.ts" />
-    <TypeScriptCompile Include="controller\app.ts" />
-    <TypeScriptCompile Include="controller\controller.ts" />
-    <TypeScriptCompile Include="controller\events\event.ts" />
-    <TypeScriptCompile Include="controller\protocol.ts" />
-    <TypeScriptCompile Include="controller\server.ts" />
-    <TypeScriptCompile Include="view\Board.ts" />
-    <TypeScriptCompile Include="view\Field.ts" />
+    <TypeScriptCompile Include="src\app.ts" />
+    <TypeScriptCompile Include="src\controller\message.ts" />
+    <TypeScriptCompile Include="src\view\Board.ts" />
+    <TypeScriptCompile Include="src\view\Field.ts" />
     <TypeScriptCompile Include="lib\d3.d.ts" />
-    <TypeScriptCompile Include="view\Pawn.ts" />
+    <TypeScriptCompile Include="src\view\Pawn.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="lib\bootstrap\css\bootstrap-theme.css.map" />
