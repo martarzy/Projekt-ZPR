@@ -38,15 +38,23 @@
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="controller\command.ts" />
+    <TypeScriptCompile Include="controller\events\concreteClientEvents.ts" />
+    <TypeScriptCompile Include="controller\events\clientEvent.ts" />
+    <TypeScriptCompile Include="controller\events\concreteServerEvents.ts" />
+    <TypeScriptCompile Include="controller\events\serverEvent.ts" />
+    <TypeScriptCompile Include="controller\observer.ts" />
+    <TypeScriptCompile Include="controller\model.ts" />
+    <TypeScriptCompile Include="controller\view.ts" />
     <TypeScriptCompile Include="model\board.ts" />
     <TypeScriptCompile Include="model\field.ts" />
     <TypeScriptCompile Include="model\model.ts" />
     <TypeScriptCompile Include="model\pawn.ts" />
     <TypeScriptCompile Include="model\player.ts" />
-    <TypeScriptCompile Include="Scripts\collections.ts" />
+    <TypeScriptCompile Include="scripts\collections.ts" />
     <TypeScriptCompile Include="controller\app.ts" />
     <TypeScriptCompile Include="controller\controller.ts" />
-    <TypeScriptCompile Include="controller\events\Event.ts" />
+    <TypeScriptCompile Include="controller\events\event.ts" />
     <TypeScriptCompile Include="controller\protocol.ts" />
     <TypeScriptCompile Include="controller\server.ts" />
     <TypeScriptCompile Include="view\Board.ts" />
@@ -105,7 +113,8 @@
     <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
     <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
     <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
-    <TypeScriptModuleKind>None</TypeScriptModuleKind>
+    <TypeScriptModuleKind>
+    </TypeScriptModuleKind>
     <TypeScriptOutFile>js/app.js</TypeScriptOutFile>
     <TypeScriptOutDir />
     <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>

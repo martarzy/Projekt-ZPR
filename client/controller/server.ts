@@ -1,4 +1,7 @@
-﻿namespace server {
+﻿/// <reference path="events/serverEvent.ts" />
+/// <reference path="events/event.ts" />
+
+namespace server {
 
     import Queue = collections.Queue;
     import Event = events.Event;
@@ -7,6 +10,8 @@
         private socket: WebSocket;
         // maybe just pass a function to pass events, like (ev: Event) => void
         private events: Queue<Event>;
+
+        
 
         constructor(uri: string) {
             this.socket = new WebSocket(uri);
@@ -18,7 +23,7 @@
         }
 
         private onMessage(event: MessageEvent): void {
-            console.log('Obtained ' + event.data);
+            console.log("Obtained " + event.data);
 
             // probably needs to be moved somewhere else, maybe to enqueue method
             // of custom EventQueue class
@@ -32,14 +37,15 @@
         }
 
         sendMessage(message: string): void {
-            if (this.socketIsReady())
+            if (this.socketIsReady()) {
                 this.socket.send(message);
-            else
-                this.delayMessage(message);   
+            } else {
+                this.delayMessage(message);
+            }
         }
 
         private socketIsReady(): boolean {
-            return this.socket.readyState == 1;
+            return this.socket.readyState === 1;
         }
 
         private delayMessage(message: string) {

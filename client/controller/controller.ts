@@ -2,7 +2,9 @@
 /// <reference path="../model/model.ts" />
 /// <reference path="protocol.ts" />
 /// <reference path="server.ts" />
-/// <reference path="events/Event.ts" />
+/// <reference path="events/event.ts" />
+/// <reference path="events/concreteClientEvents.ts" />
+/// <reference path="events/concreteServerEvents.ts" />
 
 "use strict";
 
@@ -32,20 +34,24 @@ namespace logic {
         }
 
         connect(uri: string): void {
-            if (this.server == null) {
+            if (this.server == undefined) {
                 this.server = new server.SocketServer(uri);
                 this.server.addEventQueue(this.events);
-            }        
+            }
         }
 
         start(): void {
-            if (this.mainLoopTimerID == null)
+            if (!this.alreadyRunning())
                 this.mainLoopTimerID = setInterval(this.handleEvents.bind(this), 500);
         }
 
         stop(): void {
-            if (this.mainLoopTimerID != null)
+            if (this.alreadyRunning())
                 clearTimeout(this.mainLoopTimerID);
+        }
+
+        alreadyRunning(): boolean {
+            return this.mainLoopTimerID != undefined;
         }
 
         private handleEvents() {
@@ -57,14 +63,13 @@ namespace logic {
 
         private handleEvent(event: Event) {
             if (event.shouldBeSendToServer()) {
-                console.log('Enqueueing');
+                console.log("Enqueueing");
                 console.log(event);
                 this.sendToServer(event.toJson());
-            }                
-            else {
+            } else {
                 const handler = this.handlers.getValue(event.title);
                 handler(event);
-            }    
+            }
         }
 
         private sendToServer(event: string) {
@@ -95,7 +100,7 @@ namespace logic {
 
         playerIsReady() {
             this.events.enqueue(new events.UserIsReadyEvent());
-        } 
+        }
 
         private nameAccepted(event: events.UsernameValidationEvent) {
             this.model.updateUserList([this.myUsername]);
@@ -110,7 +115,7 @@ namespace logic {
         }
 
         private gameResets(event: events.GameResetEvent) {
-            console.log('Game reseted');
+            console.log("Game reseted");
         }
 
         private rolledValue(event: events.RollResultEvent) {

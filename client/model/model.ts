@@ -7,17 +7,12 @@ namespace model {
 
     import Dict = collections.Dictionary;
     import Player = player.Player;
-    type PlayersInfo = Array<string>;
+    export type PlayersInfo = Array<string>;
 
-    enum GameState {
-        NOT_ENOUGH_PLAYERS,
-        PLAYERS_NOT_READY,
-        IN_PROGRESS
-    }
 
-    export let gameState: GameState = GameState.NOT_ENOUGH_PLAYERS;
+    
 
-    export class Model {
+    export class Model2 {
         private board: Board = new Board();
 
         private pawnsPositions: Dict<Pawn, Field>;

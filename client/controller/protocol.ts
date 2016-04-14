@@ -1,92 +1,92 @@
 ﻿namespace protocols {
 
-    export const eventTitle = 'message';
+    export const eventTitle = "message";
 
     export class UsernameChoice {
         static get message(): string {
-            return 'myName';
+            return "myName";
         }
 
         static get name(): string {
-            return 'myName';
+            return "myName";
         }
     }
 
     export class UsernameValidation {
         static get message(): string {
-            return 'nameAccepted';
+            return "nameAccepted";
         }
 
         static get decision(): string {
-            return 'valid';
+            return "valid";
         }
     }
 
     export class UserIsReady {
         static get message(): string {
-            return 'ready';
+            return "ready";
         }
     }
 
     export class RollDice {
         static get message(): string {
-            return 'rollDice';
+            return "rollDice";
         }
     }
 
     export class RollResult {
         static get message(): string {
-            return 'rollResult';
+            return "rollResult";
         }
 
         static get result(): string {
-            return 'rollResult';
+            return "rollResult";
         }
     }
 
     export class NewTurn {
         static get message(): string {
-            return 'newTurn';
+            return "newTurn";
         }
 
         static get activePlayer(): string {
-            return 'player';
+            return "player";
         }
     }
 
     export class UsernamesObtained {
         static get message(): string {
-            return 'userList';
+            return "userList";
         }
 
         static get info(): string {
-            return 'userList';
+            return "userList";
         }
     }
 
     export class OtherPlayerMoved {
         static get message(): string {
-            return 'playerMove';
+            return "playerMove";
         }
 
         static get playerName(): string {
-            return 'player';
+            return "player";
         }
 
         static get movedBy(): string {
-            return 'move';
+            return "move";
         }
     }
 
     export class GameReset {
         static get message(): string {
-            return 'reset';
+            return "reset";
         }
     }
 
     export class GameStart {
         static get message(): string {
-            return 'start';
+            return "start";
         }
     }
 
