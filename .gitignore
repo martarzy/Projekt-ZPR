@@ -38,3 +38,6 @@ client/obj
 # Typescript and Js temp files
 client/src/**/*.js
 client/src/**/*.js.map
+
+# Python precompiled modules
+**/__pycache__/**
