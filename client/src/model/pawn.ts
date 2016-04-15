@@ -10,6 +10,12 @@ namespace model {
         get color(): Color {
             return this.color_;
         }
+
+        // Board's dictionary uses Pawn's toString() method 
+        // to check equality of pawns.
+        toString(): string {
+            return this.color_.toString();
+        }
     }
 
 }
