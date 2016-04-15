@@ -76,9 +76,10 @@ app = web.Application([
         ('/', MainHandler),
         ('/ws', WSHandler),
         ('/js/(.*)', web.StaticFileHandler, dict(path='../client/js')),
+        ('/lib/(.*)', web.StaticFileHandler, dict(path='../client/lib')),
         ('/css/(.*)', web.StaticFileHandler, dict(path='../client/css')),
         ('/images/(.*)', web.StaticFileHandler, dict(path='../client/images')),
-        ('/(.*)', web.StaticFileHandler, dict(path='../client'))   # Not a good solution, should be changed in the future
+        ('/src/(.*)', web.StaticFileHandler, dict(path='../client/src'))
     ])
 
 
