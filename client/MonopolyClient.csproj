@@ -22,7 +22,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="lib\css\app.css" />
-    <Content Include="board.jpg" />
     <Content Include="index.html" />
     <Content Include="lib\bootstrap\css\bootstrap-theme.css" />
     <Content Include="lib\bootstrap\css\bootstrap-theme.min.css" />
@@ -33,8 +32,6 @@
     <Content Include="lib\bootstrap\js\bootstrap.min.js" />
     <Content Include="lib\bootstrap\js\npm.js" />
     <Content Include="lib\d3.min.js" />
-    <Content Include="lib\jquery.min.js" />
-    <Content Include="right-column.css" />
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -45,7 +42,6 @@
     <TypeScriptCompile Include="src\model\field.ts" />
     <TypeScriptCompile Include="src\model\model.ts" />
     <TypeScriptCompile Include="src\model\pawn.ts" />
-    <TypeScriptCompile Include="scripts\collections.ts" />
     <TypeScriptCompile Include="src\app.ts" />
     <TypeScriptCompile Include="src\controller\message.ts" />
     <TypeScriptCompile Include="src\view\Board.ts" />
