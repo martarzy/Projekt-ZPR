@@ -1,6 +1,6 @@
 ﻿/// <reference path="message.ts" />
 /// <reference path="../model/model.ts" />
-/// <reference path="../../scripts/collections.ts" />
+/// <reference path="../../lib/collections.d.ts" />
 
 namespace controller {
 

@@ -6,8 +6,5 @@
         "preserveConstEnums": true,
         "out": "js/app.js",
         "sourceMap": true
-    },
-    "exclude": [
-        "packages"
-    ]
+    }
 }
