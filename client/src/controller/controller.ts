@@ -15,11 +15,11 @@ namespace controller {
             this.createSocketConnection(serverUri);
         }
 
-        private createSocketConnection(uri: string) {
+        private createSocketConnection(uri: string): void {
             this.server = new SocketServer(uri, this.delegateMessageToHandler.bind(this));
         }
 
-        private sendMessage(toSend: any) {
+        private sendMessage(toSend: any): void {
             this.server.sendMessage(toSend);
         }
 
@@ -32,7 +32,7 @@ namespace controller {
         // The web browser would have access only to an instance 
         // of this class and it would be passed to controller.
 
-        chooseName(name: string) {
+        chooseName(name: string): void {
             let toSend: any = { };
             toSend[message.messageTitle] = message.UsernameChoice.message;
             toSend[message.UsernameChoice.name] = name;
@@ -40,13 +40,13 @@ namespace controller {
             this.sendMessage(this.prepareToSend(toSend));
         }
 
-        rollDice() {
+        rollDice(): void {
             let toSend: any = {};
             toSend[message.messageTitle] = message.RollDice.message;
             this.sendMessage(this.prepareToSend(toSend));
         }
 
-        playerIsReady() {
+        playerIsReady(): void {
             let toSend: any = {};
             toSend[message.messageTitle] = message.UserIsReady.message;
             this.sendMessage(this.prepareToSend(toSend));
