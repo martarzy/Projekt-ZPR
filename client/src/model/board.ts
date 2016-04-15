@@ -10,18 +10,18 @@ namespace model {
             this.initializeFields();
         }
 
-        private initializeFields() {
+        private initializeFields(): void {
             this._fields = new Array<Field>(this.FIELDS_NUMBER);
             for (let i = 0; i < this.FIELDS_NUMBER; i++) {
                 this._fields[i] = new Field(i);
             }
         }
 
-        private getField(id: number) {
+        private getField(id: number): Field {
             return this._fields[id];
         }
 
-        fieldInDistanceOf(field: Field, distance: number) {
+        fieldInDistanceOf(field: Field, distance: number): Field {
             let newId = (field.number + distance) % this.FIELDS_NUMBER;
             return this._fields[newId];
         }
