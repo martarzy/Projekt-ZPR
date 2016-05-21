@@ -29,11 +29,11 @@ namespace controller {
                 .call(this, msgFromServer);
         }
 
-        private nameAccepted(object: any) {
+        private nameAccepted(object: any): void {
             this.model.players.addNewUser(this.model.players.getMyUsername());
         }
 
-        private addNewUsers(object: any) {
+        private addNewUsers(object: any): void {
             const usernames: string[] = object[message.UsernamesObtained.usernamesList];
             const alreadyStored = this.model.players.getUsernames();
             const newUsernames = usernames.filter(username => alreadyStored.indexOf(username) < 0);
@@ -41,21 +41,21 @@ namespace controller {
                 this.model.players.addNewUser(username);
         }
 
-        private gameStarts(object: any) {
+        private gameStarts(object: any): void {
             this.model.board.placePawnsOnBoard(this.model.players.getUsernames());
         }
 
-        private gameResets(object: any) {
+        private gameResets(object: any): void {
             // no changes in model
         }
 
-        private someoneMoved(object: any) {
+        private someoneMoved(object: any): void {
             const username: string = object[message.OtherPlayerMoved.playerName];
             const rollResult: number = object[message.OtherPlayerMoved.movedBy];
             this.model.board.movePawn(username, rollResult);
         }
 
-        private newTurn(object: any) {
+        private newTurn(object: any): void {
             const newActive: string = object[message.NewTurn.activePlayer];
             this.model.players.setActivePlayer(newActive);
         }
