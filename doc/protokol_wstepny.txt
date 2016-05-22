@@ -1,4 +1,4 @@
-Protokół wersja wstępna
+Protokół wersja 2.0
 
 Gracz podaje swoją nazwę: 
 {   "message": "myName", 
@@ -10,6 +10,8 @@ Serwer ocenia, czy dobra nazwa (unikalna):
     "valid": true / false 
 }
 
+--------------------------------------------
+(Jeśli nazwa dobra)
 Serwer zwraca listę uzytkownikow:
 {   "message": "userList", 
     "userList": [ 
@@ -17,7 +19,7 @@ Serwer zwraca listę uzytkownikow:
         "Nazwa2"
     ] 
 }
-
+--------------------------------------------
 Użytkownik gotowy do rozpoczęcia: 
 {   "message": "ready"    
 }
@@ -29,7 +31,7 @@ Serwer daje sygnał startu:
 Serwer daje sygnał reset: 
 {   "message": "reset" 
 }
-
+--------------------------------------------
 Serwer inicjuje turę użytkownika: 
 {   "message": "newTurn"
     "player": "NAZWA"
@@ -41,5 +43,14 @@ Użytkownik rzuca kostką
 
 Serwer podaje ruch użytkownika
 {   "message": "playerMove", 
-    "player": "NAZWA", "move": LICZBA
+    "player": "NAZWA", 
+    "move": LICZBA
 }
+--------------------------------------------
+Serwer podaje nową ilość pieniędzy na koncie gracza (dowolnego):
+{
+    "message": "setCash",
+    "player": "NAZWA",
+    "cash": LICZBA
+}
+--------------------------------------------
