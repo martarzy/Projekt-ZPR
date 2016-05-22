@@ -21,6 +21,7 @@ namespace controller {
             this.handlers.setValue(message.GameReset.message, this.gameResets.bind(this));
             this.handlers.setValue(message.OtherPlayerMoved.message, this.someoneMoved.bind(this));
             this.handlers.setValue(message.NewTurn.message, this.newTurn.bind(this));
+            this.handlers.setValue(message.SetCash.message, this.setCash.bind(this));
         }
 
         handle(msgFromServer: any): void {
@@ -58,6 +59,12 @@ namespace controller {
         private newTurn(object: any): void {
             const newActive: string = object[message.NewTurn.activePlayer];
             this.model.players.setActivePlayer(newActive);
+        }
+
+        private setCash(object: any): void {
+            const target: string = object[message.SetCash.target];
+            const cash: string = object[message.SetCash.amount];
+            // update model
         }
     }
 

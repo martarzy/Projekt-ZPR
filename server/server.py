@@ -38,9 +38,14 @@ class WSHandler(websocket.WebSocketHandler):
         elif msg['message'] == 'ready':
             self.__player.ready = True
             unready = [handler.__player.name for handler in WSHandler.__handlers if handler.__player.ready is False]
+            ready = [handler.__player.name for handler in WSHandler.__handlers if handler.__player.ready is True]
             if len(unready) == 0:
-                WSHandler.__broadcast({'message': 'start'})
-                WSHandler.__next_turn()
+                if len(ready) > 1:
+                    WSHandler.__broadcast({'message': 'start'})
+                    WSHandler.__next_turn()
+                else:
+                    WSHandler.__broadcast({'message': 'reset'})
+                    WSHandler.__broadcast_pnames()
 
         elif msg['message'] == 'rollDice':
             msg = dict(message='playerMove', player=self.__player.name, move=randint(1, 20))
@@ -76,9 +81,10 @@ app = web.Application([
         ('/', MainHandler),
         ('/ws', WSHandler),
         ('/js/(.*)', web.StaticFileHandler, dict(path='../client/js')),
+        ('/lib/(.*)', web.StaticFileHandler, dict(path='../client/lib')),
         ('/css/(.*)', web.StaticFileHandler, dict(path='../client/css')),
         ('/images/(.*)', web.StaticFileHandler, dict(path='../client/images')),
-        ('/(.*)', web.StaticFileHandler, dict(path='../client'))   # Not a good solution, should be changed in the future
+        ('/src/(.*)', web.StaticFileHandler, dict(path='../client/src'))
     ])
 
 

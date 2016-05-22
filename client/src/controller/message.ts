@@ -80,4 +80,18 @@
         }
     }
 
+    export class SetCash {
+        static get message(): string {
+            return "setCash";
+        }
+
+        static get target(): string {
+            return "player";
+        }
+
+        static get amount(): string {
+            return "cash";
+        }
+    }
+
 }
