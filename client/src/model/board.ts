@@ -12,7 +12,7 @@ namespace model {
 
         private initializeFields(): void {
             this.fields_ = new Array<Field>(this.FIELDS_NUMBER);
-            for (const i = 0; i < this.FIELDS_NUMBER; i++) {
+            for (let i = 0; i < this.FIELDS_NUMBER; i++) {
                 this.fields_[i] = new Field(i);
             }
         }

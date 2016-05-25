@@ -34,8 +34,8 @@ namespace controller {
 
         chooseName(name: string): void {
             let toSend: any = { };
-            toSend[message.messageTitle] = message.UsernameChoice.message;
-            toSend[message.UsernameChoice.name] = name;
+            toSend[message.messageTitle] = message.MyName.message;
+            toSend[message.MyName.name] = name;
             this.model.players.setMyUsername(name);
             this.sendMessage(this.prepareToSend(toSend));
         }
@@ -48,7 +48,7 @@ namespace controller {
 
         playerIsReady(): void {
             let toSend: any = {};
-            toSend[message.messageTitle] = message.UserIsReady.message;
+            toSend[message.messageTitle] = message.Ready.message;
             this.sendMessage(this.prepareToSend(toSend));
         }
 

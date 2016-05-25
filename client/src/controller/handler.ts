@@ -15,11 +15,11 @@ namespace controller {
 
         // The install method could be exposed to public to simplify adding new handlers.
         private installHandlers(): void {
-            this.handlers.setValue(message.UsernameValidation.message, this.nameAccepted.bind(this));
-            this.handlers.setValue(message.UsernamesObtained.message, this.addNewUsers.bind(this));
-            this.handlers.setValue(message.GameStart.message, this.gameStarts.bind(this));
-            this.handlers.setValue(message.GameReset.message, this.gameResets.bind(this));
-            this.handlers.setValue(message.OtherPlayerMoved.message, this.someoneMoved.bind(this));
+            this.handlers.setValue(message.NameAccepted.message, this.nameAccepted.bind(this));
+            this.handlers.setValue(message.UserList.message, this.synchUsers.bind(this));
+            this.handlers.setValue(message.Start.message, this.gameStarts.bind(this));
+            this.handlers.setValue(message.Reset.message, this.gameResets.bind(this));
+            this.handlers.setValue(message.PlayerMove.message, this.someoneMoved.bind(this));
             this.handlers.setValue(message.NewTurn.message, this.newTurn.bind(this));
             this.handlers.setValue(message.SetCash.message, this.setCash.bind(this));
         }
@@ -31,12 +31,13 @@ namespace controller {
         }
 
         private nameAccepted(object: any): void {
-            if(object[message.UsernameValidation.decision])
+            if(object[message.NameAccepted.decision])
                 this.model.players.addNewUser(this.model.players.getMyUsername());
+            // thsis.view.addPlayer(name, color, number);
         }
 
-        private addNewUsers(object: any): void {
-            const usernames: string[] = object[message.UsernamesObtained.usernamesList];
+        private synchUsers(object: any): void {
+            const usernames: string[] = object[message.UserList.usernamesList];
             const alreadyStored = this.model.players.getUsernames();
             const newUsernames = usernames.filter(username => alreadyStored.indexOf(username) < 0);
             for (const username of newUsernames)
@@ -49,11 +50,12 @@ namespace controller {
 
         private gameResets(object: any): void {
             // TODO just need to let view know that start button need to be clickable again
+            // this.view.startClickable();
         }
 
         private someoneMoved(object: any): void {
-            const username: string = object[message.OtherPlayerMoved.playerName];
-            const rollResult: number = object[message.OtherPlayerMoved.movedBy];
+            const username: string = object[message.PlayerMove.playerName];
+            const rollResult: number = object[message.PlayerMove.movedBy];
             this.model.board.movePawn(username, rollResult);
         }
 
