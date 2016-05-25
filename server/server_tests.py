@@ -11,7 +11,7 @@ class SinglePlayerCase(unittest.TestCase):
         msg = {'message': 'myName', 'myName': ''}
         self.ws.send(json.dumps(msg))
         recv = json.loads(self.ws.recv())
-        self.assertDictEqual(recv, {'message': 'nameAccepted', 'valid': False})
+        self.assertDictEqual(recv, {'message': 'nameAccepted', 'valid': False, 'error': 'notUniqueName'})
 
     def test_give_name(self):
         msg = {'message': 'myName', 'myName': 'krolJulian'}
@@ -22,13 +22,6 @@ class SinglePlayerCase(unittest.TestCase):
         self.assertDictEqual(recv, {'message': 'reset'})
         recv = json.loads(self.ws.recv())
         self.assertDictEqual(recv, {'message': 'userList', 'userList': ['krolJulian']})
-
-    def test_ready(self):
-        self.test_give_name()
-        msg = {'message': 'ready'}
-        self.ws.send(json.dumps(msg))
-        recv = json.loads(self.ws.recv())
-        self.assertDictEqual(recv, {'message': 'reset'})
 
     def tearDown(self):
         self.ws.close()
@@ -48,7 +41,7 @@ class TwoPlayerCase(unittest.TestCase):
         self.ws.send(json.dumps(msg))
         self.ws2.send(json.dumps(msg))
         recv = json.loads(self.ws2.recv())
-        self.assertDictEqual(recv, {'message': 'nameAccepted', 'valid': False})
+        self.assertDictEqual(recv, {'message': 'nameAccepted', 'valid': False, 'error': 'notUniqueName'})
 
     def test_game_start(self):
         msg = {'message': 'myName', 'myName': 'krolJulian'}

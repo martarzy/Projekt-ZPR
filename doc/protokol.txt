@@ -5,9 +5,23 @@ Gracz podaje swoją nazwę:
     "myName": "NAZWAGRACZA" 
 }
 
-Serwer ocenia, czy dobra nazwa (unikalna):
+Serwer ocenia, czy zaakceptowana nazwa. Jeśli tak:
 {   "message": "nameAccepted", 
-    "valid": true / false 
+    "valid": true
+}
+
+Jeśli nie została zaakceptowana:
+{
+    "message": "nameAccepted",
+    "valid": "false",
+    "error": "notUniqueName"
+}
+
+Jeśli za dużo użytkowników:
+{
+    "message": "nameAccepted",
+    "valid": "false",
+    "error": "tooMuchUsers"
 }
 
 --------------------------------------------

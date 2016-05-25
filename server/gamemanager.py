@@ -18,18 +18,12 @@ class GameManager:
         new_player = Player(name, handler)
         self.players.append(new_player)
         self.pname_map[name] = new_player
-        self.broadcast({'message': 'reset'})
-        self.broadcast_pnames()
+        self.reset()
 
     def remove_player(self, player_name):
+        self.players.remove(self.pname_map[player_name])
         del self.pname_map[player_name]
-        for player in self.players:
-            if player.name == player_name:
-                self.players.remove(player)
-                break
-
-        self.broadcast({'message': 'reset'})
-        self.broadcast_pnames()
+        self.reset()
 
     def is_valid(self, name):
         return name != '' and name not in [player.name for player in self.players]
@@ -38,16 +32,7 @@ class GameManager:
         player = self.pname_map[pname] if pname != '' else None
 
         if msg['message'] == 'ready':
-            player.ready = True
-            unready = [player.name for player in self.players if player.ready is False]
-            ready = [player.name for player in self.players if player.ready is True]
-            if len(unready) == 0:
-                if len(ready) > 1:
-                    self.broadcast({'message': 'start'})
-                    self.next_turn()
-                else:
-                    self.broadcast({'message': 'reset'})
-                    self.broadcast_pnames()
+            self.ready(player)
 
         elif msg['message'] == 'rollDice':
             msg = dict(message='playerMove', player=player.name, move=self.roll_dice())
@@ -67,6 +52,21 @@ class GameManager:
 
         return result
 
+    def reset(self):
+        for player in self.players:
+            player.ready = False
+        self.turn = -1
+        self.broadcast({'message': 'reset'})
+        self.broadcast_pnames()
+
+    def ready(self, player):
+        player.ready = True
+        unready = [player.name for player in self.players if player.ready is False]
+        ready = [player.name for player in self.players if player.ready is True]
+        if len(unready) == 0 and len(ready) > 1:
+            self.broadcast({'message': 'start'})
+            self.next_turn()
+
     def next_turn(self):
         self.turn = (self.turn + 1) % len(self.players)
         msg = {'message': 'newTurn', 'player': self.players[self.turn].name}
@@ -75,6 +75,9 @@ class GameManager:
     def broadcast(self, msg):
         for player in self.players:
             player.handler.send_message(msg)
+
+    def get_players_number(self):
+        return len(self.players)
 
     def broadcast_pnames(self):
         pnames = [player.name for player in self.players]

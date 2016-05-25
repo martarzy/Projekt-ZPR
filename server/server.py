@@ -22,14 +22,19 @@ class WSHandler(websocket.WebSocketHandler):
         # Negotiate player name
         if msg['message'] == 'myName':
             name = msg['myName']
-            if gm.is_valid(name):
+
+            if gm.get_players_number() > 5:     # Max. 6 players allowed
+                self.write_message(json.dumps({'message': 'nameAccepted', 'valid': False, 'error': 'tooManyUsers'}))
+
+            elif gm.is_valid(name):
                 self.player_name = name
                 self.write_message(json.dumps({'message': 'nameAccepted', 'valid': True}))
                 gm.add_player(name, self)
-            else:
-                self.write_message(json.dumps({'message': 'nameAccepted', 'valid': False}))
 
-        # Other message
+            else:
+                self.write_message(json.dumps({'message': 'nameAccepted', 'valid': False, 'error': 'notUniqueName'}))
+
+        # Other messages are handled by game manager
         else:
             gm.on_message(self.player_name, msg)
 
