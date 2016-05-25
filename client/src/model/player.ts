@@ -10,12 +10,8 @@
             return this.username_;
         }
 
-        addCash(amount: number): void {
-            this.cash += amount;
-        }
-
-        removeCash(amount: number): void {
-            this.cash -= amount;
+        setCash(amount: number): void {
+            this.cash = amount;
         }
     }
 }

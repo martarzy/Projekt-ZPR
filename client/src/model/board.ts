@@ -4,26 +4,26 @@ namespace model {
         private FIELDS_NUMBER = 40;
         private START_FIELD_NUMBER = 0;
         private JAIL_FIELD_NUMBER = 10;
-        private _fields: Array<Field>;
+        private fields_: Array<Field>;
 
         constructor() {
             this.initializeFields();
         }
 
         private initializeFields(): void {
-            this._fields = new Array<Field>(this.FIELDS_NUMBER);
-            for (let i = 0; i < this.FIELDS_NUMBER; i++) {
-                this._fields[i] = new Field(i);
+            this.fields_ = new Array<Field>(this.FIELDS_NUMBER);
+            for (const i = 0; i < this.FIELDS_NUMBER; i++) {
+                this.fields_[i] = new Field(i);
             }
         }
 
         private getField(id: number): Field {
-            return this._fields[id];
+            return this.fields_[id];
         }
 
         fieldInDistanceOf(field: Field, distance: number): Field {
             let newId = (field.number + distance) % this.FIELDS_NUMBER;
-            return this._fields[newId];
+            return this.fields_[newId];
         }
 
         startField(): Field {

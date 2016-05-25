@@ -9,7 +9,7 @@ window.onload = () => {
     const usernameButton = document.getElementById("submit-username");
 
     usernameButton.onclick =
-        (event: Event) => {
+        (event: MouseEvent) => {
             control.chooseName(usernameField.value);
             control.playerIsReady();
             control.rollDice();

@@ -31,7 +31,8 @@ namespace controller {
         }
 
         private nameAccepted(object: any): void {
-            this.model.players.addNewUser(this.model.players.getMyUsername());
+            if(object[message.UsernameValidation.decision])
+                this.model.players.addNewUser(this.model.players.getMyUsername());
         }
 
         private addNewUsers(object: any): void {
@@ -47,7 +48,7 @@ namespace controller {
         }
 
         private gameResets(object: any): void {
-            // no changes in model
+            // TODO just need to let view know that start button need to be clickable again
         }
 
         private someoneMoved(object: any): void {
@@ -63,8 +64,8 @@ namespace controller {
 
         private setCash(object: any): void {
             const target: string = object[message.SetCash.target];
-            const cash: string = object[message.SetCash.amount];
-            // update model
+            const cash: number = object[message.SetCash.amount];
+            this.model.players.setCash(target, cash);
         }
     }
 

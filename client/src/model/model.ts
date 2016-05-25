@@ -37,29 +37,33 @@ namespace model {
     }
 
     export class PlayersModel {
-        private me: Player;
+        private myUsername: string;
         private activeUsername: string;
-        private enemies: Array<Player> = [];
+        private players: Array<Player> = [];
 
         addNewUser(username: string): void {
-            this.enemies = this.enemies.concat(new Player(username));
+            this.players = this.players.concat(new Player(username));
         }
 
         getUsernames(): Array<string> {
-            return this.enemies.map(enemy => enemy.username)
-                               .concat(this.me.username);
+            return this.players.map(player => player.username);
         }
 
         setMyUsername(myUsername: string): void {
-            this.me = new Player(myUsername);
+            this.myUsername = myUsername;
         }
 
         getMyUsername(): string {
-            return this.me.username;
+            return this.myUsername;
         }
 
         setActivePlayer(activeUsername: string): void {
             this.activeUsername = activeUsername;
+        }
+
+        setCash(username: string, amount: number): void {
+            this.players.filter(player => player.username === username)
+                        .forEach(player => player.setCash(amount));
         }
     }
 }
