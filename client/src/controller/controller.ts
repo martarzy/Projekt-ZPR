@@ -46,12 +46,14 @@ namespace controller {
             let toSend: any = {};
             toSend[message.messageTitle] = message.RollDice.message;
             this.sendMessage(this.prepareToSend(toSend));
+            this.view.setDisabledRollButton();
         }
 
         playerIsReady(): void {
             let toSend: any = {};
             toSend[message.messageTitle] = message.Ready.message;
             this.sendMessage(this.prepareToSend(toSend));
+            this.view.setDisabledReadyButton();
         }
 
         private prepareToSend(object: any): string {
