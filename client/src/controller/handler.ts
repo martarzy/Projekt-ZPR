@@ -35,7 +35,8 @@ namespace controller {
                 this.model.players.addNewUser(this.model.players.getMyUsername());
                 this.view.hideSignInWindow();
             }
-            // TODO error type handle
+            const errorMessage = object[message.NameAccepted.reason];
+            this.view.showError(errorMessage);
         }
 
         private synchUsers(object: any): void {

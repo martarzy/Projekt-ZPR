@@ -51,5 +51,9 @@ namespace view {
         showError(msg: string): void {
             document.getElementById("message").innerHTML = msg;
         }
+
+        updateUserList(list: Array<view.PlayerDTO>): void {
+            
+        }
 	}
 }
