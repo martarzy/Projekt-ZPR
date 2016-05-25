@@ -1,6 +1,6 @@
 ﻿namespace model {
     export class Player {
-        private cash: number;
+        private cash_: number;
 
         constructor(private username_: string) {
         }
@@ -9,8 +9,12 @@
             return this.username_;
         }
 
+        get cash(): number {
+            return this.cash_;
+        }
+
         setCash(amount: number): void {
-            this.cash = amount;
+            this.cash_ = amount;
         }
     }
 }
