@@ -18,7 +18,8 @@ module View {
             var sequencenumber = 0;
             for (var i = (this.pawns[pawnNumber].getPawnField().getFieldId() + 1) % 40;
                 i <= fieldNumber;
-                i = (i + 1) % 40) {
+                i = (i + 1) % 40)
+            {
                 this.pawns[pawnNumber].move(this.fields[i], sequencenumber++);
             }
             setTimeout(onMovingEnd, sequencenumber*200);

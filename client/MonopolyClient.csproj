@@ -38,6 +38,8 @@
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="lib\bootstrap.d.ts" />
+    <TypeScriptCompile Include="lib\jquery.d.ts" />
     <TypeScriptCompile Include="src\controller\controller.ts" />
     <TypeScriptCompile Include="src\controller\handler.ts" />
     <TypeScriptCompile Include="src\controller\websocket.ts" />
