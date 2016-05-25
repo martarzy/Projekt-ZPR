@@ -3,7 +3,6 @@
         private cash: number;
 
         constructor(private username_: string) {
-            this.cash = 1000;
         }
 
         get username(): string {
