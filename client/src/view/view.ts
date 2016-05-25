@@ -1,5 +1,17 @@
 /// <reference path="../model/model.ts" />
 
+/*
+* TODO
+* - setActiveRollButton(true/false)
+* - setActiveSubmitUsername - blokuje przycisk i pole tekstowe (albo je ukrywa)
+* - setActiveReadyButton - ukrywa/pokazuje przycisk gotowśości
+* - movePawn(username, targetFieldNumber)
+* - addUser(username)
+* - setUserColor(username, color)
+* - setUserCash(username, cash)
+* - setActiveUser(username)
+*/
+
 namespace view {
 
 	export class View {
