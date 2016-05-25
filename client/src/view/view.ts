@@ -21,28 +21,27 @@ namespace view {
         }
 
         hideSignInWindow(): void {
-            //$('#submit-username').attr("disabled");
             $("#myModal").modal('hide');
         }
 
         setActiveRollButton(): void {
-            $('#roll-button').removeClass('disabled');
-            $('#roll-button').addClass('active');
+            $('#roll-button').removeAttr('disabled');
+            $('#roll-button').attr('active');
         }
 
         setDisabledRollButton(): void {
-            $('#roll-button').removeClass('active');
-            $('#roll-button').addClass('disabled');
+            $('#roll-button').removeAttr('active');
+            $('#roll-button').attr('disabled', 1);
         }
 
         setActiveReadyButton(): void {
-            $('#ready-button').removeClass('disabled');
-            $('#ready-button').addClass('active');
+            $('#ready-button').removeAttr('disabled');
+            $('#ready-button').attr('active', 1);
         }
 
         setDisabledReadyButton(): void {
-            $('#ready-button').removeClass('active');
-            $('#ready-button').addClass('disabled');
+            $('#ready-button').removeAttr('active');
+            $('#ready-button').attr('disabled', 1);
         }
 	}
 
