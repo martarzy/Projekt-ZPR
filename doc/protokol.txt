@@ -21,7 +21,7 @@ Jeśli za dużo użytkowników:
 {
     "message": "nameAccepted",
     "valid": "false",
-    "error": "tooMuchUsers"
+    "error": "tooManyUsers"
 }
 
 --------------------------------------------
@@ -40,10 +40,6 @@ Użytkownik gotowy do rozpoczęcia:
 
 Serwer daje sygnał startu: 
 {   "message": "start" 
-}
-
-Serwer daje sygnał reset: 
-{   "message": "reset" 
 }
 --------------------------------------------
 Serwer inicjuje turę użytkownika: 
