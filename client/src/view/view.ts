@@ -47,6 +47,9 @@ namespace view {
             $('#ready-button').removeAttr('active');
             $('#ready-button').attr('disabled', 1);
         }
-	}
 
+        showError(msg: string): void {
+            document.getElementById("message").innerHTML = msg;
+        }
+	}
 }
