@@ -46,6 +46,10 @@ namespace controller {
             const newUsernames = usernames.filter(username => alreadyStored.indexOf(username) < 0);
             for (const username of newUsernames)
                 this.model.players.addNewUser(username);
+            if(usernames.length >= 2)
+                this.view.setActiveReadyButton();
+            else
+                this.view.setDisabledReadyButton();
         }
 
         private gameStarts(object: any): void {
