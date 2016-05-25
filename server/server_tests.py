@@ -46,8 +46,6 @@ class TwoPlayerCase(unittest.TestCase):
     def test_same_name(self):
         msg = {'message': 'myName', 'myName': 'krolJulian'}
         self.ws.send(json.dumps(msg))
-        self.ws2.recv()     # Reset message received
-        self.ws2.recv()     # Connected users list received
         self.ws2.send(json.dumps(msg))
         recv = json.loads(self.ws2.recv())
         self.assertDictEqual(recv, {'message': 'nameAccepted', 'valid': False})
@@ -61,9 +59,11 @@ class TwoPlayerCase(unittest.TestCase):
         self.ws.send(json.dumps(msg))
         self.ws2.send(json.dumps(msg))
 
-        for i in range(5):  # Skip initial messages: nameAccepted, reset (2x), userList(2x)
-            self.ws2.recv()
+        for i in range(5):  # Skip initial messages: nameAccepted, reset, userList
             self.ws.recv()
+
+        for i in range(3):
+            self.ws2.recv()
 
         recv = json.loads(self.ws.recv())
         self.assertEqual(recv, {'message': 'start'})

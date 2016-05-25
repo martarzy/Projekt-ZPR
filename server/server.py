@@ -1,6 +1,9 @@
 from tornado import web, websocket, ioloop
+from gamemanager import GameManager
 import json
-from random import randint
+
+
+gm = GameManager()
 
 
 class MainHandler(web.RequestHandler):
@@ -8,74 +11,37 @@ class MainHandler(web.RequestHandler):
         self.render("../client/index.html")
 
 
-class Player:
-    def __init__(self):
-        self.name = ''
-        self.ready = False
-
-
 class WSHandler(websocket.WebSocketHandler):
-    __handlers = []
-    __turn = -1
 
     def open(self):
-        self.__player = Player()
-        WSHandler.__handlers.append(self)
+        self.player_name = ''
 
-    def on_message(self, message):
-        msg = json.loads(message)
+    def on_message(self, msg):
+        msg = json.loads(msg)
 
+        # Negotiate player name
         if msg['message'] == 'myName':
             name = msg['myName']
-            if name not in [handler.__player.name for handler in WSHandler.__handlers]:
-                self.__player.name = msg['myName']
+            if gm.is_valid(name):
+                self.player_name = name
                 self.write_message(json.dumps({'message': 'nameAccepted', 'valid': True}))
-                WSHandler.__broadcast({'message': 'reset'})
-                WSHandler.__broadcast_pnames()
+                gm.add_player(name, self)
             else:
-                self.write_message({'message': 'nameAccepted', 'valid': False})
+                self.write_message(json.dumps({'message': 'nameAccepted', 'valid': False}))
 
-        elif msg['message'] == 'ready':
-            self.__player.ready = True
-            unready = [handler.__player.name for handler in WSHandler.__handlers if handler.__player.ready is False]
-            ready = [handler.__player.name for handler in WSHandler.__handlers if handler.__player.ready is True]
-            if len(unready) == 0:
-                if len(ready) > 1:
-                    WSHandler.__broadcast({'message': 'start'})
-                    WSHandler.__next_turn()
-                else:
-                    WSHandler.__broadcast({'message': 'reset'})
-                    WSHandler.__broadcast_pnames()
-
-        elif msg['message'] == 'rollDice':
-            msg = dict(message='playerMove', player=self.__player.name, move=randint(1, 20))
-            WSHandler.__broadcast(msg)
-            WSHandler.__next_turn()
+        # Other message
+        else:
+            gm.on_message(self.player_name, msg)
 
     def on_close(self):
-        self.__handlers.remove(self)
-        WSHandler.__broadcast({'message': 'reset'})
-        WSHandler.__broadcast_pnames()
+        if self.player_name != '':
+            gm.remove_player(self.player_name)
 
     def check_origin(self, origin):
         return True
 
-    @staticmethod
-    def __next_turn():
-        WSHandler.__turn = (WSHandler.__turn + 1) % len(WSHandler.__handlers)
-        msg = { 'message': 'newTurn', 'player': WSHandler.__handlers[WSHandler.__turn].__player.name }
-        WSHandler.__broadcast(msg)
-
-    @staticmethod
-    def __broadcast(msg):
-        for handler in WSHandler.__handlers:
-            handler.write_message(json.dumps(msg))
-
-    @staticmethod
-    def __broadcast_pnames():
-        pnames = [handler.__player.name for handler in WSHandler.__handlers if handler.__player.name != '']
-        WSHandler.__broadcast({'message': 'userList', 'userList': pnames})
-
+    def send_message(self, json_msg):
+        self.write_message(json.dumps(json_msg))
 
 app = web.Application([
         ('/', MainHandler),
