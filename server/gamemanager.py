@@ -1,4 +1,4 @@
-from random import randrange
+from random import randint
 
 
 class Player:
@@ -50,9 +50,22 @@ class GameManager:
                     self.broadcast_pnames()
 
         elif msg['message'] == 'rollDice':
-            msg = dict(message='playerMove', player=player.name, move=randrange(1, 20))
+            msg = dict(message='playerMove', player=player.name, move=self.roll_dice())
             self.broadcast(msg)
             self.next_turn()
+
+    @staticmethod
+    def roll_dice():
+        result = 0
+
+        for _ in range(3):
+            first = randint(1, 6)
+            second = randint(1, 6)
+            result += first + second
+            if first != second:
+                break
+
+        return result
 
     def next_turn(self):
         self.turn = (self.turn + 1) % len(self.players)
