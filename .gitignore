@@ -39,9 +39,11 @@ client/obj
 client/src/**/*.js
 client/src/**/*.js.map
 
+# Thumbs
+client/Thumbs.db
+
 # Typescript build files
-client/js/app.js
-client/js/app.js.map
+client/js/*.js*
 
 # Python precompiled modules
 **/__pycache__/**

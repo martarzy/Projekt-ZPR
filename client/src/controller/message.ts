@@ -2,7 +2,7 @@
 
     export const messageTitle = "message";
 
-    export class UsernameChoice {
+    export class MyName {
         static get message(): string {
             return "myName";
         }
@@ -12,7 +12,7 @@
         }
     }
 
-    export class UsernameValidation {
+    export class NameAccepted {
         static get message(): string {
             return "nameAccepted";
         }
@@ -20,9 +20,13 @@
         static get decision(): string {
             return "valid";
         }
+
+        static get reason(): string {
+            return "error";
+        }
     }
 
-    export class UserIsReady {
+    export class Ready {
         static get message(): string {
             return "ready";
         }
@@ -44,7 +48,7 @@
         }
     }
 
-    export class UsernamesObtained {
+    export class UserList {
         static get message(): string {
             return "userList";
         }
@@ -54,7 +58,7 @@
         }
     }
 
-    export class OtherPlayerMoved {
+    export class PlayerMove {
         static get message(): string {
             return "playerMove";
         }
@@ -68,15 +72,23 @@
         }
     }
 
-    export class GameReset {
+    export class Start {
         static get message(): string {
-            return "reset";
+            return "start";
         }
     }
 
-    export class GameStart {
+    export class SetCash {
         static get message(): string {
-            return "start";
+            return "setCash";
+        }
+
+        static get target(): string {
+            return "player";
+        }
+
+        static get amount(): string {
+            return "cash";
         }
     }
 

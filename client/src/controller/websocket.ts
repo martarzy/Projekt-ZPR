@@ -28,7 +28,7 @@
             return this.socket.readyState === 1;
         }
 
-        private delayMessage(message: string) {
+        private delayMessage(message: string): void {
             setTimeout(() => this.sendMessage(message), 1);
         }
     }

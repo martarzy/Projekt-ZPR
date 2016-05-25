@@ -6,12 +6,11 @@ window.onload = () => {
 
     // adding function from controller to html element
     const usernameField = <HTMLInputElement>document.getElementById("username");
-    const usernameButton = document.getElementById("submit-username");
+    const submitUsernameButton = <HTMLInputElement>document.getElementById("submit-username");
+    const readyButton = <HTMLInputElement>document.getElementById("ready-button");
+    const rollButton = <HTMLInputElement>document.getElementById("roll-button");
 
-    usernameButton.onclick =
-        (event: Event) => {
-            control.chooseName(usernameField.value);
-            control.playerIsReady();
-            control.rollDice();
-        };
+    submitUsernameButton.onclick = (event: MouseEvent) => control.chooseName(usernameField.value);
+    readyButton.onclick = (event: MouseEvent) => control.playerIsReady();
+    rollButton.onclick = (event: MouseEvent) => control.rollDice();
 };

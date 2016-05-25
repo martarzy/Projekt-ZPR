@@ -1,5 +1,8 @@
 namespace model {
 
+    /*  Model doesn't validate game rules, so for example
+        uniqueness of players usernames must be provided by controller */
+
     export class Model {
         private board_ = new BoardModel();
         private players_ = new PlayersModel();
@@ -36,17 +39,14 @@ namespace model {
     export class PlayersModel {
         private myUsername: string;
         private activeUsername: string;
-        private enemiesUsernames: Array<string> = [];
-
-        // Model doesn't validate game rules so Logic needs to check
-        // if the passed username is unique.
+        private players: Array<Player> = [];
 
         addNewUser(username: string): void {
-            this.enemiesUsernames = this.enemiesUsernames.concat(username);
+            this.players = this.players.concat(new Player(username));
         }
 
         getUsernames(): Array<string> {
-            return this.enemiesUsernames.concat([this.myUsername]);
+            return this.players.map(player => player.username);
         }
 
         setMyUsername(myUsername: string): void {
@@ -60,6 +60,10 @@ namespace model {
         setActivePlayer(activeUsername: string): void {
             this.activeUsername = activeUsername;
         }
-    }
 
+        setCash(username: string, amount: number): void {
+            this.players.filter(player => player.username === username)
+                        .forEach(player => player.setCash(amount));
+        }
+    }
 }
