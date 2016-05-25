@@ -6,12 +6,14 @@ namespace controller {
 
     export class Controller {
         private model: model.Model;
+        private view: view.View;
         private handler: HandlerManager;
         private server: SocketServer;
 
         constructor(serverUri: string) {
             this.model = new model.Model();
-            this.handler = new HandlerManager(this.model);
+            this.view = new view.View();
+            this.handler = new HandlerManager(this.model, this.view);
             this.createSocketConnection(serverUri);
         }
 

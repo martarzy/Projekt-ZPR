@@ -1,5 +1,6 @@
 ﻿/// <reference path="message.ts" />
 /// <reference path="../model/model.ts" />
+/// <reference path="../view/view.ts" />
 /// <reference path="../../lib/collections.d.ts" />
 
 namespace controller {
@@ -9,7 +10,7 @@ namespace controller {
     export class HandlerManager {
         private handlers = new collections.Dictionary<string, EventHandler>();
 
-        constructor(private model: model.Model) {
+        constructor(private model: model.Model, private view: view.View) {
             this.installHandlers();
         }
 
@@ -31,8 +32,11 @@ namespace controller {
         }
 
         private nameAccepted(object: any): void {
-            if(object[message.NameAccepted.decision])
+            if(object[message.NameAccepted.decision]) {
                 this.model.players.addNewUser(this.model.players.getMyUsername());
+                this.view.hideSignInWindow();
+            }
+
             // thsis.view.addPlayer(name, color, number);
         }
 

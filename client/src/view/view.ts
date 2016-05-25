@@ -15,23 +15,6 @@
 namespace view {
 
 	export class View {
-		private boardView: BoardView;
-        private playersView: PlayersView;
-
-
-
-		constructor(model: model.Model) { 
-			this.boardView = new BoardView(model.board);
-            this.playersView = new PlayersView(model.players);
-		}
-
-		updateBoard(): void { 
-			this.boardView.update();
-		}
-		
-		updatePlayers(): void {
-			this.playersView.update();
-        }
 
         showSignInWindow(): void {
             $("#myModal").modal('show');
@@ -61,16 +44,6 @@ namespace view {
             $('#ready-button').removeClass('active');
             $('#ready-button').addClass('disabled');
         }
-	}
-
-	class BoardView {
-		constructor(private model: model.BoardModel) { }
-		update(): void {}
-	}
-
-	class PlayersView {
-		constructor(private model: model.PlayersModel) { }
-		update(): void { }
 	}
 
 }
