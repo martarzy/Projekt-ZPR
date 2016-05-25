@@ -16,6 +16,12 @@ namespace view {
 
 	export class View {
 
+        constructor() {
+            this.showSignInWindow();
+            this.setDisabledReadyButton();
+            this.setDisabledRollButton();
+        }
+
         showSignInWindow(): void {
             $("#myModal").modal('show');
         }
