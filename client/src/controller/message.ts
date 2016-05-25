@@ -20,6 +20,10 @@
         static get decision(): string {
             return "valid";
         }
+
+        static get reason(): string {
+            return "error";
+        }
     }
 
     export class Ready {
@@ -65,12 +69,6 @@
 
         static get movedBy(): string {
             return "move";
-        }
-    }
-
-    export class Reset {
-        static get message(): string {
-            return "reset";
         }
     }
 

@@ -19,7 +19,6 @@ namespace controller {
             this.handlers.setValue(message.NameAccepted.message, this.nameAccepted.bind(this));
             this.handlers.setValue(message.UserList.message, this.synchUsers.bind(this));
             this.handlers.setValue(message.Start.message, this.gameStarts.bind(this));
-            this.handlers.setValue(message.Reset.message, this.gameResets.bind(this));
             this.handlers.setValue(message.PlayerMove.message, this.someoneMoved.bind(this));
             this.handlers.setValue(message.NewTurn.message, this.newTurn.bind(this));
             this.handlers.setValue(message.SetCash.message, this.setCash.bind(this));
@@ -36,8 +35,7 @@ namespace controller {
                 this.model.players.addNewUser(this.model.players.getMyUsername());
                 this.view.hideSignInWindow();
             }
-
-            // thsis.view.addPlayer(name, color, number);
+            // TODO error type handle
         }
 
         private synchUsers(object: any): void {
@@ -56,11 +54,6 @@ namespace controller {
             this.model.board.placePawnsOnBoard(this.model.players.getUsernames());
         }
 
-        private gameResets(object: any): void {
-            // TODO just need to let view know that start button need to be clickable again
-            // this.view.startClickable();
-        }
-
         private someoneMoved(object: any): void {
             const username: string = object[message.PlayerMove.playerName];
             const rollResult: number = object[message.PlayerMove.movedBy];
@@ -70,6 +63,10 @@ namespace controller {
         private newTurn(object: any): void {
             const newActive: string = object[message.NewTurn.activePlayer];
             this.model.players.setActivePlayer(newActive);
+            if(this.model.players.getMyUsername() === newActive)
+                this.view.setActiveRollButton();
+            else
+                this.view.setDisabledRollButton();
         }
 
         private setCash(object: any): void {
