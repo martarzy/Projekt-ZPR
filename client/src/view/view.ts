@@ -26,7 +26,6 @@ namespace view {
 
         setActiveRollButton(): void {
             $('#roll-button').removeAttr('disabled');
-            $('#roll-button').attr('active');
         }
 
         setDisabledRollButton(): void {
@@ -36,7 +35,6 @@ namespace view {
 
         setActiveReadyButton(): void {
             $('#ready-button').removeAttr('disabled');
-            $('#ready-button').attr('active', 1);
         }
 
         setDisabledReadyButton(): void {
