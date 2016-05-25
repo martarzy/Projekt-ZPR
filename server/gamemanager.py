@@ -56,7 +56,6 @@ class GameManager:
         for player in self.players:
             player.ready = False
         self.turn = -1
-        self.broadcast({'message': 'reset'})
         self.broadcast_pnames()
 
     def ready(self, player):
