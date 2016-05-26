@@ -35,6 +35,7 @@
     <Content Include="lib\bootstrap\js\bootstrap.min.js" />
     <Content Include="lib\bootstrap\js\npm.js" />
     <Content Include="lib\d3.min.js" />
+    <Content Include="lib\jquery.min.js" />
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -54,6 +55,8 @@
     <TypeScriptCompile Include="src\view\Field.ts" />
     <TypeScriptCompile Include="lib\d3.d.ts" />
     <TypeScriptCompile Include="src\view\Pawn.ts" />
+    <TypeScriptCompile Include="src\view\playerdto.ts" />
+    <TypeScriptCompile Include="src\view\view.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="lib\bootstrap\css\bootstrap-theme.css.map" />

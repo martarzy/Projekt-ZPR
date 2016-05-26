@@ -1,7 +1,3 @@
-/**
- * Created by julian on 25.05.16.
- */
-
 namespace view {
 
     export class PlayerDTO {
@@ -9,5 +5,4 @@ namespace view {
         cash: number;
         active: boolean;
     }
-
 }

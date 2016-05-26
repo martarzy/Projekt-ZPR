@@ -1,6 +1,6 @@
 ﻿/// <reference path="Pawn.ts" />
 /// <reference path="Field.ts" />
-module View {
+namespace view {
     export class Board {
         // pionki
         private pawns: Pawn[] = [];
