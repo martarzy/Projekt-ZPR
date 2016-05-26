@@ -44,7 +44,7 @@ namespace view {
 
         updateUserList(list: Array<view.PlayerDTO>) {
             // @todo
-            let other_players_list = $(".other-players-box").toArray();
+            var other_players_list = $(".other-players-box").children().toArray();
 
             for (let i = 0; i < list.length; i++) {
                 if (list[i].active) {
