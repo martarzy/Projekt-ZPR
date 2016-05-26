@@ -3,47 +3,46 @@
 namespace view {
 
     export class View {
+        private board: Board;
 
         constructor() {
+            this.board = new Board();
             this.showSignInWindow();
             this.setDisabledReadyButton();
             this.setDisabledRollButton();
         }
 
-        // mapa nazwa_gracza->pionek
-        dictionary: { [playerName: string]: Pawn; } = {};
-
-        showSignInWindow(): void {
+        showSignInWindow() {
             $("#myModal").modal('show');
         }
 
-        hideSignInWindow(): void {
+        hideSignInWindow() {
             $("#myModal").modal('hide');
         }
 
-        setActiveRollButton(): void {
+        setActiveRollButton() {
             $('#roll-button').removeAttr('disabled');
         }
 
-        setDisabledRollButton(): void {
+        setDisabledRollButton() {
             $('#roll-button').removeAttr('active');
             $('#roll-button').attr('disabled', 1);
         }
 
-        setActiveReadyButton(): void {
+        setActiveReadyButton() {
             $('#ready-button').removeAttr('disabled');
         }
 
-        setDisabledReadyButton(): void {
+        setDisabledReadyButton() {
             $('#ready-button').removeAttr('active');
             $('#ready-button').attr('disabled', 1);
         }
 
-        showError(msg: string): void {
+        showError(msg: string) {
             document.getElementById("message").innerHTML = msg;
         }
 
-        updateUserList(list: Array<view.PlayerDTO>): void {
+        updateUserList(list: Array<view.PlayerDTO>) {
             // @todo
             var other_players_list = $(".other-players-box").toArray();
 
@@ -63,8 +62,9 @@ namespace view {
             }
         }
 
-        movePawn(username: string, targetFieldNumber: number): void {
-            //@todo
+        initPawnsDictionary(list: Array<view.PlayerDTO>) {
+            for (var i = 0; i < list.length; i++)
+                this.board.addPawn(list[i].username);
         }
 	}
 }
