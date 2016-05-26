@@ -42,7 +42,7 @@ namespace model {
         private players: Array<Player> = [];
 
         getPlayers(): Array<Player> {
-            return this.players;
+            return this.players.slice();
         }
 
         addNewUser(username: string): void {
