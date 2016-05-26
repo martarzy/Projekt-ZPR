@@ -5,7 +5,6 @@
 
 namespace controller {
 
-    import PlayerDTO = view.PlayerDTO;
     type EventHandler = (object: any) => void;
 
     export class HandlerManager {
@@ -78,12 +77,12 @@ namespace controller {
             this.view.updateUserList(toPrint);
         }
 
-        playersToPlayersDTO(players: Array<model.Player>): Array<PlayerDTO> {
+        playersToPlayersDTO(players: Array<model.Player>): Array<view.PlayerDTO> {
             return players.map(player => this.playerToPlayerDTO(player));
         }
 
-        private playerToPlayerDTO(player: model.Player): PlayerDTO {
-            let dto = new PlayerDTO();
+        private playerToPlayerDTO(player: model.Player): view.PlayerDTO {
+            let dto = new view.PlayerDTO();
             dto.username = player.username;
             dto.cash = player.cash;
             dto.active = this.model.players.getActivePlayer() === player.username;
