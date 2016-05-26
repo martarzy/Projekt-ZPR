@@ -44,9 +44,9 @@ namespace view {
 
         updateUserList(list: Array<view.PlayerDTO>) {
             // @todo
-            var other_players_list = $(".other-players-box").toArray();
+            let other_players_list = $(".other-players-box").toArray();
 
-            for (var i = 0; i < list.length; i++) {
+            for (let i = 0; i < list.length; i++) {
                 if (list[i].active) {
                     $(".current-player-name").val(list[i].username);
                     $(".current-player-money").val(list[i].cash);
@@ -54,7 +54,7 @@ namespace view {
                     // ...
                 } else {
                     // Pobierz element z other_players z usunieciem
-                    var other_player = other_players_list.shift();
+                    let other_player = other_players_list.shift();
                     other_player.children(".player-name").val(list[i].username);
                     other_player.children(".player-money").val(list[i].cash);
                     // jeszcze ustawianie koloru --> @todo
@@ -63,7 +63,7 @@ namespace view {
         }
 
         initPawnsDictionary(list: Array<view.PlayerDTO>) {
-            for (var i = 0; i < list.length; i++)
+            for (let i = 0; i < list.length; i++)
                 this.board.addPawn(list[i].username);
         }
 	}
