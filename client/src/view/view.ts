@@ -55,8 +55,9 @@ namespace view {
                 } else {
                     // Pobierz element z other_players z usunieciem
                     let other_player = other_players_list.shift();
-                    other_player.children(".player-name").val(list[i].username);
-                    other_player.children(".player-money").val(list[i].cash);
+                    let children = other_player.children;
+                    $(children[0]).text(list[i].username);
+                    $(children[1]).text(list[i].cash);
                     // jeszcze ustawianie koloru --> @todo
                 }
             }
