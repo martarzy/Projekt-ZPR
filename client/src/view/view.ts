@@ -48,8 +48,9 @@ namespace view {
 
             for (let i = 0; i < list.length; i++) {
                 if (list[i].active) {
-                    $(".current-player-name").val(list[i].username);
-                    $(".current-player-money").val(list[i].cash);
+		    console.log("Active player"+list[i].toString());
+                    $(".current-player-name").text(list[i].username);
+                    $(".current-player-money").text(list[i].cash);
                     // jeszcze ustawianie koloru --> @todo
                     // ...
                 } else {
@@ -60,6 +61,14 @@ namespace view {
                     $(children[1]).text(list[i].cash);
                     // jeszcze ustawianie koloru --> @todo
                 }
+            }
+            // Trzeba czyscic pozostale pola!
+            while(other_players_list.length)
+            {
+				let other_player = other_players_list.shift();
+				let children = other_player.children;
+				$(children[0]).text(" ");
+                $(children[1]).text(" ");
             }
         }
 
