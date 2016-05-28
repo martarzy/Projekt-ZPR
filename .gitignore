@@ -47,3 +47,7 @@ client/js/*.js*
 
 # Python precompiled modules
 **/__pycache__/**
+
+# Python compiled bytecode
+*.pyc
+*.pyc

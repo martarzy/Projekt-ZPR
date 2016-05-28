@@ -1,4 +1,4 @@
-﻿module View {
+﻿namespace view {
     export class Pawn {
         private field: Field;
         private element: d3.Selection<any>;
