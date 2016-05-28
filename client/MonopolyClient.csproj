@@ -51,6 +51,7 @@
     <TypeScriptCompile Include="src\app.ts" />
     <TypeScriptCompile Include="src\controller\message.ts" />
     <TypeScriptCompile Include="src\model\player.ts" />
+    <TypeScriptCompile Include="src\model\round.ts" />
     <TypeScriptCompile Include="src\view\Board.ts" />
     <TypeScriptCompile Include="src\view\Field.ts" />
     <TypeScriptCompile Include="lib\d3.d.ts" />

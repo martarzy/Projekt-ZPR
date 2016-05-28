@@ -22,6 +22,7 @@ namespace controller {
             this.handlers.setValue(message.PlayerMove.message, this.someoneMoved.bind(this));
             this.handlers.setValue(message.NewTurn.message, this.newTurn.bind(this));
             this.handlers.setValue(message.SetCash.message, this.setCash.bind(this));
+            this.handlers.setValue(message.UserBought.message, this.userBought.bind(this));
         }
 
         handle(msgFromServer: any): void {
@@ -58,12 +59,22 @@ namespace controller {
             const username: string = object[message.PlayerMove.playerName];
             const rollResult: number = object[message.PlayerMove.movedBy];
             this.model.board.movePawn(username, rollResult);
+            // TODO movePawn in view
+            const field = this.model.board.getField(username);
+            if (this.model.players.iAmActive()) {
+                this.model.round.playerMoved();
+                if(!field.hasOwner
+                    && field.cost <= this.model.players.getActivePlayerFunds()) {
+                    //TODO unlockBuyButton
+                }
+            }
         }
 
         private newTurn(object: any): void {
             const newActive: string = object[message.NewTurn.activePlayer];
             this.model.players.setActivePlayer(newActive);
-            if(this.model.players.getMyUsername() === newActive)
+            this.model.round.reset();
+            if (this.model.players.iAmActive())
                 this.view.setActiveRollButton();
             else
                 this.view.setDisabledRollButton();
@@ -92,6 +103,13 @@ namespace controller {
             const cash: number = object[message.SetCash.amount];
             this.model.players.setCash(target, cash);
             this.updatePlayerList(this.model.players.getPlayers());
+        }
+
+        private userBought(object: any): void {
+            const buyer: string = object[message.UserBought.buyerName];
+            this.model.board.getField(buyer).markAsBought(buyer);
+            //TOCHECK Is setCash called by server after userBought
+            //TODO update view
         }
     }
 

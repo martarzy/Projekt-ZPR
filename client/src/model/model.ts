@@ -6,6 +6,7 @@ namespace model {
     export class Model {
         private board_ = new BoardModel();
         private players_ = new PlayersModel();
+        private round_ = new Round();
 
         get board(): BoardModel {
             return this.board_;
@@ -14,12 +15,20 @@ namespace model {
         get players(): PlayersModel {
             return this.players_;
         }
+
+        get round(): Round {
+            return this.round_;
+        }
     }
 
     export class BoardModel {
         private board = new Board();
         private pawnsOwners = new collections.Dictionary<string, Pawn>();
         private pawnsPosition = new collections.Dictionary<Pawn, Field>();
+
+        getField(ownerUsername: string): Field {
+            return this.pawnsPosition.getValue(this.pawnsOwners.getValue(ownerUsername));
+        }
 
         placePawnsOnBoard(usernames: Array<string>) {
             for (const username of usernames)
@@ -40,6 +49,10 @@ namespace model {
         private myUsername: string;
         private activeUsername: string;
         private players: Array<Player> = [];
+
+        iAmActive(): boolean {
+            return this.activeUsername === this.myUsername;
+        }
 
         getPlayers(): Array<Player> {
             return this.players.slice();
@@ -67,6 +80,10 @@ namespace model {
 
         getActivePlayer(): string {
             return this.activeUsername;
+        }
+
+        getActivePlayerFunds(): number {
+            return this.players.filter(player => player.username === this.activeUsername)[0].cash;
         }
 
         setCash(username: string, amount: number): void {

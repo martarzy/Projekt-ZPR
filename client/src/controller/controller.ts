@@ -56,6 +56,22 @@ namespace controller {
             this.view.setDisabledReadyButton();
         }
 
+        playerBuysField(): void {
+            let toSend: any = {};
+            toSend[message.messageTitle] = message.BuyField.message;
+            this.sendMessage(this.prepareToSend(toSend));
+            //TODO disable buy button
+        }
+
+        playerEndsTurn(): void {
+            if (!this.model.round.playerMoved)
+                return;
+            let toSend: any = {};
+            toSend[message.messageTitle] = message.EndOfTurn.message;
+            this.sendMessage(this.prepareToSend(toSend));
+            //TODO disable all buttons
+        }
+
         private prepareToSend(object: any): string {
             return JSON.stringify(object);
         }

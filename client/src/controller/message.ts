@@ -92,4 +92,17 @@
         }
     }
 
+    export class BuyField {
+        static get message(): string { return "buyField"; }
+    }
+
+    export class EndOfTurn {
+        static get message(): string { return "endOfTurn"; }
+    }
+
+    export class UserBought {
+        static get message(): string { return "userBought"; }
+        static get buyerName(): string { return "username"; }
+    }
+
 }

@@ -22,7 +22,7 @@ namespace model {
         }
 
         fieldInDistanceOf(field: Field, distance: number): Field {
-            let newId = (field.number + distance) % this.FIELDS_NUMBER;
+            let newId = (field.id + distance) % this.FIELDS_NUMBER;
             return this.fields_[newId];
         }
 
