@@ -4,8 +4,10 @@ from random import randint
 class Player:
     def __init__(self, name, handler):
         self.name = name
-        self.ready = False
         self.handler = handler  # Handler is a class which must have write_message() function
+        self.ready = False
+        self.cash = 1500
+        self.field = 0
 
 
 class GameManager:
@@ -35,8 +37,14 @@ class GameManager:
             self.ready(player)
 
         elif msg['message'] == 'rollDice':
-            msg = dict(message='playerMove', player=player.name, move=self.roll_dice())
+            result = self.roll_dice()
+            msg = dict(message='playerMove', player=player.name, move=result)
             self.broadcast(msg)
+            player.field += result
+            if player.field >= 40:
+                player.cash += 400
+                player.field -= 40
+                self.broadcast_cash_info(player)
             self.next_turn()
 
     @staticmethod
@@ -64,12 +72,18 @@ class GameManager:
         ready = [player.name for player in self.players if player.ready is True]
         if len(unready) == 0 and len(ready) > 1:
             self.broadcast({'message': 'start'})
+            for player in self.players:
+                self.broadcast_cash_info(player)
+
             self.next_turn()
 
     def next_turn(self):
         self.turn = (self.turn + 1) % len(self.players)
         msg = {'message': 'newTurn', 'player': self.players[self.turn].name}
         self.broadcast(msg)
+
+    def broadcast_cash_info(self, player):
+        self.broadcast({'message': 'setCash', 'cash': player.cash, 'player': player.name})
 
     def broadcast(self, msg):
         for player in self.players:
