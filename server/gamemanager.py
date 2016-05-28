@@ -49,6 +49,8 @@ class GameManager:
                 player.cash += 400
                 player.field -= 40
                 self.broadcast_cash_info(player)
+
+        elif msg['message'] == 'endOfTurn':
             self.next_turn()
 
     @staticmethod
@@ -75,12 +77,14 @@ class GameManager:
         unready = [player.name for player in self.players if player.ready is False]
         ready = [player.name for player in self.players if player.ready is True]
         if len(unready) == 0 and len(ready) > 1:
-            self.started = True
-            self.broadcast({'message': 'start'})
-            for player in self.players:
-                self.broadcast_cash_info(player)
+            self.start_game()
 
-            self.next_turn()
+    def start_game(self):
+        self.started = True
+        self.broadcast({'message': 'start'})
+        for player in self.players:
+            self.broadcast_cash_info(player)
+        self.next_turn()
 
     def next_turn(self):
         self.turn = (self.turn + 1) % len(self.players)
