@@ -41,6 +41,10 @@ namespace model {
         private activeUsername: string;
         private players: Array<Player> = [];
 
+        getPlayers(): Array<Player> {
+            return this.players.slice();
+        }
+
         addNewUser(username: string): void {
             this.players = this.players.concat(new Player(username));
         }
@@ -59,6 +63,10 @@ namespace model {
 
         setActivePlayer(activeUsername: string): void {
             this.activeUsername = activeUsername;
+        }
+
+        getActivePlayer(): string {
+            return this.activeUsername;
         }
 
         setCash(username: string, amount: number): void {

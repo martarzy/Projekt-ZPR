@@ -35,7 +35,8 @@ namespace controller {
                 this.model.players.addNewUser(this.model.players.getMyUsername());
                 this.view.hideSignInWindow();
             }
-            // TODO error type handle
+            const errorMessage = object[message.NameAccepted.reason];
+            this.view.showError(errorMessage);
         }
 
         private synchUsers(object: any): void {
@@ -48,6 +49,7 @@ namespace controller {
                 this.view.setActiveReadyButton();
             else
                 this.view.setDisabledReadyButton();
+            this.updatePlayerList(this.model.players.getPlayers());
         }
 
         private gameStarts(object: any): void {
@@ -67,12 +69,31 @@ namespace controller {
                 this.view.setActiveRollButton();
             else
                 this.view.setDisabledRollButton();
+            this.updatePlayerList(this.model.players.getPlayers());
+        }
+
+        updatePlayerList(players: Array<model.Player>) {
+            let toPrint = this.playersToPlayersDTO(this.model.players.getPlayers());
+            this.view.updateUserList(toPrint);
+        }
+
+        playersToPlayersDTO(players: Array<model.Player>): Array<view.PlayerDTO> {
+            return players.map(player => this.playerToPlayerDTO(player));
+        }
+
+        private playerToPlayerDTO(player: model.Player): view.PlayerDTO {
+            let dto = new view.PlayerDTO();
+            dto.username = player.username;
+            dto.cash = player.cash;
+            dto.active = this.model.players.getActivePlayer() === player.username;
+            return dto;
         }
 
         private setCash(object: any): void {
             const target: string = object[message.SetCash.target];
             const cash: number = object[message.SetCash.amount];
             this.model.players.setCash(target, cash);
+            this.updatePlayerList(this.model.players.getPlayers());
         }
     }
 

@@ -1,26 +1,33 @@
 ﻿/// <reference path="Pawn.ts" />
 /// <reference path="Field.ts" />
-module View {
+namespace view {
     export class Board {
-        // pionki
-        private pawns: Pawn[] = [];
+        // pionki - slownik: gracz->pionek
+        private pawns: { [playerName: string]: Pawn; } = {};
         // pola
         private fields: Field[] = [];
 
-        constructor(pawnsNumber: number) {
-            for (var i = 0; i < 40; i++)
-                this.fields[i] = new Field(i);
-            for (var i = 0; i < pawnsNumber; i++)
-                this.pawns[i] = new Pawn(this.fields[0]);
+        constructor() {
+            // @todo --> tu bedzie tworzona plansza
         }
 
-        public movePawn(pawnNumber: number, fieldNumber: number, onMovingEnd: () => any) {
-            var sequencenumber = 0;
-            for (var i = (this.pawns[pawnNumber].getPawnField().getFieldId() + 1) % 40;
+        public addPawn(pawnName: string)
+        {
+            this.pawns[pawnName] = new Pawn(this.fields[0]);
+        }
+
+        public removePawn(pawnName: string)
+        {
+            delete this.pawns[pawnName];
+        }
+
+        public movePawn(pawnName: string, fieldNumber: number, onMovingEnd: () => any) {
+            let sequencenumber = 0;
+            for (let i = (this.pawns[pawnName].getPawnField().getFieldId() + 1) % 40;
                 i <= fieldNumber;
                 i = (i + 1) % 40)
             {
-                this.pawns[pawnNumber].move(this.fields[i], sequencenumber++);
+                this.pawns[pawnName].move(this.fields[i], sequencenumber++);
             }
             setTimeout(onMovingEnd, sequencenumber*200);
         }

@@ -1,4 +1,4 @@
-﻿module View {
+﻿namespace view {
     export class Field {
         // statyczna tablica ze wspolrzednymi kolejnych pol -> tymczasowo
         // @TODO: uzupelnic tablice wartosciami

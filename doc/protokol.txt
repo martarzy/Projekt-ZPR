@@ -64,3 +64,18 @@ Serwer podaje nową ilość pieniędzy na koncie gracza (dowolnego):
     "cash": LICZBA
 }
 --------------------------------------------
+Użytkownik kupuje pole
+{
+    "message": "buyField"
+}
+
+Użytkownik kończy turę
+{
+    "message": "endOfTurn"
+}
+
+Serwer podaje informację o zakupie dokonanym przez użytkownika
+{
+    "message": "userBought",
+    "username": "NAZWA"
+}

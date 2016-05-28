@@ -3,26 +3,17 @@
     display: table;
 }
 
-.current-player-first-row,
-.current-player-second-row,
-.player-first-row,
-.player-second-row,
-.player-third-row {
+.current-player-row,
+.player-row {
     display: table-row;
 }
 
 .current-player-name,
 .current-player-color,
 .current-player-money,
-.playerB-name,
-.playerB-color,
-.playerB-money,
-.playerC-name,
-.playerC-color,
-.playerC-money,
-.playerD-name,
-.playerD-color,
-.playerD-money {
+.player-name,
+.player-color,
+.player-money {
     display: table-cell;
 }
 
@@ -60,21 +51,12 @@
     font-size: x-large;
 }
 
-.playerB-name,
-.playerC-name,
-.playerD-name {
+.player-name,
+.player-money {
     font-size: medium;
 }
 
-.playerB-money,
-.playerC-money,
-.playerD-money {
-    font-size: medium;
-}
-
-.playerB-color,
-.playerC-color,
-.playerD-color {
+.player-color {
     float:left;
     width: 20px;
     height: 20px;
