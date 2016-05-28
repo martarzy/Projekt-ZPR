@@ -110,7 +110,9 @@ class GameManager:
 
     def buy_field(self, player):
         field = self.fields[player.field_no]
-        if field.buyable and not field.bought:
+        if field.buyable and not field.bought and player.cash >= field.price:
+            player.cash -= field.price
+            self.broadcast_cash_info(player)
             field.bought = True
             self.broadcast_field_buy(player)
 
