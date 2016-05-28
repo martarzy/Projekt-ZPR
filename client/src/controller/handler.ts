@@ -31,10 +31,8 @@ namespace controller {
         }
 
         private nameAccepted(object: any): void {
-            if(object[message.NameAccepted.decision]) {
-                this.model.players.addNewUser(this.model.players.getMyUsername());
+            if(object[message.NameAccepted.decision])
                 this.view.hideSignInWindow();
-            }
             const errorMessage = object[message.NameAccepted.reason];
             this.view.showError(errorMessage);
         }
