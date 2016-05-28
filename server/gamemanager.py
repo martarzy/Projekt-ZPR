@@ -9,6 +9,9 @@ class Player:
         self.cash = 1500
         self.field_nr = 0
 
+    def error(self, error_code):
+        self.handler.send_message({'message': 'invalidOperation', 'error': error_code})
+
 
 class Field:
     def __init__(self, price):
@@ -110,11 +113,13 @@ class GameManager:
 
     def buy_field(self, player):
         field = self.fields[player.field_no]
-        if field.buyable and not field.bought and player.cash >= field.price:
+        if field.buyable and field.owner is None and player.cash >= field.price:
             player.cash -= field.price
             self.broadcast_cash_info(player)
-            field.bought = True
+            field.owner = player
             self.broadcast_field_buy(player)
+        else:
+            player.error('notAbleToBuy')
 
     def broadcast_field_buy(self, player):
         self.broadcast({'message': 'userBought', 'username': player.name})
