@@ -38,6 +38,24 @@ namespace view {
             $('#ready-button').attr('disabled', 1);
         }
 
+        setActiveBuyButton() {
+            $('#buy-button').removeAttr('disabled');
+        }
+
+        setDisabledBuyButton() {
+            $('#buy-button').removeAttr('active');
+            $('#buy-button').attr('disabled', 1);
+        }
+
+        setActiveEndTurnButton() {
+            $('#end-turn-button').removeAttr('disabled');
+        }
+
+        setDisabledEndTurnButton() {
+            $('#end-turn-button').removeAttr('active');
+            $('#end-turn-button').attr('disabled', 1);
+        }
+
         showError(msg: string) {
             document.getElementById("message").innerHTML = msg;
         }
