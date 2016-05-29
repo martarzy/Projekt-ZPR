@@ -1,7 +1,6 @@
 ﻿/// <reference path="message.ts" />
 /// <reference path="../model/model.ts" />
 /// <reference path="../view/view.ts" />
-/// <reference path="../../lib/collections.d.ts" />
 
 namespace controller {
 
@@ -9,7 +8,7 @@ namespace controller {
 
         constructor(private sender_: (arg: any) => void,
                     private model_: model.Model,
-                    private view_: view.View) {
+                    private viewChanges_: ViewChanges) {
         }
 
         chooseName(name: string): void {
@@ -24,14 +23,14 @@ namespace controller {
             let toSend: any = {};
             toSend[message.messageTitle] = message.RollDice.message;
             this.sender_(toSend);
-            this.view_.setDisabledRollButton();
+            this.viewChanges_.show(ViewElement.ROLL_BTN, false);
         }
 
         playerIsReady(): void {
             let toSend: any = {};
             toSend[message.messageTitle] = message.Ready.message;
             this.sender_(toSend);
-            this.view_.setDisabledReadyButton();
+            this.viewChanges_.show(ViewElement.READY_BTN, false);
         }
 
         playerBuysField(): void {
@@ -47,7 +46,7 @@ namespace controller {
             let toSend: any = {};
             toSend[message.messageTitle] = message.EndOfTurn.message;
             this.sender_(toSend);
-            //TODO disable all buttons
+            this.viewChanges_.disableAllButtons();
         }
 
     }

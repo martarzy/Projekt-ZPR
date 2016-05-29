@@ -51,3 +51,5 @@ client/js/*.js*
 # Python compiled bytecode
 *.pyc
 *.pyc
+
+*packages*

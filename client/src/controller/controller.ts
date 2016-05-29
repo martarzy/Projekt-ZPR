@@ -1,22 +1,24 @@
 ﻿/// <reference path="message.ts" />
 /// <reference path="websocket.ts" />
-/// <reference path="handler.ts" />
-/// <reference path="UserActions.ts" />
+/// <reference path="server-handler.ts" />
+/// <reference path="user-actions.ts" />
+/// <reference path="view-changes.ts" />
 
 namespace controller {
 
     export class Controller {
         private model: model.Model;
         private view: view.View;
-        private handler: HandlerManager;
+        private handler: ServerHandler;
         private userActionsHandler: UserActions;
         private server: SocketServer;
 
         constructor(serverUri: string) {
             this.model = new model.Model();
             this.view = new view.View();
-            this.handler = new HandlerManager(this.model, this.view);
-            this.userActionsHandler = new UserActions(this.sendMessage.bind(this), this.model, this.view);
+            const viewChanges = new ViewChanges(this.view);
+            this.handler = new ServerHandler(this.model, viewChanges);
+            this.userActionsHandler = new UserActions(this.sendMessage.bind(this), this.model, viewChanges);
             this.createSocketConnection(serverUri);
         }
 

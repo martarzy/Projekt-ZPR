@@ -1,20 +1,21 @@
 ﻿/// <reference path="message.ts" />
+/// <reference path="view-changes.ts" />
 /// <reference path="../model/model.ts" />
-/// <reference path="../view/view.ts" />
 /// <reference path="../../lib/collections.d.ts" />
 
 namespace controller {
 
     type EventHandler = (object: any) => void;
 
-    export class HandlerManager {
+    export class ServerHandler {
         private handlers = new collections.Dictionary<string, EventHandler>();
 
-        constructor(private model: model.Model, private view: view.View) {
+        constructor(private model: model.Model, private viewChanges_: ViewChanges) {
             this.installHandlers();
         }
 
         // The install method could be exposed to public to simplify adding new handlers.
+        // TODO bind may be omitted as handle uses call
         private installHandlers(): void {
             this.handlers.setValue(message.NameAccepted.message, this.nameAccepted.bind(this));
             this.handlers.setValue(message.UserList.message, this.synchUsers.bind(this));
@@ -32,10 +33,10 @@ namespace controller {
         }
 
         private nameAccepted(object: any): void {
-            if(object[message.NameAccepted.decision])
-                this.view.hideSignInWindow();
+            if (object[message.NameAccepted.decision])
+                this.viewChanges_.show(ViewElement.JOIN_MODAL, false);
             const errorMessage = object[message.NameAccepted.reason];
-            this.view.showError(errorMessage);
+            this.viewChanges_.errorMessage(errorMessage);
         }
 
         private synchUsers(object: any): void {
@@ -44,10 +45,10 @@ namespace controller {
             const newUsernames = usernames.filter(username => alreadyStored.indexOf(username) < 0);
             for (const username of newUsernames)
                 this.model.players.addNewUser(username);
-            if(usernames.length >= 2)
-                this.view.setActiveReadyButton();
+            if (usernames.length >= 2)
+                this.viewChanges_.show(ViewElement.READY_BTN, true);
             else
-                this.view.setDisabledReadyButton();
+                this.viewChanges_.show(ViewElement.READY_BTN, false);
             this.updatePlayerList(this.model.players.getPlayers());
         }
 
@@ -75,15 +76,15 @@ namespace controller {
             this.model.players.setActivePlayer(newActive);
             this.model.round.reset();
             if (this.model.players.iAmActive())
-                this.view.setActiveRollButton();
+                this.viewChanges_.show(ViewElement.ROLL_BTN, true);
             else
-                this.view.setDisabledRollButton();
+                this.viewChanges_.show(ViewElement.ROLL_BTN, false);
             this.updatePlayerList(this.model.players.getPlayers());
         }
 
         updatePlayerList(players: Array<model.Player>) {
             let toPrint = this.playersToPlayersDTO(this.model.players.getPlayers());
-            this.view.updateUserList(toPrint);
+            this.viewChanges_.updatePlayerList(toPrint);
         }
 
         playersToPlayersDTO(players: Array<model.Player>): Array<view.PlayerDTO> {

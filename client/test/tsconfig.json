@@ -6,8 +6,5 @@
         "preserveConstEnums": true,
         "out": "js/tests.js",
         "sourceMap": false
-    },
-    "exclude": [
-        "tests"
-    ]
+    }
 }
