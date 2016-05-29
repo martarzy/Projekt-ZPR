@@ -14,16 +14,14 @@ namespace controller {
             this.installHandlers();
         }
 
-        // The install method could be exposed to public to simplify adding new handlers.
-        // TODO bind may be omitted as handle uses call
         private installHandlers(): void {
-            this.handlers.setValue(message.NameAccepted.message, this.nameAccepted.bind(this));
-            this.handlers.setValue(message.UserList.message, this.synchUsers.bind(this));
-            this.handlers.setValue(message.Start.message, this.gameStarts.bind(this));
-            this.handlers.setValue(message.PlayerMove.message, this.someoneMoved.bind(this));
-            this.handlers.setValue(message.NewTurn.message, this.newTurn.bind(this));
-            this.handlers.setValue(message.SetCash.message, this.setCash.bind(this));
-            this.handlers.setValue(message.UserBought.message, this.userBought.bind(this));
+            this.handlers.setValue(message.NameAccepted.message, this.nameAccepted);
+            this.handlers.setValue(message.UserList.message, this.synchUsers);
+            this.handlers.setValue(message.Start.message, this.gameStarts);
+            this.handlers.setValue(message.PlayerMove.message, this.someoneMoved);
+            this.handlers.setValue(message.NewTurn.message, this.newTurn);
+            this.handlers.setValue(message.SetCash.message, this.setCash);
+            this.handlers.setValue(message.UserBought.message, this.userBought);
         }
 
         handle(msgFromServer: any): void {
@@ -77,8 +75,6 @@ namespace controller {
             this.model.round.reset();
             if (this.model.players.iAmActive())
                 this.viewChanges_.show(ViewElement.ROLL_BTN, true);
-            else
-                this.viewChanges_.show(ViewElement.ROLL_BTN, false);
             this.updatePlayerList(this.model.players.getPlayers());
         }
 
@@ -109,7 +105,6 @@ namespace controller {
         private userBought(object: any): void {
             const buyer: string = object[message.UserBought.buyerName];
             this.model.board.getField(buyer).markAsBought(buyer);
-            //TOCHECK Is setCash called by server after userBought
             //TODO update view
         }
     }
