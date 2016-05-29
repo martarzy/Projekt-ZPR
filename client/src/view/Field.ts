@@ -59,7 +59,7 @@
             { image: "images/chance.svg" },                                    // nr 7 - szansa
             { color: "lightblue", name: "TODO", cash: "200$" },         // nr 8 - niebieske
             { color: "lightblue", name: "TODO", cash: "200$" },         // nr 9 - niebieske
-            { image: "images/jail.svg", big:true },                                      // nr 10 - wieznienie
+            { image: "images/jail.svg", big:true },                                      // nr 10 - wiezienie
             { color: "darkred", name: "TODO", cash: "200$"},            // nr 11 - bordowe
             { image: "images/electric_company.svg" },                         // nr 12 - elektorwnia
             { color: "darkred", name: "TODO", cash: "200$"},            // nr 13 - bordowe
@@ -103,7 +103,12 @@
 
             var fieldRotation = Math.floor(fieldId / 10) * 90;
 
-            if (Field.FieldDescription[fieldId].image) {
+            if (fieldId == 5 || fieldId == 15|| fieldId == 25 || fieldId == 35 ||
+                fieldId == 12 || fieldId == 28)
+            {
+                var fieldDesc = Field.FieldDescription[fieldId];
+                this.createSpecialImageField(fieldDesc.image, this.coordinateX, this.coordinateY, fieldRotation);
+            } else if (Field.FieldDescription[fieldId].image) {
                 var fieldDesc = Field.FieldDescription[fieldId];
                 this.createImageField(fieldDesc.image, this.coordinateX, this.coordinateY, fieldRotation, fieldDesc.big);
             } else {
@@ -122,6 +127,36 @@
 
         public getFieldId(): number {
             return this.fieldId;
+        }
+
+        public createSpecialImageField(url: string, x: number, y: number, rotation: number) {
+            var g = d3.select("svg")
+                .append("g");
+                g.append("rect")
+                    .attr("x", -35)
+                    .attr("y", -53)
+                    .attr("width", 70)
+                    .attr("height", 105)
+                    .attr("fill", "whitesmoke")
+                    .attr("stroke", "black");
+
+                // kwadracik dla kupujacego
+                g.append("rect")
+                    .attr("x", +20)
+                    .attr("y", -53)
+                    .attr("width", 15)
+                    .attr("height", 15)
+                    .attr("fill", "white")
+                    .attr("stroke", "black");
+
+                g.append("image")
+                    .attr("xlink:href", url)
+                    .attr("x", -30)
+                    .attr("y", -30)
+                    .attr("width", 60)
+                    .attr("height", 60);
+
+            g.attr("transform", "translate(" + x + " " + y + "), rotate(" + rotation + ")");
         }
 
         public createImageField(url: string, x: number, y: number, rotation: number, big: boolean)
