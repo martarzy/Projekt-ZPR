@@ -23,14 +23,15 @@ class WSHandler(websocket.WebSocketHandler):
         if msg['message'] == 'myName':
             name = msg['myName']
 
-            if gm.get_players_number() > 5:     # Max. 6 players allowed
+            if gm.game_started():
+                self.write_message(json.dumps({'message': 'nameAccepted', 'valid': False, 'error': 'gameStarted'}))
+            elif gm.get_players_number() > 5:     # Max. 6 players allowed
                 self.write_message(json.dumps({'message': 'nameAccepted', 'valid': False, 'error': 'tooManyUsers'}))
 
             elif gm.is_valid(name):
                 self.player_name = name
                 self.write_message(json.dumps({'message': 'nameAccepted', 'valid': True}))
                 gm.add_player(name, self)
-
             else:
                 self.write_message(json.dumps({'message': 'nameAccepted', 'valid': False, 'error': 'notUniqueName'}))
 

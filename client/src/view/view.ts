@@ -43,7 +43,6 @@ namespace view {
         }
 
         updateUserList(list: Array<view.PlayerDTO>) {
-            // @todo
             var other_players_list = $(".other-players-box").children().toArray();
 
             for (let i = 0; i < list.length; i++) {
@@ -51,15 +50,14 @@ namespace view {
 		    console.log("Active player"+list[i].toString());
                     $(".current-player-name").text(list[i].username);
                     $(".current-player-money").text(list[i].cash);
-                    // jeszcze ustawianie koloru --> @todo
-                    // ...
+                    $(".current-player-color").css("background-color", list[i].color);
                 } else {
                     // Pobierz element z other_players z usunieciem
                     let other_player = other_players_list.shift();
                     let children = other_player.children;
                     $(children[0]).text(list[i].username);
                     $(children[1]).text(list[i].cash);
-                    // jeszcze ustawianie koloru --> @todo
+                    $(children[2]).css("background-color", list[i].color);
                 }
             }
             // Trzeba czyscic pozostale pola!

@@ -9,6 +9,9 @@ namespace view {
 
         constructor() {
             // @todo --> tu bedzie tworzona plansza
+            for (let i = 0; i < 40; i++) {
+                this.fields[i] = new Field(i);
+            }
         }
 
         public addPawn(pawnName: string)

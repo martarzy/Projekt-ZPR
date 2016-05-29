@@ -10,6 +10,13 @@ Serwer ocenia, czy zaakceptowana nazwa. Jeśli tak:
     "valid": true
 }
 
+Jeśli gra już wystartowała:
+{
+    "message": "nameAccepted",
+    "valid": "false",
+    "error": "gameStarted"
+}
+
 Jeśli nie została zaakceptowana:
 {
     "message": "nameAccepted",

@@ -15,6 +15,7 @@ class GameManager:
         self.players = []
         self.turn = -1
         self.pname_map = {}
+        self.started = False
 
     def add_player(self, name, handler):
         new_player = Player(name, handler)
@@ -29,6 +30,9 @@ class GameManager:
 
     def is_valid(self, name):
         return name != '' and name not in [player.name for player in self.players]
+
+    def game_started(self):
+        return self.started
 
     def on_message(self, pname, msg):
         player = self.pname_map[pname] if pname != '' else None
@@ -71,6 +75,7 @@ class GameManager:
         unready = [player.name for player in self.players if player.ready is False]
         ready = [player.name for player in self.players if player.ready is True]
         if len(unready) == 0 and len(ready) > 1:
+            self.started = True
             self.broadcast({'message': 'start'})
             for player in self.players:
                 self.broadcast_cash_info(player)
