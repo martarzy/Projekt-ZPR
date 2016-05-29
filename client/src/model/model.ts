@@ -30,9 +30,9 @@ namespace model {
             return this.pawnsPosition.getValue(this.pawnsOwners.getValue(ownerUsername));
         }
 
-        placePawnsOnBoard(usernames: Array<string>) {
-            for (const username of usernames)
-                this.pawnsOwners.setValue(username, new Pawn(Color.BLACK));
+        placePawnsOnBoard(players: Array<Player>) {
+            for (const player of players)
+                this.pawnsOwners.setValue(player.username, new Pawn(player.color));
             this.pawnsOwners
                 .forEach((username, pawn) => this.pawnsPosition.setValue(pawn, this.board.startField()));
         }
@@ -58,8 +58,12 @@ namespace model {
             return this.players.slice();
         }
 
-        addNewUser(username: string): void {
-            this.players = this.players.concat(new Player(username));
+        resetPlayers(): void {
+            this.players = [];
+        }
+
+        addNewUser(username: string, color: string): void {
+            this.players = this.players.concat(new Player(username, color));
         }
 
         getUsernames(): Array<string> {

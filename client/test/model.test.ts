@@ -12,9 +12,10 @@ test("round test", function () {
 });
 
 test("player test", function () {
-    let player = new model.Player("Tester");
+    let player = new model.Player("Tester", "red");
     deepEqual(player.username, "Tester");
     deepEqual(player.cash, 0);
+    deepEqual(player.color, "red");
     player.setCash(1000);
     deepEqual(player.cash, 1000);
 });

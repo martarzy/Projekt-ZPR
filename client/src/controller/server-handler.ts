@@ -9,9 +9,15 @@ namespace controller {
 
     export class ServerHandler {
         private handlers = new collections.Dictionary<string, EventHandler>();
+        private colorManager_: model.ColorManager;
 
         constructor(private model: model.Model, private viewChanges_: ViewChanges) {
             this.installHandlers();
+            this.initialise();
+        }
+
+        private initialise() {
+            this.colorManager_ = new model.ColorManager();
         }
 
         private installHandlers(): void {
@@ -39,10 +45,9 @@ namespace controller {
 
         private synchUsers(object: any): void {
             const usernames: string[] = object[message.UserList.usernamesList];
-            const alreadyStored = this.model.players.getUsernames();
-            const newUsernames = usernames.filter(username => alreadyStored.indexOf(username) < 0);
-            for (const username of newUsernames)
-                this.model.players.addNewUser(username);
+            this.model.players.resetPlayers();
+            for (let i = 0; i < usernames.length; ++i)
+                this.model.players.addNewUser(usernames[i], this.colorManager_.getColor(i));
             if (usernames.length >= 2)
                 this.viewChanges_.show(ViewElement.READY_BTN, true);
             else
@@ -51,7 +56,9 @@ namespace controller {
         }
 
         private gameStarts(object: any): void {
-            this.model.board.placePawnsOnBoard(this.model.players.getUsernames());
+            this.model.board.placePawnsOnBoard(this.model.players.getPlayers());
+            let playersDTO = this.playersToPlayersDTO(this.model.players.getPlayers());
+            this.viewChanges_.startGame(playersDTO);
         }
 
         private someoneMoved(object: any): void {
@@ -78,12 +85,12 @@ namespace controller {
             this.updatePlayerList(this.model.players.getPlayers());
         }
 
-        updatePlayerList(players: Array<model.Player>) {
+        private updatePlayerList(players: Array<model.Player>) {
             let toPrint = this.playersToPlayersDTO(this.model.players.getPlayers());
             this.viewChanges_.updatePlayerList(toPrint);
         }
 
-        playersToPlayersDTO(players: Array<model.Player>): Array<view.PlayerDTO> {
+        private playersToPlayersDTO(players: Array<model.Player>): Array<view.PlayerDTO> {
             return players.map(player => this.playerToPlayerDTO(player));
         }
 
@@ -92,6 +99,7 @@ namespace controller {
             dto.username = player.username;
             dto.cash = player.cash;
             dto.active = this.model.players.getActivePlayer() === player.username;
+            dto.color = player.color;
             return dto;
         }
 

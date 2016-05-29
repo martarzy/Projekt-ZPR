@@ -43,6 +43,10 @@ namespace controller {
         updatePlayerList(players: Array<view.PlayerDTO>) {
             this.view_.updateUserList(players);
         }
+
+        startGame(players: Array<view.PlayerDTO>) {
+            this.view_.initPawnsDictionary(players);
+        }
     }
 
 }
