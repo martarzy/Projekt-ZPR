@@ -47,6 +47,11 @@ namespace controller {
         startGame(players: Array<view.PlayerDTO>) {
             this.view_.initPawnsDictionary(players);
         }
+
+        // TODO strange callback?
+        movePawn(player: string, targetField: number) {
+            this.view_.movePawn(player, targetField, () => { });
+        }
     }
 
 }

@@ -65,10 +65,12 @@ namespace controller {
             const username: string = object[message.PlayerMove.playerName];
             const rollResult: number = object[message.PlayerMove.movedBy];
             this.model.board.movePawn(username, rollResult);
-            // TODO movePawn in view
             const field = this.model.board.getField(username);
+            this.viewChanges_.movePawn(username, field.id);
+            console.log(field.id);
             if (this.model.players.iAmActive()) {
                 this.model.round.playerMoved();
+                // TODO unlock endOfTurn button
                 if(!field.hasOwner
                     && field.cost <= this.model.players.getActivePlayerFunds()) {
                     //TODO unlockBuyButton

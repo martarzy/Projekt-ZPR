@@ -28,7 +28,7 @@ namespace controller {
 
         playerIsReady(): void {
             let toSend: any = {};
-            //toSend[message.messageTitle] = message.Ready.message;
+            toSend[message.messageTitle] = message.Ready.message;
             this.sender_(toSend);
             this.viewChanges_.show(ViewElement.READY_BTN, false);
         }
