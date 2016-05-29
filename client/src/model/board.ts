@@ -13,7 +13,7 @@ namespace model {
         private initializeFields(): void {
             this.fields_ = new Array<Field>(this.FIELDS_NUMBER);
             for (let i = 0; i < this.FIELDS_NUMBER; i++) {
-                this.fields_[i] = new Field(i);
+                this.fields_[i] = new Field(i, "", 0, false);
             }
         }
 

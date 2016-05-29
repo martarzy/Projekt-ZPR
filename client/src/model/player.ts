@@ -1,6 +1,6 @@
 ﻿namespace model {
     export class Player {
-        private cash_: number;
+        private cash_ = 0;
 
         constructor(private username_: string) {
         }

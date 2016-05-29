@@ -1,7 +1,7 @@
 namespace model {
 
     export class Field {
-        ownerUsername_: string = null;
+        private ownerUsername_: string = "";
 
         constructor(private id_: number,
                     private description_: string,
@@ -26,12 +26,17 @@ namespace model {
         }
 
         hasOwner(): boolean {
-            return this.ownerUsername_ != null;
+            return this.ownerUsername_ !== "";
         }
 
         markAsBought(owner: string): void {
-            this.ownerUsername_ = owner;
+            if (this.buyable_)
+                this.ownerUsername_ = owner;
         }
+
+        ownerUsername(): string {
+            return this.ownerUsername_;
+        }   
     }
 
 }

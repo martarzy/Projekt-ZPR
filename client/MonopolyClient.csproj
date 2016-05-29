@@ -41,6 +41,9 @@
   <ItemGroup>
     <TypeScriptCompile Include="lib\bootstrap.d.ts" />
     <TypeScriptCompile Include="lib\jquery.d.ts" />
+    <TypeScriptCompile Include="src\controller\UserActions.ts" />
+    <TypeScriptCompile Include="test\model.test.ts" />
+    <TypeScriptCompile Include="test\qunit.d.ts" />
     <TypeScriptCompile Include="src\controller\controller.ts" />
     <TypeScriptCompile Include="src\controller\handler.ts" />
     <TypeScriptCompile Include="src\controller\websocket.ts" />
@@ -66,6 +69,9 @@
     <Content Include="lib\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="lib\bootstrap\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="lib\bootstrap\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="tsconfig.json" />
+    <Content Include="tslint.json" />
+    <Content Include="test\tsconfig.json" />
     <Content Include="packages.config" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>

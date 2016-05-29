@@ -1,6 +1,6 @@
 ﻿namespace model {
     export class Round {
-        private playerMoved_: boolean;
+        private playerMoved_ = false;
 
         get movementPerformed(): boolean {
             return this.playerMoved_;
