@@ -25,7 +25,7 @@ namespace view {
 
         public movePawn(pawnName: string, fieldNumber: number, onMovingEnd: () => any) {
             let sequencenumber = 0;
-            for (let i = (this.pawns[pawnName].getPawnField().getFieldId() + 1) % 40;
+            for (let i = (this.pawns[pawnName].getPawnField().getFieldId()) % 40;
                 i != fieldNumber;
                 i = (i + 1) % 40)
             {
