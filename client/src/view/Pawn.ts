@@ -3,14 +3,14 @@
         private field: Field;
         private element: d3.Selection<any>;
 
-        constructor(startField: Field) {
+        constructor(startField: Field, color: string) {
             this.field = startField;
             this.element = d3.select("svg").append("circle");
             this.element
                 .attr("r", 10)
                 .attr("cx", this.field.getCoordX() + "px")
                 .attr("cy", this.field.getCoordY() + "px")
-                .style("fill", "lightblue");
+                .style("fill", color);
         }
 
         public move(target: Field, sequencenumber: number) {

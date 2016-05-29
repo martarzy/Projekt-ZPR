@@ -8,15 +8,14 @@ namespace view {
         private fields: Field[] = [];
 
         constructor() {
-            // @todo --> tu bedzie tworzona plansza
             for (let i = 0; i < 40; i++) {
                 this.fields[i] = new Field(i);
             }
         }
 
-        public addPawn(pawnName: string)
+        public addPawn(pawnName: string, color: string)
         {
-            this.pawns[pawnName] = new Pawn(this.fields[0]);
+            this.pawns[pawnName] = new Pawn(this.fields[0], color);
         }
 
         public removePawn(pawnName: string)
