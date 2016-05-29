@@ -183,6 +183,15 @@
                 .attr("fill", "whitesmoke")
                 .attr("stroke", "black");
 
+            // kwadracik dla kupujacego
+            g.append("rect")
+                .attr("x", +20)
+                .attr("y", -53)
+                .attr("width", 15)
+                .attr("height", 15)
+                .attr("fill", "white")
+                .attr("stroke", "black");
+
             g.append("text")
                 .attr("text-anchor", "middle")
                 .attr("x", 0)
