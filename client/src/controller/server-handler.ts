@@ -49,9 +49,9 @@ namespace controller {
             for (let i = 0; i < usernames.length; ++i)
                 this.model.players.addNewUser(usernames[i], this.colorManager_.getColor(i));
             if (usernames.length >= 2)
-                this.viewChanges_.show(ViewElement.READY_BTN, true);
+                this.viewChanges_.enable(ViewElement.READY_BTN, true);
             else
-                this.viewChanges_.show(ViewElement.READY_BTN, false);
+                this.viewChanges_.enable(ViewElement.READY_BTN, false);
             this.updatePlayerList(this.model.players.getPlayers());
         }
 
@@ -67,13 +67,12 @@ namespace controller {
             this.model.board.movePawn(username, rollResult);
             const field = this.model.board.getField(username);
             this.viewChanges_.movePawn(username, field.id);
-            console.log(field.id);
             if (this.model.players.iAmActive()) {
                 this.model.round.playerMoved();
-                // TODO unlock endOfTurn button
-                if(!field.hasOwner
+                this.viewChanges_.enable(ViewElement.END_TURN_BTN, true);
+                if(!field.hasOwner()
                     && field.cost <= this.model.players.getActivePlayerFunds()) {
-                    //TODO unlockBuyButton
+                    this.viewChanges_.enable(ViewElement.BUY_FIELD_BTN, true);
                 }
             }
         }
@@ -83,7 +82,7 @@ namespace controller {
             this.model.players.setActivePlayer(newActive);
             this.model.round.reset();
             if (this.model.players.iAmActive())
-                this.viewChanges_.show(ViewElement.ROLL_BTN, true);
+                this.viewChanges_.enable(ViewElement.ROLL_BTN, true);
             this.updatePlayerList(this.model.players.getPlayers());
         }
 

@@ -31,7 +31,7 @@ namespace controller {
             this.disablers_.setValue(ViewElement.JOIN_MODAL, this.view_.hideSignInWindow);
         }
 
-        show(name: ViewElement, visible: boolean) {
+        enable(name: ViewElement, visible: boolean) {
             const map = visible ? this.enablers_ : this.disablers_;
             map.getValue(name).call(this.view_);
         }

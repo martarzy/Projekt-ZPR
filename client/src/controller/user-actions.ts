@@ -23,21 +23,21 @@ namespace controller {
             let toSend: any = {};
             toSend[message.messageTitle] = message.RollDice.message;
             this.sender_(toSend);
-            this.viewChanges_.show(ViewElement.ROLL_BTN, false);
+            this.viewChanges_.enable(ViewElement.ROLL_BTN, false);
         }
 
         playerIsReady(): void {
             let toSend: any = {};
             toSend[message.messageTitle] = message.Ready.message;
             this.sender_(toSend);
-            this.viewChanges_.show(ViewElement.READY_BTN, false);
+            this.viewChanges_.enable(ViewElement.READY_BTN, false);
         }
 
         playerBuysField(): void {
             let toSend: any = {};
             toSend[message.messageTitle] = message.BuyField.message;
             this.sender_(toSend);
-            this.viewChanges_.show(ViewElement.BUY_FIELD_BTN, false);
+            this.viewChanges_.enable(ViewElement.BUY_FIELD_BTN, false);
         }
 
         playerEndsTurn(): void {
