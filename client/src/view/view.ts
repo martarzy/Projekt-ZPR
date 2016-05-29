@@ -74,5 +74,9 @@ namespace view {
             for (let i = 0; i < list.length; i++)
                 this.board.addPawn(list[i].username, list[i].color);
         }
+
+        movePawn(pawnName: string, fieldNumber: number, onMovingEnd: () => any) {
+            this.board.movePawn(pawnName, fieldNumber, onMovingEnd);
+        }
 	}
 }

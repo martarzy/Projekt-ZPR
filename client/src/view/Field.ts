@@ -135,7 +135,8 @@
                     .attr("y", -53)
                     .attr("width", 105)
                     .attr("height", 105)
-                    .attr("fill", "whitesmoke");
+                    .attr("fill", "whitesmoke")
+                    .attr("stroke", "black");
                 g.append("image")
                     .attr("xlink:href", url)
                     .attr("x", -40)
@@ -148,7 +149,9 @@
                     .attr("y", -53)
                     .attr("width", 70)
                     .attr("height", 105)
-                    .attr("fill", "whitesmoke");
+                    .attr("fill", "whitesmoke")
+                    .attr("stroke", "black");
+
                 g.append("image")
                     .attr("xlink:href", url)
                     .attr("x", -30)
@@ -169,14 +172,16 @@
                 .attr("y", -53)
                 .attr("width", 70)
                 .attr("height", 15)
-                .attr("fill", color);
+                .attr("fill", color)
+                .attr("stroke", "black");
 
             g.append("rect")
                 .attr("x", -35)
                 .attr("y", -38)
                 .attr("width", 70)
                 .attr("height", 90)
-                .attr("fill", "whitesmoke");
+                .attr("fill", "whitesmoke")
+                .attr("stroke", "black");
 
             g.append("text")
                 .attr("text-anchor", "middle")

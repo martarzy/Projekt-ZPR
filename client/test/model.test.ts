@@ -1,7 +1,7 @@
 ﻿/// <reference path="../src/model/round.ts" />
 /// <reference path="../src/model/player.ts" />
 /// <reference path="../src/model/field.ts" />
-
+/*
 test("round test", function () {
     let round = new model.Round();
     deepEqual(round.movementPerformed, false);
@@ -41,3 +41,5 @@ test("not buyable field test", function () {
     deepEqual(field.hasOwner(), false);
     deepEqual(field.ownerUsername(), "");
 });
+
+*/
