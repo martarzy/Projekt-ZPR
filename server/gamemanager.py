@@ -112,7 +112,7 @@ class GameManager:
         self.broadcast(msg)
 
     def buy_field(self, player):
-        field = self.fields[player.field_no]
+        field = self.fields[player.field_nr]
         if field.buyable and field.owner is None and player.cash >= field.price:
             player.cash -= field.price
             self.broadcast_cash_info(player)
