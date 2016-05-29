@@ -72,7 +72,7 @@ namespace view {
 
         initPawnsDictionary(list: Array<view.PlayerDTO>) {
             for (let i = 0; i < list.length; i++)
-                this.board.addPawn(list[i].username);
+                this.board.addPawn(list[i].username, list[i].color);
         }
 	}
 }
