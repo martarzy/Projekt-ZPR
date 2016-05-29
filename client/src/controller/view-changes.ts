@@ -23,6 +23,10 @@ namespace controller {
             this.disablers_.setValue(ViewElement.ROLL_BTN, this.view_.setDisabledRollButton);
             this.enablers_.setValue(ViewElement.READY_BTN, this.view_.setActiveReadyButton);
             this.disablers_.setValue(ViewElement.READY_BTN, this.view_.setDisabledReadyButton);
+            this.enablers_.setValue(ViewElement.END_TURN_BTN, this.view_.setActiveEndTurnButton);
+            this.disablers_.setValue(ViewElement.END_TURN_BTN, this.view_.setDisabledEndTurnButton);
+            this.enablers_.setValue(ViewElement.BUY_FIELD_BTN, this.view_.setActiveBuyButton);
+            this.disablers_.setValue(ViewElement.BUY_FIELD_BTN, this.view_.setDisabledBuyButton);
             this.enablers_.setValue(ViewElement.JOIN_MODAL, this.view_.showSignInWindow);
             this.disablers_.setValue(ViewElement.JOIN_MODAL, this.view_.hideSignInWindow);
         }

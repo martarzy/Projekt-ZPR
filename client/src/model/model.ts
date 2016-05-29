@@ -43,6 +43,10 @@ namespace model {
             const targetField = this.board.fieldInDistanceOf(currentField, rollResult);
             this.pawnsPosition.setValue(targetPawn, targetField);
         }
+
+        buyField(ownerUsername: string) {
+            this.getField(ownerUsername).markAsBought(ownerUsername);
+        }
     }
 
     export class PlayersModel {

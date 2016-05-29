@@ -37,7 +37,7 @@ namespace controller {
             let toSend: any = {};
             toSend[message.messageTitle] = message.BuyField.message;
             this.sender_(toSend);
-            //TODO disable buy button
+            this.viewChanges_.show(ViewElement.BUY_FIELD_BTN, false);
         }
 
         playerEndsTurn(): void {

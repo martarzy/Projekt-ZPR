@@ -38,7 +38,7 @@ namespace controller {
 
         private nameAccepted(object: any): void {
             if (object[message.NameAccepted.decision])
-                this.viewChanges_.show(ViewElement.JOIN_MODAL, false);
+                this.viewChanges_.disableAllButtons();
             const errorMessage = object[message.NameAccepted.reason];
             this.viewChanges_.errorMessage(errorMessage);
         }
@@ -114,7 +114,7 @@ namespace controller {
 
         private userBought(object: any): void {
             const buyer: string = object[message.UserBought.buyerName];
-            this.model.board.getField(buyer).markAsBought(buyer);
+            this.model.board.buyField(buyer);
             //TODO update view
         }
     }

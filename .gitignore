@@ -44,6 +44,7 @@ client/Thumbs.db
 
 # Typescript build files
 client/js/*.js*
+client/test/js/*
 
 # Python precompiled modules
 **/__pycache__/**
