@@ -28,6 +28,7 @@ namespace controller {
             this.handlers.setValue(message.NewTurn.message, this.newTurn);
             this.handlers.setValue(message.SetCash.message, this.setCash);
             this.handlers.setValue(message.UserBought.message, this.userBought);
+            this.handlers.setValue(message.InvalidOperation.message, this.invalidOperation);
         }
 
         handle(msgFromServer: any): void {
@@ -64,17 +65,21 @@ namespace controller {
         private someoneMoved(object: any): void {
             const username: string = object[message.PlayerMove.playerName];
             const rollResult: number = object[message.PlayerMove.movedBy];
+
             this.model.board.movePawn(username, rollResult);
+
             const field = this.model.board.getField(username);
-            this.viewChanges_.movePawn(username, field.id);
             if (this.model.players.iAmActive()) {
                 this.model.round.playerMoved();
                 this.viewChanges_.enable(ViewElement.END_TURN_BTN, true);
-                if(!field.hasOwner()
+                if (field.buyable
+                    && !field.hasOwner()
                     && field.cost <= this.model.players.getActivePlayerFunds()) {
                     this.viewChanges_.enable(ViewElement.BUY_FIELD_BTN, true);
                 }
             }
+
+            this.viewChanges_.movePawn(username, field.id);
         }
 
         private newTurn(object: any): void {
@@ -115,6 +120,11 @@ namespace controller {
             const buyer: string = object[message.UserBought.buyerName];
             this.model.board.buyField(buyer);
             //TODO update view
+        }
+
+        private invalidOperation(object: any): void {
+            const error: string = object[message.InvalidOperation.error];
+            console.log("ERROR: " + error);
         }
     }
 

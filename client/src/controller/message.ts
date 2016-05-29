@@ -105,4 +105,9 @@
         static get buyerName(): string { return "username"; }
     }
 
+    export class InvalidOperation {
+        static get message(): string { return "invalidOperatio"; }
+        static get error(): string { return "error"; }
+    }
+
 }

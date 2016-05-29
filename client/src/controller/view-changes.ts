@@ -54,6 +54,7 @@ namespace controller {
 
         // TODO strange callback?
         movePawn(player: string, targetField: number) {
+            console.log(targetField);
             this.view_.movePawn(player, targetField, () => { });
         }
     }

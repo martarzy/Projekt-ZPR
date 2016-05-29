@@ -2,11 +2,12 @@ namespace model {
 
     export class Field {
         private ownerUsername_: string = "";
+        private buyable_: boolean;
 
         constructor(private id_: number,
                     private description_: string,
-                    private cost_: number,
-                    private buyable_: boolean) {
+                    private cost_: number) {
+            this.buyable_ = cost_ > 0;
         }
 
         get id(): number {
