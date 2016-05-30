@@ -49,6 +49,22 @@ namespace controller {
             this.viewChanges_.disableAllButtons();
         }
 
+        playerBuildsHouse(): void {
+            // TODO
+        }
+
+        playerCollateralizesField(): void {
+            // TODO
+        }
+
+        playerSellsHouse(): void {
+            // TODO
+        }
+
+        fieldClicked(fieldId: number): void {
+            // TODO handle the click depending on current mode
+            // (none, sell, buy, collateralize)
+        }
     }
 
 }

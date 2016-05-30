@@ -1,6 +1,15 @@
 ﻿namespace model {
+    export enum ActionMode {
+        NONE, BUILD, SELL, COLLATERALIZE
+    }
+
     export class Round {
-        private playerMoved_ = false;
+        private playerMoved_: boolean;
+        private currentMode_: ActionMode;
+
+        constructor() {
+            this.reset();
+        }
 
         get movementPerformed(): boolean {
             return this.playerMoved_;
@@ -12,6 +21,7 @@
 
         reset() {
             this.playerMoved_ = false;
+            this.currentMode_ = ActionMode.NONE
         }
     }
 }

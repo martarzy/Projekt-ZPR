@@ -47,6 +47,11 @@ namespace model {
         buyField(ownerUsername: string) {
             this.getField(ownerUsername).markAsBought(ownerUsername);
         }
+        
+        fieldsOwnedBy(owner: string): Array<Field> {
+            return this.board.getFields()
+                             .filter(field => field.ownerUsername() === owner);
+        }
     }
 
     export class PlayersModel {

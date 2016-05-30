@@ -37,6 +37,10 @@ namespace model {
         jailField(): Field {
             return this.getField(this.JAIL_FIELD_NUMBER);
         }
+
+        getFields(): Array<Field> {
+            return this.fields_;
+        }
     }
 
 }

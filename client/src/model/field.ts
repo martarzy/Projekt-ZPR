@@ -1,7 +1,7 @@
 namespace model {
 
     export class Field {
-        private ownerUsername_: string = "";
+        private ownerUsername_ = "";
         private buyable_: boolean;
 
         constructor(private id_: number,
@@ -37,7 +37,7 @@ namespace model {
 
         ownerUsername(): string {
             return this.ownerUsername_;
-        }   
+        }
     }
 
 }
