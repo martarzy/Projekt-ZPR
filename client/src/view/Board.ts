@@ -34,5 +34,9 @@ namespace view {
             this.pawns[pawnName].move(this.fields[fieldNumber], sequencenumber);
             setTimeout(onMovingEnd, sequencenumber*200);
         }
+
+        public getField(fieldNumber): Field {
+            return this.fields[fieldNumber];
+        }
     }
 }

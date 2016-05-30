@@ -10,57 +10,59 @@ namespace view {
             this.showSignInWindow();
             this.setDisabledReadyButton();
             this.setDisabledRollButton();
+
+            this.setBoughtFieldColor(11, "red");
         }
 
-        showSignInWindow() {
+        public showSignInWindow() {
             $("#myModal").modal('show');
         }
 
-        hideSignInWindow() {
+        public hideSignInWindow() {
             $("#myModal").modal('hide');
         }
 
-        setActiveRollButton() {
+        public setActiveRollButton() {
             $('#roll-button').removeAttr('disabled');
         }
 
-        setDisabledRollButton() {
+        public setDisabledRollButton() {
             $('#roll-button').removeAttr('active');
             $('#roll-button').attr('disabled', 1);
         }
 
-        setActiveReadyButton() {
+        public setActiveReadyButton() {
             $('#ready-button').removeAttr('disabled');
         }
 
-        setDisabledReadyButton() {
+        public setDisabledReadyButton() {
             $('#ready-button').removeAttr('active');
             $('#ready-button').attr('disabled', 1);
         }
 
-        setActiveBuyButton() {
+        public setActiveBuyButton() {
             $('#buy-button').removeAttr('disabled');
         }
 
-        setDisabledBuyButton() {
+        public setDisabledBuyButton() {
             $('#buy-button').removeAttr('active');
             $('#buy-button').attr('disabled', 1);
         }
 
-        setActiveEndTurnButton() {
+        public setActiveEndTurnButton() {
             $('#end-turn-button').removeAttr('disabled');
         }
 
-        setDisabledEndTurnButton() {
+        public setDisabledEndTurnButton() {
             $('#end-turn-button').removeAttr('active');
             $('#end-turn-button').attr('disabled', 1);
         }
 
-        showError(msg: string) {
+        public showError(msg: string) {
             document.getElementById("message").innerHTML = msg;
         }
 
-        updateUserList(list: Array<view.PlayerDTO>) {
+        public updateUserList(list: Array<view.PlayerDTO>) {
             var other_players_list = $(".other-players-box").children().toArray();
 
             for (let i = 0; i < list.length; i++) {
@@ -88,13 +90,18 @@ namespace view {
             }
         }
 
-        initPawnsDictionary(list: Array<view.PlayerDTO>) {
+        public initPawnsDictionary(list: Array<view.PlayerDTO>) {
             for (let i = 0; i < list.length; i++)
                 this.board.addPawn(list[i].username, list[i].color);
         }
 
-        movePawn(pawnName: string, fieldNumber: number, onMovingEnd: () => any) {
+        public movePawn(pawnName: string, fieldNumber: number, onMovingEnd: () => any) {
             this.board.movePawn(pawnName, fieldNumber, onMovingEnd);
+        }
+
+        public setBoughtFieldColor(fieldNumber: number, color: string) {
+            var field = this.board.getField(fieldNumber);
+            field.changeBoughtFieldColor(color);
         }
 	}
 }
