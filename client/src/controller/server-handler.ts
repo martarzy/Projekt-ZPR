@@ -119,7 +119,7 @@ namespace controller {
         private userBought(object: any): void {
             const buyer: string = object[message.UserBought.buyerName];
             this.model.board.buyField(buyer);
-            //TODO update view
+            this.viewChanges_.colorField(this.model.board.getField(buyer).id, this.model.players.getActivePlayerColor());
         }
 
         private invalidOperation(object: any): void {

@@ -35,7 +35,7 @@ namespace view {
             setTimeout(onMovingEnd, sequencenumber*200);
         }
 
-        public getField(fieldNumber): Field {
+        public getField(fieldNumber: number): Field {
             return this.fields[fieldNumber];
         }
     }

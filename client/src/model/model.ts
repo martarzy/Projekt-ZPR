@@ -91,7 +91,15 @@ namespace model {
         }
 
         getActivePlayerFunds(): number {
-            return this.players.filter(player => player.username === this.activeUsername)[0].cash;
+            return this.findActivePlayer().cash;
+        }
+
+        getActivePlayerColor(): string {
+            return this.findActivePlayer().color;
+        }
+
+        private findActivePlayer(): Player {
+            return this.players.filter(player => player.username === this.activeUsername)[0];
         }
 
         setCash(username: string, amount: number): void {

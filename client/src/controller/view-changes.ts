@@ -52,10 +52,14 @@ namespace controller {
             this.view_.initPawnsDictionary(players);
         }
 
-        // TODO strange callback?
+        // TODO callback could be used to unlock endTurnButton
+        // because right now two pawns can move simultanously
         movePawn(player: string, targetField: number) {
-            console.log(targetField);
             this.view_.movePawn(player, targetField, () => { });
+        }
+
+        colorField(fieldNumber: number, color: string) {
+            this.view_.setBoughtFieldColor(fieldNumber, color);
         }
     }
 
