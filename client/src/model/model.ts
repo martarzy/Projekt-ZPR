@@ -22,26 +22,26 @@ namespace model {
     }
 
     export class BoardModel {
-        private board = new Board();
-        private pawnsOwners = new collections.Dictionary<string, Pawn>();
-        private pawnsPosition = new collections.Dictionary<Pawn, Field>();
+        private board_ = new Board();
+        private pawnsOwners_ = new collections.Dictionary<string, Pawn>();
+        private pawnsPosition_ = new collections.Dictionary<Pawn, Field>();
 
         getField(ownerUsername: string): Field {
-            return this.pawnsPosition.getValue(this.pawnsOwners.getValue(ownerUsername));
+            return this.pawnsPosition_.getValue(this.pawnsOwners_.getValue(ownerUsername));
         }
 
         placePawnsOnBoard(players: Array<Player>) {
             for (const player of players)
-                this.pawnsOwners.setValue(player.username, new Pawn(player.color));
-            this.pawnsOwners
-                .forEach((username, pawn) => this.pawnsPosition.setValue(pawn, this.board.startField()));
+                this.pawnsOwners_.setValue(player.username, new Pawn(player.color));
+            this.pawnsOwners_
+                .forEach((username, pawn) => this.pawnsPosition_.setValue(pawn, this.board_.startField()));
         }
 
         movePawn(ownerUsername: string, rollResult: number): void {
-            const targetPawn = this.pawnsOwners.getValue(ownerUsername);
-            const currentField = this.pawnsPosition.getValue(targetPawn);
-            const targetField = this.board.fieldInDistanceOf(currentField, rollResult);
-            this.pawnsPosition.setValue(targetPawn, targetField);
+            const targetPawn = this.pawnsOwners_.getValue(ownerUsername);
+            const currentField = this.pawnsPosition_.getValue(targetPawn);
+            const targetField = this.board_.fieldInDistanceOf(currentField, rollResult);
+            this.pawnsPosition_.setValue(targetPawn, targetField);
         }
 
         buyField(ownerUsername: string) {
@@ -61,7 +61,7 @@ namespace model {
         }
 
         private userOwnsWholeDistinct(username: string, targetGroup: string) {
-            return this.board.getFields()
+            return this.board_.getFields()
                             .filter(f => f.group === targetGroup)
                             .every(f => f.ownerUsername() === username);
         }
@@ -73,20 +73,20 @@ namespace model {
 
 
         private fieldsOwnedBy(owner: string): Array<Field> {
-            return this.board.getFields()
+            return this.board_.getFields()
                              .filter(field => field.ownerUsername() === owner);
         }
 
         buyHouseOn(fieldId: number): void {
-            this.board.getField(fieldId).buyHouse();
+            this.board_.getField(fieldId).buyHouse();
         }
 
         sellHouseOn(fieldId: number): void {
-            this.board.getField(fieldId).sellHouse();
+            this.board_.getField(fieldId).sellHouse();
         }
 
         houseAmountOn(fieldId: number): number {
-            return this.board.getField(fieldId).housesBuilt;
+            return this.board_.getField(fieldId).housesBuilt;
         }
     }
 
