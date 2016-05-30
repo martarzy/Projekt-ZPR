@@ -52,14 +52,25 @@ namespace controller {
             this.view_.initPawnsDictionary(players);
         }
 
-        // TODO callback could be used to unlock endTurnButton
-        // because right now two pawns can move simultanously
         movePawn(player: string, targetField: number) {
-            this.view_.movePawn(player, targetField, () => { });
+            this.enable(ViewElement.END_TURN_BTN, false);
+            this.view_.movePawn(player, targetField, () => this.enable(ViewElement.END_TURN_BTN, true) );
         }
 
         colorField(fieldNumber: number, color: string) {
             this.view_.setBoughtFieldColor(fieldNumber, color);
+        }
+
+        highlightFields(fieldIds: Array<number>): void {
+            this.view_.highlightFields(fieldIds);
+        }
+
+        unhighlightAllFields(): void {
+            this.view_.unhighlightAllFields();
+        }
+
+        drawHousesOnField(fieldId: number, houseAmount: number) {
+            this.view_.drawHousesOnField(fieldId, houseAmount);
         }
     }
 

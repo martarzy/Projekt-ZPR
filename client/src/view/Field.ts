@@ -203,6 +203,7 @@
             var g = d3.select("svg")
                 .append("g");
 
+            // kolorowy pasek pola
             g.append("rect")
                 .attr("x", -35)
                 .attr("y", -53)
@@ -210,14 +211,16 @@
                 .attr("height", 15)
                 .attr("fill", color)
                 .attr("stroke", "black");
-
+            
+            // glowny prostokat
             g.append("rect")
                 .attr("x", -35)
                 .attr("y", -38)
                 .attr("width", 70)
                 .attr("height", 90)
                 .attr("fill", "whitesmoke")
-                .attr("stroke", "black");
+                .attr("stroke", "black")
+                .attr("id","main-collateralize-field-" + this.fieldId);
 
             // kwadracik dla kupujacego
             g.append("rect")
@@ -227,7 +230,49 @@
                 .attr("height", 15)
                 .attr("fill", "white")
                 .attr("stroke", "black")
-                .attr("id", "bought-field"+this.fieldId);
+                .attr("id", "bought-field" + this.fieldId);
+
+            // kwadraciki dla domow i hotelu
+            // nr 1
+            g.append("rect")
+                .attr("x", -20)
+                .attr("y", -20)
+                .attr("width", 15)
+                .attr("height", 15)
+                .attr("fill", "whitesmoke")
+                .attr("id", "house-field1-" + this.fieldId);
+            // nr 2
+            g.append("rect")
+                .attr("x", +5)
+                .attr("y", -20)
+                .attr("width", 15)
+                .attr("height", 15)
+                .attr("fill", "whitesmoke")
+                .attr("id", "house-field2-" + this.fieldId);
+            // nr 3
+            g.append("rect")
+                .attr("x", -20)
+                .attr("y", +5)
+                .attr("width", 15)
+                .attr("height", 15)
+                .attr("fill", "whitesmoke")
+                .attr("id", "house-field3-" + this.fieldId);
+            // nr 4
+            g.append("rect")
+                .attr("x", +5)
+                .attr("y", +5)
+                .attr("width", 15)
+                .attr("height", 15)
+                .attr("fill", "whitesmoke")
+                .attr("id", "house-field4-" + this.fieldId);
+            // pole dla hotelu
+            g.append("rect")
+                .attr("x", -20)
+                .attr("y", -20)
+                .attr("width", 40)
+                .attr("height", 40)
+                .attr("fill", "whitesmoke")
+                .attr("id", "hotel-field-" + this.fieldId);
 
             g.append("text")
                 .attr("text-anchor", "middle")
@@ -249,6 +294,76 @@
         public changeBoughtFieldColor(color: string) {
             var rect = document.getElementById("bought-field" + this.fieldId);
             rect.style.fill = color;
+        }
+
+        drawHighlightField(x: number, y: number) {
+            var fieldRotation = Math.floor(this.fieldId / 10) * 90;
+            var g = d3.select("svg").append("g");
+
+            g.append("rect")
+                .attr("x", -35)
+                .attr("y", -53)
+                .attr("width", 70)
+                .attr("height", 15)
+                .attr("fill", "lime")    
+                .attr("stroke", "black")
+                .attr("fill-opacity", 0.3)
+                .attr("class", "highlighted-field");;
+
+            g.append("rect")
+                .attr("x", -35)
+                .attr("y", -38)
+                .attr("width", 70)
+                .attr("height", 90)
+                .attr("fill", "lime")
+                .attr("stroke", "black")
+                .attr("fill-opacity", 0.3)
+                .attr("class", "highlighted-field");
+
+            g.attr("transform", "translate(" + x + " " + y + "), rotate(" + fieldRotation + ")");
+        }
+
+        public sellAllHouses(fieldId: number) {
+            $("#house-field4-" + fieldId).attr("stroke", "whitesmoke").attr("fill", "whitesmoke");
+            $("#house-field3-" + fieldId).attr("stroke", "whitesmoke").attr("fill", "whitesmoke");
+            $("#house-field2-" + fieldId).attr("stroke", "whitesmoke").attr("fill", "whitesmoke");
+            $("#house-field1-" + fieldId).attr("stroke", "whitesmoke").attr("fill", "whitesmoke");
+            $("#hotel-field-" + fieldId).attr("stroke", "whitesmoke").attr("fill", "whitesmoke");
+        }
+
+        public buildHouses(fieldId: number, amount: number) {
+            this.sellAllHouses(fieldId);
+            switch (amount) {
+                case 4:
+                    $("#house-field4-" + fieldId).attr("stroke", "black").attr("fill", "green");
+                case 3:
+                    $("#house-field3-" + fieldId).attr("stroke", "black").attr("fill", "green");
+                case 2:
+                    $("#house-field2-" + fieldId).attr("stroke", "black").attr("fill", "green");
+                case 1:
+                    $("#house-field1-" + fieldId).attr("stroke", "black").attr("fill", "green");
+                    break;
+                case 5:
+                    $("#hotel-field-" + fieldId).attr("stroke", "black").attr("fill", "red");
+            }
+        }
+
+        public collateralizeField(fieldId: number) {
+            $("#main-collateralize-field-" + fieldId).attr("fill", "gray");
+            $("#hotel-field-" + fieldId).attr("fill", "gray");
+            $("#house-field4-" + fieldId).attr("fill", "gray");
+            $("#house-field3-" + fieldId).attr("fill", "gray");
+            $("#house-field2-" + fieldId).attr("fill", "gray");
+            $("#house-field1-" + fieldId).attr("fill", "gray");
+        }
+
+        public buyBackField(fieldNumber: number) {
+            $("#main-collateralize-field-" + fieldNumber).attr("fill", "whitesmoke");
+            $("#hotel-field-" + fieldNumber).attr("fill",  "whitesmoke");
+            $("#house-field4-" + fieldNumber).attr("fill", "whitesmoke");
+            $("#house-field3-" + fieldNumber).attr("fill", "whitesmoke");
+            $("#house-field2-" + fieldNumber).attr("fill", "whitesmoke");
+            $("#house-field1-" + fieldNumber).attr("fill", "whitesmoke");
         }
     }
 }

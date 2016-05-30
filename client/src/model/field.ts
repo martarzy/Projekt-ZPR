@@ -1,43 +1,74 @@
 namespace model {
 
     export class Field {
-        private ownerUsername_: string = "";
-        private buyable_: boolean;
+        static MAX_HOUSES = 5;
+        private ownerUsername_ = "";
+        private collateralized_ = false;
+        private housesBuilt_ = 0;
 
         constructor(private id_: number,
-                    private description_: string,
-                    private cost_: number) {
-            this.buyable_ = cost_ > 0;
+                    private group_: string,
+                    private fieldCost_: number = 0,
+                    private houseCost_: number = 0) {
         }
 
         get id(): number {
             return this.id_;
         }
 
-        get description(): string {
-            return this.description_;
+        get group(): string {
+            return this.group_;
         }
 
         get cost(): number {
-            return this.cost_;
+            return this.fieldCost_;
         }
 
-        get buyable(): boolean {
-            return this.buyable_;
+        get houseCost(): number {
+            return this.houseCost_;
         }
 
-        hasOwner(): boolean {
+        get housesBuilt(): number {
+            return this.housesBuilt_;
+        }
+
+        get isCollateralized(): boolean {
+            return this.collateralized_;
+        }
+
+        isBuyable(): boolean {
+            return this.fieldCost_ > 0
+                && !this.hasOwner();
+        }
+
+        expansible(): boolean {
+            return this.houseCost_ > 0
+                   && this.housesBuilt_ < Field.MAX_HOUSES;
+        }
+
+        private hasOwner(): boolean {
             return this.ownerUsername_ !== "";
         }
 
         markAsBought(owner: string): void {
-            if (this.buyable_)
-                this.ownerUsername_ = owner;
+            this.ownerUsername_ = owner;
         }
 
         ownerUsername(): string {
             return this.ownerUsername_;
-        }   
+        }
+
+        collateralize(): void {
+            this.collateralized_ = true;
+        }
+
+        buyHouse(): void {
+            this.housesBuilt_ += 1;
+        }
+
+        sellHouse(): void {
+            this.housesBuilt_ -= 1;
+        }
     }
 
 }

@@ -11,6 +11,9 @@ window.onload = () => {
     const rollButton = <HTMLInputElement>document.getElementById("roll-button");
     const buyButton = <HTMLInputElement>document.getElementById("buy-button");
     const endTurnButton = <HTMLInputElement>document.getElementById("end-turn-button");
+    const buildButton = <HTMLInputElement>document.getElementById("build-button");
+    const sellButton = <HTMLInputElement>document.getElementById("sell-button");
+    const collateralizeButton = <HTMLInputElement>document.getElementById("collateralize-button");
 
     const actions: controller.UserActions = control.actionsMap;
 
@@ -19,4 +22,7 @@ window.onload = () => {
     rollButton.onclick = (event: MouseEvent) => actions.rollDice();
     buyButton.onclick = (event: MouseEvent) => actions.playerBuysField();
     endTurnButton.onclick = (event: MouseEvent) => actions.playerEndsTurn();
+    buildButton.onclick = (event: MouseEvent) => actions.activateBuildMode();
+    sellButton.onclick = (event: MouseEvent) => actions.activateSellMode();
+    collateralizeButton.onclick = (event: MouseEvent) => actions.activateCollateralizesMode();
 };
