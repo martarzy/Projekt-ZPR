@@ -323,7 +323,16 @@
             g.attr("transform", "translate(" + x + " " + y + "), rotate(" + fieldRotation + ")");
         }
 
+        public sellAllHouses(fieldId: number) {
+            $("#house-field4-" + fieldId).attr("stroke", "whitesmoke").attr("fill", "whitesmoke");
+            $("#house-field3-" + fieldId).attr("stroke", "whitesmoke").attr("fill", "whitesmoke");
+            $("#house-field2-" + fieldId).attr("stroke", "whitesmoke").attr("fill", "whitesmoke");
+            $("#house-field1-" + fieldId).attr("stroke", "whitesmoke").attr("fill", "whitesmoke");
+            $("#hotel-field-" + fieldId).attr("stroke", "whitesmoke").attr("fill", "whitesmoke");
+        }
+
         public buildHouses(fieldId: number, amount: number) {
+            this.sellAllHouses(fieldId);
             switch (amount) {
                 case 4:
                     $("#house-field4-" + fieldId).attr("stroke", "black").attr("fill", "green");
@@ -337,10 +346,6 @@
                 case 5:
                     $("#hotel-field-" + fieldId).attr("stroke", "black").attr("fill", "red");
             }
-        }
-
-        public buildHotel(fieldId: number) {
-            $("#hotel-field-" + fieldId).attr("stroke", "black").attr("fill", "red");
         }
 
         public collateralizeField(fieldId: number) {

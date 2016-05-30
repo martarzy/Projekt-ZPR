@@ -163,6 +163,5 @@ namespace view {
         public buyBackField(fieldNumber: number) {
             this.board.getField(fieldNumber).buyBackField(fieldNumber);
         }
-        // public removeHouses..????
 	}
 }
