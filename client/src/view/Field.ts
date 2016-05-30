@@ -203,6 +203,7 @@
             var g = d3.select("svg")
                 .append("g");
 
+            // kolorowy pasek pola
             g.append("rect")
                 .attr("x", -35)
                 .attr("y", -53)
@@ -210,14 +211,16 @@
                 .attr("height", 15)
                 .attr("fill", color)
                 .attr("stroke", "black");
-
+            
+            // glowny prostokat
             g.append("rect")
                 .attr("x", -35)
                 .attr("y", -38)
                 .attr("width", 70)
                 .attr("height", 90)
                 .attr("fill", "whitesmoke")
-                .attr("stroke", "black");
+                .attr("stroke", "black")
+                .attr("id","main-collateralize-field-" + this.fieldId);
 
             // kwadracik dla kupujacego
             g.append("rect")
@@ -338,6 +341,15 @@
 
         public buildHotel(fieldId: number) {
             $("#hotel-field-" + fieldId).attr("stroke", "black").attr("fill", "red");
+        }
+
+        public collateralizeField(fieldId: number) {
+            $("#main-collateralize-field-" + fieldId).attr("fill", "gray");
+            $("#hotel-field-" + fieldId).attr("fill", "gray");
+            $("#house-field4-" + fieldId).attr("fill", "gray");
+            $("#house-field3-" + fieldId).attr("fill", "gray");
+            $("#house-field2-" + fieldId).attr("fill", "gray");
+            $("#house-field1-" + fieldId).attr("fill", "gray");
         }
     }
 }

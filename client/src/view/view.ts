@@ -10,6 +10,8 @@ namespace view {
             this.showSignInWindow();
             this.setDisabledReadyButton();
             this.setDisabledRollButton();
+
+            this.collateralizeField(1);
         }
 
         public showSignInWindow() {
@@ -152,6 +154,10 @@ namespace view {
 
         public drawHousesOnField(fieldId: number, houseAmount: number) {
             this.board.getField(fieldId).buildHouses(fieldId, houseAmount);
+        }
+
+        public collateralizeField(fieldId: number) {
+            this.board.getField(fieldId).collateralizeField(fieldId);
         }
 
         // public removeHouses..????
