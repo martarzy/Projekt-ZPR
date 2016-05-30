@@ -260,9 +260,10 @@
                 .attr("y", -53)
                 .attr("width", 70)
                 .attr("height", 15)
-                .attr("fill", "lime")        // kolor do zmiany
+                .attr("fill", "lime")    
                 .attr("stroke", "black")
-                .attr("fill-opacity", 0.3);
+                .attr("fill-opacity", 0.3)
+                .attr("class", "highlighted-field");;
 
             g.append("rect")
                 .attr("x", -35)
@@ -271,7 +272,8 @@
                 .attr("height", 90)
                 .attr("fill", "lime")
                 .attr("stroke", "black")
-                .attr("fill-opacity", 0.3);
+                .attr("fill-opacity", 0.3)
+                .attr("class", "highlighted-field");
 
             g.attr("transform", "translate(" + x + " " + y + "), rotate(" + fieldRotation + ")");
         }

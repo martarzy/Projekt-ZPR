@@ -130,12 +130,11 @@ namespace view {
             field.changeBoughtFieldColor(color);
         }
 
-        assignFieldClickedCallback(callback: (clickedId: number) => void) {
+        public assignFieldClickedCallback(callback: (clickedId: number) => void) {
             // TODO    
         }
 
-        highlightFields(fieldIds: Array<number>): void {
-            // TODO
+        public highlightFields(fieldIds: Array<number>) {
             for (let i = 0; i < fieldIds.length; i++) {
                 // pole o zadanym w tablicy nr
                 var field = this.board.getField(fieldIds[i]);
@@ -148,11 +147,12 @@ namespace view {
             }
         }
 
-        unhighlightAllFields(): void {
-            // TODO
+        public unhighlightAllFields() {
+            var highlightedFields = $(".highlighted-field");
+            highlightedFields.remove();
         }
 
-        drawHousesOnField(fieldId: number, houseAmount: number): void {
+        public drawHousesOnField(fieldId: number, houseAmount: number) {
             // TODO
         }
 	}
