@@ -10,8 +10,6 @@ namespace view {
             this.showSignInWindow();
             this.setDisabledReadyButton();
             this.setDisabledRollButton();
-
-            this.highlightFields([2, 4, 6]);
         }
 
         public showSignInWindow() {
@@ -153,7 +151,13 @@ namespace view {
         }
 
         public drawHousesOnField(fieldId: number, houseAmount: number) {
+            this.board.getField(fieldId).buildHouses(fieldId, houseAmount);
+        }
+
+        public drawHotelOnField(fieldId: number) {
             // TODO
         }
+
+        // public removeHouses..????
 	}
 }

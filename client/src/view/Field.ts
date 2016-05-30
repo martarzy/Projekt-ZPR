@@ -227,7 +227,41 @@
                 .attr("height", 15)
                 .attr("fill", "white")
                 .attr("stroke", "black")
-                .attr("id", "bought-field"+this.fieldId);
+                .attr("id", "bought-field" + this.fieldId);
+
+            // kwadraciki dla domow
+            // nr 1
+            g.append("rect")
+                .attr("x", -20)
+                .attr("y", -20)
+                .attr("width", 15)
+                .attr("height", 15)
+                .attr("fill", "whitesmoke")
+                .attr("id", "house-field1-" + this.fieldId);
+            // nr 2
+            g.append("rect")
+                .attr("x", +5)
+                .attr("y", -20)
+                .attr("width", 15)
+                .attr("height", 15)
+                .attr("fill", "whitesmoke")
+                .attr("id", "house-field2-" + this.fieldId);
+            // nr 3
+            g.append("rect")
+                .attr("x", -20)
+                .attr("y", +5)
+                .attr("width", 15)
+                .attr("height", 15)
+                .attr("fill", "whitesmoke")
+                .attr("id", "house-field3-" + this.fieldId);
+            // nr 4
+            g.append("rect")
+                .attr("x", +5)
+                .attr("y", +5)
+                .attr("width", 15)
+                .attr("height", 15)
+                .attr("fill", "whitesmoke")
+                .attr("id", "house-field4-" + this.fieldId);
 
             g.append("text")
                 .attr("text-anchor", "middle")
@@ -276,6 +310,19 @@
                 .attr("class", "highlighted-field");
 
             g.attr("transform", "translate(" + x + " " + y + "), rotate(" + fieldRotation + ")");
+        }
+
+        public buildHouses(fieldId: number, amount: number) {
+            switch (amount) {
+                case 4:
+                    $("#house-field4-" + fieldId).attr("stroke", "black").attr("fill", "green");
+                case 3:
+                    $("#house-field3-" + fieldId).attr("stroke", "black").attr("fill", "green");
+                case 2:
+                    $("#house-field2-" + fieldId).attr("stroke", "black").attr("fill", "green");
+                case 1:
+                    $("#house-field1-" + fieldId).attr("stroke", "black").attr("fill", "green");
+            }
         }
     }
 }
