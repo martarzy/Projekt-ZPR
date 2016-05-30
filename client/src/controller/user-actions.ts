@@ -12,58 +12,87 @@ namespace controller {
         }
 
         chooseName(name: string): void {
-            let toSend: any = {};
-            toSend[message.messageTitle] = message.MyName.message;
+            let toSend = this.prepareMessage(message.MyName.message);
             toSend[message.MyName.name] = name;
-            this.model_.players.setMyUsername(name);
             this.sender_(toSend);
+            this.model_.players.setMyUsername(name);
         }
 
         rollDice(): void {
-            let toSend: any = {};
-            toSend[message.messageTitle] = message.RollDice.message;
-            this.sender_(toSend);
+            this.sender_(this.prepareMessage(message.RollDice.message));
             this.viewChanges_.enable(ViewElement.ROLL_BTN, false);
         }
 
         playerIsReady(): void {
-            let toSend: any = {};
-            toSend[message.messageTitle] = message.Ready.message;
-            this.sender_(toSend);
+            this.sender_(this.prepareMessage(message.Ready.message));
             this.viewChanges_.enable(ViewElement.READY_BTN, false);
         }
 
         playerBuysField(): void {
-            let toSend: any = {};
-            toSend[message.messageTitle] = message.BuyField.message;
-            this.sender_(toSend);
+            this.sender_(this.prepareMessage(message.BuyField.message));
             this.viewChanges_.enable(ViewElement.BUY_FIELD_BTN, false);
         }
 
         playerEndsTurn(): void {
             if (!this.model_.round.playerMoved)
                 return;
-            let toSend: any = {};
-            toSend[message.messageTitle] = message.EndOfTurn.message;
-            this.sender_(toSend);
+            this.sender_(this.prepareMessage(message.EndOfTurn.message));
             this.viewChanges_.disableAllButtons();
         }
 
-        playerBuildsHouse(): void {
-            // TODO
+        private prepareMessage(title: string): any {
+            let toSend: any = {};
+            toSend[message.messageTitle] = title;
+            return toSend;
         }
 
-        playerCollateralizesField(): void {
-            // TODO
+        activateBuildMode(): void {
+            this.setRoundMode(model.ActionMode.BUILD);
+            const buildable = this.model_.board.expansibleFields(this.model_.players.getMyUsername());
+            this.highlightOnly(buildable);
         }
 
-        playerSellsHouse(): void {
-            // TODO
+        activateCollateralizesMode(): void {
+            this.setRoundMode(model.ActionMode.COLLATERALIZE);
+        }
+
+        activateSellMode(): void {
+            this.setRoundMode(model.ActionMode.SELL);
+            const sellable = this.model_.board.fieldsWithSellableHouses(this.model_.players.getMyUsername());
+            this.highlightOnly(sellable);
+        }
+
+        private highlightOnly(fields: Array<model.Field>): void {
+            this.viewChanges_.unhighlightAllFields();
+            this.viewChanges_.highlightFields(fields.map(f => f.id));
+        }
+
+        private setRoundMode(mode: model.ActionMode): void {
+            this.model_.round.mode = mode;
         }
 
         fieldClicked(fieldId: number): void {
-            // TODO handle the click depending on current mode
-            // (none, sell, buy, collateralize)
+            switch (this.model_.round.mode) {
+                case model.ActionMode.BUILD:
+                    this.buyHouse(fieldId);
+                    break;
+                case model.ActionMode.SELL:
+                    this.sellHouse(fieldId);
+                    break;
+                default: // Action on NONE mode
+            }
+        }
+
+        private buyHouse(fieldId: number) {
+            let toSend = this.prepareMessage(message.BuyHouse.message);
+            toSend[message.BuyHouse.field] = fieldId;
+            this.sender_(toSend);
+        }
+
+        private sellHouse(fieldId: number) {
+            let toSend = this.prepareMessage(message.SellHouse.message);
+            toSend[message.SellHouse.field] = fieldId;
+            this.sender_(toSend);
         }
     }
 

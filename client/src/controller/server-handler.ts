@@ -11,7 +11,9 @@ namespace controller {
         private handlers = new collections.Dictionary<string, EventHandler>();
         private colorManager_: model.ColorManager;
 
-        constructor(private model: model.Model, private viewChanges_: ViewChanges) {
+        constructor(private model: model.Model,
+                    private viewChanges_: ViewChanges,
+                    private userActions_: UserActions) {
             this.installHandlers();
             this.initialise();
         }
@@ -29,6 +31,8 @@ namespace controller {
             this.handlers.setValue(message.SetCash.message, this.setCash);
             this.handlers.setValue(message.UserBought.message, this.userBought);
             this.handlers.setValue(message.InvalidOperation.message, this.invalidOperation);
+            this.handlers.setValue(message.UserBoughtHouse.message, this.userBoughtHouse);
+            this.handlers.setValue(message.UserSoldHouse.message, this.userSoldHouse);
         }
 
         handle(msgFromServer: any): void {
@@ -72,8 +76,7 @@ namespace controller {
             if (this.model.players.iAmActive()) {
                 this.model.round.playerMoved();
                 this.viewChanges_.enable(ViewElement.END_TURN_BTN, true);
-                if (field.buyable
-                    && !field.hasOwner()
+                if (field.isBuyable()
                     && field.cost <= this.model.players.getActivePlayerFunds()) {
                     this.viewChanges_.enable(ViewElement.BUY_FIELD_BTN, true);
                 }
@@ -125,6 +128,20 @@ namespace controller {
         private invalidOperation(object: any): void {
             const error: string = object[message.InvalidOperation.error];
             console.log("ERROR: " + error);
+        }
+
+        private userBoughtHouse(object: any): void {
+            const field: number = object[message.UserBoughtHouse.field];
+            this.model.board.buyHouseOn(field);
+            this.viewChanges_.drawHousesOnField(field, this.model.board.houseAmountOn(field));
+            this.userActions_.activateBuildMode();
+        }
+
+        private userSoldHouse(object: any): void {
+            const field: number = object[message.UserSoldHouse.field];
+            this.model.board.sellHouseOn(field);
+            this.viewChanges_.drawHousesOnField(field, this.model.board.houseAmountOn(field));
+            this.userActions_.activateSellMode();
         }
     }
 

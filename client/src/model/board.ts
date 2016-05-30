@@ -12,16 +12,53 @@ namespace model {
 
         private initializeFields(): void {
             this.fields_ = new Array<Field>(this.FIELDS_NUMBER);
-            const prices: Array<number> = [0, 60, 0, 60, 0, 200, 100, 0, 100, 120,
-                                           0, 140, 150, 140, 160, 200, 180, 0, 180, 200,
-                                           0, 220, 0, 220, 240, 200, 260, 260, 150, 280,
-                                           0, 300, 300, 0, 320, 200, 0, 350, 0, 400]
-            for (let i = 0; i < this.FIELDS_NUMBER; i++) {
-                this.fields_[i] = new Field(i, "", prices[i]);
-            }
+
+            this.fields_.concat(new Field(this.fields_.length, "Go"));
+            this.fields_.concat(new Field(this.fields_.length, "Brown", 60, 50));
+            this.fields_.concat(new Field(this.fields_.length, "Chance"));
+            this.fields_.concat(new Field(this.fields_.length, "Brown", 60, 50));
+            this.fields_.concat(new Field(this.fields_.length, "Income Tax"));
+            this.fields_.concat(new Field(this.fields_.length, "Railroad", 200));
+            this.fields_.concat(new Field(this.fields_.length, "Blue", 100, 50));
+            this.fields_.concat(new Field(this.fields_.length, "Chance"));
+            this.fields_.concat(new Field(this.fields_.length, "Blue", 100, 50));
+            this.fields_.concat(new Field(this.fields_.length, "Blue", 120, 50));
+
+            this.fields_.concat(new Field(this.fields_.length, "Jail"));
+            this.fields_.concat(new Field(this.fields_.length, "Pink", 140, 100));
+            this.fields_.concat(new Field(this.fields_.length, "Utility", 150));
+            this.fields_.concat(new Field(this.fields_.length, "Pink", 140, 100));
+            this.fields_.concat(new Field(this.fields_.length, "Pink", 160, 100));
+            this.fields_.concat(new Field(this.fields_.length, "Railroad"));
+            this.fields_.concat(new Field(this.fields_.length, "Orange", 160, 100));
+            this.fields_.concat(new Field(this.fields_.length, "Chance"));
+            this.fields_.concat(new Field(this.fields_.length, "Orange", 160, 100));
+            this.fields_.concat(new Field(this.fields_.length, "Orange", 180, 100));
+
+            this.fields_.concat(new Field(this.fields_.length, "Parking"));
+            this.fields_.concat(new Field(this.fields_.length, "Red", 220, 150));
+            this.fields_.concat(new Field(this.fields_.length, "Chance"));
+            this.fields_.concat(new Field(this.fields_.length, "Red", 220, 150));
+            this.fields_.concat(new Field(this.fields_.length, "Red", 240, 150));
+            this.fields_.concat(new Field(this.fields_.length, "Railroad", 200));
+            this.fields_.concat(new Field(this.fields_.length, "Yellow", 260, 150));
+            this.fields_.concat(new Field(this.fields_.length, "Yellow", 260, 150));
+            this.fields_.concat(new Field(this.fields_.length, "Utility", 150));
+            this.fields_.concat(new Field(this.fields_.length, "Yellow", 280, 150));
+
+            this.fields_.concat(new Field(this.fields_.length, "Go to jail"));
+            this.fields_.concat(new Field(this.fields_.length, "Green", 300, 200));
+            this.fields_.concat(new Field(this.fields_.length, "Green", 300, 200));
+            this.fields_.concat(new Field(this.fields_.length, "Chance"));
+            this.fields_.concat(new Field(this.fields_.length, "Green", 320, 200));
+            this.fields_.concat(new Field(this.fields_.length, "Railroad", 200));
+            this.fields_.concat(new Field(this.fields_.length, "Chance"));
+            this.fields_.concat(new Field(this.fields_.length, "Blue", 350, 200));
+            this.fields_.concat(new Field(this.fields_.length, "Luxury tax"));
+            this.fields_.concat(new Field(this.fields_.length, "Blue", 350, 200));
         }
 
-        private getField(id: number): Field {
+        getField(id: number): Field {
             return this.fields_[id];
         }
 

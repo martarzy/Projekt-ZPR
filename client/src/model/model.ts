@@ -47,10 +47,46 @@ namespace model {
         buyField(ownerUsername: string) {
             this.getField(ownerUsername).markAsBought(ownerUsername);
         }
-        
-        fieldsOwnedBy(owner: string): Array<Field> {
+
+        expansibleFields(owner: string): Array<Field> {
+            const fields = this.fieldsOwnedBy(name)
+                               .filter(f => f.expansible());
+            const minHouseAmount = this.minOf(fields.map(f => f.housesBuilt));
+            return fields.filter(f => f.housesBuilt <= minHouseAmount)
+                         .filter(f => this.userOwnsWholeDistinct(owner, f.group));
+        }
+
+        private minOf(numbers: Array<number>): number {
+            return numbers.reduce((x, y) => Math.min(x, y));
+        }
+
+        private userOwnsWholeDistinct(username: string, targetGroup: string) {
+            return this.board.getFields()
+                            .filter(f => f.group === targetGroup)
+                            .every(f => f.ownerUsername() === username);
+        }
+
+        fieldsWithSellableHouses(owner: string): Array<Field> {
+            return this.fieldsOwnedBy(name)
+                       .filter(f => f.housesBuilt > 0);
+        }
+
+
+        private fieldsOwnedBy(owner: string): Array<Field> {
             return this.board.getFields()
                              .filter(field => field.ownerUsername() === owner);
+        }
+
+        buyHouseOn(fieldId: number): void {
+            this.board.getField(fieldId).buyHouse();
+        }
+
+        sellHouseOn(fieldId: number): void {
+            this.board.getField(fieldId).sellHouse();
+        }
+
+        houseAmountOn(fieldId: number): number {
+            return this.board.getField(fieldId).housesBuilt;
         }
     }
 
