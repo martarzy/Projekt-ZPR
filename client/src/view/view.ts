@@ -10,8 +10,6 @@ namespace view {
             this.showSignInWindow();
             this.setDisabledReadyButton();
             this.setDisabledRollButton();
-
-            this.collateralizeField(1);
         }
 
         public showSignInWindow() {
@@ -131,7 +129,8 @@ namespace view {
         }
 
         public assignFieldClickedCallback(callback: (clickedId: number) => void) {
-            // TODO    
+            var gAllElements = d3.selectAll("g");
+            gAllElements.on("click", callback);
         }
 
         public highlightFields(fieldNumbers: Array<number>) {
