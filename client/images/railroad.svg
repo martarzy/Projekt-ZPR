@@ -17,7 +17,16 @@
    inkscape:version="0.91 r13725"
    sodipodi:docname="railroad.svg">
   <defs
-     id="defs5068" />
+     id="defs5068">
+          <style
+       type="text/css"
+       id="style7">@font-face {
+  font-family: 'Aldrich';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Aldrich'), local('aldrich'), url('https://fonts.gstatic.com/s/aldrich/v6/j-NnyokbAnhXANS2iZ6Jew.woff2') format('woff2');
+}
+</style></defs>
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"

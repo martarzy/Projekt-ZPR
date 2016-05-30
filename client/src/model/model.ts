@@ -6,6 +6,7 @@ namespace model {
     export class Model {
         private board_ = new BoardModel();
         private players_ = new PlayersModel();
+        private round_ = new Round();
 
         get board(): BoardModel {
             return this.board_;
@@ -14,6 +15,10 @@ namespace model {
         get players(): PlayersModel {
             return this.players_;
         }
+
+        get round(): Round {
+            return this.round_;
+        }
     }
 
     export class BoardModel {
@@ -21,9 +26,13 @@ namespace model {
         private pawnsOwners = new collections.Dictionary<string, Pawn>();
         private pawnsPosition = new collections.Dictionary<Pawn, Field>();
 
-        placePawnsOnBoard(usernames: Array<string>) {
-            for (const username of usernames)
-                this.pawnsOwners.setValue(username, new Pawn(Color.BLACK));
+        getField(ownerUsername: string): Field {
+            return this.pawnsPosition.getValue(this.pawnsOwners.getValue(ownerUsername));
+        }
+
+        placePawnsOnBoard(players: Array<Player>) {
+            for (const player of players)
+                this.pawnsOwners.setValue(player.username, new Pawn(player.color));
             this.pawnsOwners
                 .forEach((username, pawn) => this.pawnsPosition.setValue(pawn, this.board.startField()));
         }
@@ -34,6 +43,10 @@ namespace model {
             const targetField = this.board.fieldInDistanceOf(currentField, rollResult);
             this.pawnsPosition.setValue(targetPawn, targetField);
         }
+
+        buyField(ownerUsername: string) {
+            this.getField(ownerUsername).markAsBought(ownerUsername);
+        }
     }
 
     export class PlayersModel {
@@ -41,12 +54,20 @@ namespace model {
         private activeUsername: string;
         private players: Array<Player> = [];
 
+        iAmActive(): boolean {
+            return this.activeUsername === this.myUsername;
+        }
+
         getPlayers(): Array<Player> {
             return this.players.slice();
         }
 
-        addNewUser(username: string): void {
-            this.players = this.players.concat(new Player(username));
+        resetPlayers(): void {
+            this.players = [];
+        }
+
+        addNewUser(username: string, color: string): void {
+            this.players = this.players.concat(new Player(username, color));
         }
 
         getUsernames(): Array<string> {
@@ -67,6 +88,18 @@ namespace model {
 
         getActivePlayer(): string {
             return this.activeUsername;
+        }
+
+        getActivePlayerFunds(): number {
+            return this.findActivePlayer().cash;
+        }
+
+        getActivePlayerColor(): string {
+            return this.findActivePlayer().color;
+        }
+
+        private findActivePlayer(): Player {
+            return this.players.filter(player => player.username === this.activeUsername)[0];
         }
 
         setCash(username: string, amount: number): void {

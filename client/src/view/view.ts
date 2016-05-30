@@ -12,38 +12,82 @@ namespace view {
             this.setDisabledRollButton();
         }
 
-        showSignInWindow() {
+        public showSignInWindow() {
             $("#myModal").modal('show');
         }
 
-        hideSignInWindow() {
+        public hideSignInWindow() {
             $("#myModal").modal('hide');
         }
 
-        setActiveRollButton() {
+        public setActiveRollButton() {
             $('#roll-button').removeAttr('disabled');
         }
 
-        setDisabledRollButton() {
+        public setDisabledRollButton() {
             $('#roll-button').removeAttr('active');
             $('#roll-button').attr('disabled', 1);
         }
 
-        setActiveReadyButton() {
+        public setActiveReadyButton() {
             $('#ready-button').removeAttr('disabled');
         }
 
-        setDisabledReadyButton() {
+        public setDisabledReadyButton() {
             $('#ready-button').removeAttr('active');
             $('#ready-button').attr('disabled', 1);
         }
 
-        showError(msg: string) {
+        public setActiveBuyButton() {
+            $('#buy-button').removeAttr('disabled');
+        }
+
+        public setDisabledBuyButton() {
+            $('#buy-button').removeAttr('active');
+            $('#buy-button').attr('disabled', 1);
+        }
+
+        public setActiveEndTurnButton() {
+            $('#end-turn-button').removeAttr('disabled');
+        }
+
+        public setDisabledEndTurnButton() {
+            $('#end-turn-button').removeAttr('active');
+            $('#end-turn-button').attr('disabled', 1);
+        }
+
+        public setActiveBuilButton() {
+            $('#build-button').removeAttr('disabled');
+        }
+
+        public setDisabledBuildButton() {
+            $('#build-button').removeAttr('active');
+            $('#build-button').attr('disabled', 1);
+        }
+
+        public setActiveCollateralizeButton() {
+            $('#collateralize-button').removeAttr('disabled');
+        }
+
+        public setDisabledCollateralizeButton() {
+            $('#collateralize-button').removeAttr('active');
+            $('#collateralize-button').attr('disabled', 1);
+        }
+
+        public setActiveSellButton() {
+            $('#sell-button').removeAttr('disabled');
+        }
+
+        public setDisabledSellButton() {
+            $('#sell-button').removeAttr('active');
+            $('#sell-button').attr('disabled', 1);
+        }
+
+        public showError(msg: string) {
             document.getElementById("message").innerHTML = msg;
         }
 
-        updateUserList(list: Array<view.PlayerDTO>) {
-            // @todo
+        public updateUserList(list: Array<view.PlayerDTO>) {
             var other_players_list = $(".other-players-box").children().toArray();
 
             for (let i = 0; i < list.length; i++) {
@@ -51,15 +95,14 @@ namespace view {
 		    console.log("Active player"+list[i].toString());
                     $(".current-player-name").text(list[i].username);
                     $(".current-player-money").text(list[i].cash);
-                    // jeszcze ustawianie koloru --> @todo
-                    // ...
+                    $(".current-player-color").css("background-color", list[i].color);
                 } else {
                     // Pobierz element z other_players z usunieciem
                     let other_player = other_players_list.shift();
                     let children = other_player.children;
                     $(children[0]).text(list[i].username);
                     $(children[1]).text(list[i].cash);
-                    // jeszcze ustawianie koloru --> @todo
+                    $(children[2]).css("background-color", list[i].color);
                 }
             }
             // Trzeba czyscic pozostale pola!
@@ -72,9 +115,18 @@ namespace view {
             }
         }
 
-        initPawnsDictionary(list: Array<view.PlayerDTO>) {
+        public initPawnsDictionary(list: Array<view.PlayerDTO>) {
             for (let i = 0; i < list.length; i++)
-                this.board.addPawn(list[i].username);
+                this.board.addPawn(list[i].username, list[i].color);
+        }
+
+        public movePawn(pawnName: string, fieldNumber: number, onMovingEnd: () => any) {
+            this.board.movePawn(pawnName, fieldNumber, onMovingEnd);
+        }
+
+        public setBoughtFieldColor(fieldNumber: number, color: string) {
+            var field = this.board.getField(fieldNumber);
+            field.changeBoughtFieldColor(color);
         }
 	}
 }

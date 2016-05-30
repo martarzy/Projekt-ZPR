@@ -4,5 +4,6 @@ namespace view {
         username: string;
         cash: number;
         active: boolean;
+        color: string; 
     }
 }

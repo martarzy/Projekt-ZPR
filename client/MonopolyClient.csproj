@@ -24,6 +24,16 @@
     <Content Include="css\app.css" />
     <Content Include="css\right-column.css" />
     <Content Include="images\board.jpg" />
+    <Content Include="images\chance.svg" />
+    <Content Include="images\electric_company.svg" />
+    <Content Include="images\go.svg" />
+    <Content Include="images\goto_jail.svg" />
+    <Content Include="images\income_tax.svg" />
+    <Content Include="images\jail.svg" />
+    <Content Include="images\luxury_tax.svg" />
+    <Content Include="images\parking.svg" />
+    <Content Include="images\railroad.svg" />
+    <Content Include="images\water_works.svg" />
     <Content Include="lib\css\app.css" />
     <Content Include="index.html" />
     <Content Include="lib\bootstrap\css\bootstrap-theme.css" />
@@ -41,8 +51,12 @@
   <ItemGroup>
     <TypeScriptCompile Include="lib\bootstrap.d.ts" />
     <TypeScriptCompile Include="lib\jquery.d.ts" />
+    <TypeScriptCompile Include="src\controller\user-actions.ts" />
+    <TypeScriptCompile Include="src\controller\view-changes.ts" />
+    <TypeScriptCompile Include="test\model.test.ts" />
+    <TypeScriptCompile Include="test\qunit.d.ts" />
     <TypeScriptCompile Include="src\controller\controller.ts" />
-    <TypeScriptCompile Include="src\controller\handler.ts" />
+    <TypeScriptCompile Include="src\controller\server-handler.ts" />
     <TypeScriptCompile Include="src\controller\websocket.ts" />
     <TypeScriptCompile Include="src\model\board.ts" />
     <TypeScriptCompile Include="src\model\field.ts" />
@@ -51,6 +65,7 @@
     <TypeScriptCompile Include="src\app.ts" />
     <TypeScriptCompile Include="src\controller\message.ts" />
     <TypeScriptCompile Include="src\model\player.ts" />
+    <TypeScriptCompile Include="src\model\round.ts" />
     <TypeScriptCompile Include="src\view\Board.ts" />
     <TypeScriptCompile Include="src\view\Field.ts" />
     <TypeScriptCompile Include="lib\d3.d.ts" />
@@ -65,6 +80,9 @@
     <Content Include="lib\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="lib\bootstrap\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="lib\bootstrap\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="tsconfig.json" />
+    <Content Include="tslint.json" />
+    <Content Include="test\tsconfig.json" />
     <Content Include="packages.config" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>

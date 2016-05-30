@@ -17,7 +17,16 @@
    inkscape:version="0.91 r13725"
    sodipodi:docname="luxury_tax.svg">
   <defs
-     id="defs4" />
+     id="defs4">
+          <style
+       type="text/css"
+       id="style7">@font-face {
+  font-family: 'Aldrich';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Aldrich'), local('aldrich'), url('https://fonts.gstatic.com/s/aldrich/v6/j-NnyokbAnhXANS2iZ6Jew.woff2') format('woff2');
+}
+</style></defs>
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"

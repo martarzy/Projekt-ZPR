@@ -1,5 +1,4 @@
-Protokół wersja 2.0
-
+----------------------------------------------
 Gracz podaje swoją nazwę: 
 {   "message": "myName", 
     "myName": "NAZWAGRACZA" 
@@ -41,6 +40,15 @@ Serwer zwraca listę uzytkownikow:
     ] 
 }
 --------------------------------------------
+
+Wykrycie nielegalnego działania
+Serwer, w momencie wykrycia jakiegoś nielegalnego działania wysyła wiadomość do klienta, który podjął takie działanie.
+{
+    "message": "invalidOperation",
+    "error": <String - kod błędu>
+}
+
+
 Użytkownik gotowy do rozpoczęcia: 
 {   "message": "ready"    
 }
@@ -86,3 +94,31 @@ Serwer podaje informację o zakupie dokonanym przez użytkownika
     "message": "userBought",
     "username": "NAZWA"
 }
+---------------------------------------------
+Użytkownik kupuje domek (hotel)
+{
+    "message": "buyHouse",
+    "field": <nrPola>
+}
+
+Serwer podaje informację o zakupie domku
+{
+    "message": "userBoughtHouse",
+    "field": <nrPola>,
+    "username": <nazwaGracza>
+}
+
+Użytkownik sprzedaje domek (hotel)
+{
+    "message": "sellHouse",
+    "field": <nrPola>
+}
+
+Serwer podaje informację o sprzedaży domku
+{
+    "message": "userSoldHouse",
+    "field": <nrPola>,
+    "username": <nazwaGracza>
+}
+-----------------------------------------------
+

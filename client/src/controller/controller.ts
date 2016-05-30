@@ -1,63 +1,46 @@
 ﻿/// <reference path="message.ts" />
 /// <reference path="websocket.ts" />
-/// <reference path="handler.ts" />
+/// <reference path="server-handler.ts" />
+/// <reference path="user-actions.ts" />
+/// <reference path="view-changes.ts" />
 
 namespace controller {
 
     export class Controller {
         private model: model.Model;
         private view: view.View;
-        private handler: HandlerManager;
+        private handler: ServerHandler;
+        private userActionsHandler: UserActions;
         private server: SocketServer;
 
         constructor(serverUri: string) {
             this.model = new model.Model();
             this.view = new view.View();
-            this.handler = new HandlerManager(this.model, this.view);
+            const viewChanges = new ViewChanges(this.view);
+            this.handler = new ServerHandler(this.model, viewChanges);
+            this.userActionsHandler = new UserActions(this.sendMessage.bind(this), this.model, viewChanges);
             this.createSocketConnection(serverUri);
+        }
+
+        get actionsMap(): UserActions {
+            return this.userActionsHandler;
         }
 
         private createSocketConnection(uri: string): void {
             this.server = new SocketServer(uri, this.delegateMessageToHandler.bind(this));
         }
 
-        private sendMessage(toSend: any): void {
-            this.server.sendMessage(toSend);
+        sendMessage(toSend: any): void {
+            this.server.sendMessage(this.prepareToSend(toSend));
+        }
+
+        private prepareToSend(object: any): string {
+            return JSON.stringify(object);
         }
 
         private delegateMessageToHandler(message: any): void {
             console.log(message);
             this.handler.handle(JSON.parse(message));
-        }
-
-        // Methods below could be moved to UserActions class.
-        // The web browser would have access only to an instance 
-        // of this class and it would be passed to controller.
-
-        chooseName(name: string): void {
-            let toSend: any = { };
-            toSend[message.messageTitle] = message.MyName.message;
-            toSend[message.MyName.name] = name;
-            this.model.players.setMyUsername(name);
-            this.sendMessage(this.prepareToSend(toSend));
-        }
-
-        rollDice(): void {
-            let toSend: any = {};
-            toSend[message.messageTitle] = message.RollDice.message;
-            this.sendMessage(this.prepareToSend(toSend));
-            this.view.setDisabledRollButton();
-        }
-
-        playerIsReady(): void {
-            let toSend: any = {};
-            toSend[message.messageTitle] = message.Ready.message;
-            this.sendMessage(this.prepareToSend(toSend));
-            this.view.setDisabledReadyButton();
-        }
-
-        private prepareToSend(object: any): string {
-            return JSON.stringify(object);
         }
     }
 

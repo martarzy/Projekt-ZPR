@@ -8,12 +8,14 @@ namespace view {
         private fields: Field[] = [];
 
         constructor() {
-            // @todo --> tu bedzie tworzona plansza
+            for (let i = 0; i < 40; i++) {
+                this.fields[i] = new Field(i);
+            }
         }
 
-        public addPawn(pawnName: string)
+        public addPawn(pawnName: string, color: string)
         {
-            this.pawns[pawnName] = new Pawn(this.fields[0]);
+            this.pawns[pawnName] = new Pawn(this.fields[0], color);
         }
 
         public removePawn(pawnName: string)
@@ -24,12 +26,17 @@ namespace view {
         public movePawn(pawnName: string, fieldNumber: number, onMovingEnd: () => any) {
             let sequencenumber = 0;
             for (let i = (this.pawns[pawnName].getPawnField().getFieldId() + 1) % 40;
-                i <= fieldNumber;
+                i != fieldNumber;
                 i = (i + 1) % 40)
             {
                 this.pawns[pawnName].move(this.fields[i], sequencenumber++);
             }
+            this.pawns[pawnName].move(this.fields[fieldNumber], sequencenumber);
             setTimeout(onMovingEnd, sequencenumber*200);
+        }
+
+        public getField(fieldNumber: number): Field {
+            return this.fields[fieldNumber];
         }
     }
 }
