@@ -57,12 +57,12 @@ namespace view {
         }
 
         public setActiveBuilButton() {
-            $('#buil-button').removeAttr('disabled');
+            $('#build-button').removeAttr('disabled');
         }
 
         public setDisabledBuildButton() {
-            $('#buil-button').removeAttr('active');
-            $('#buil-button').attr('disabled', 1);
+            $('#build-button').removeAttr('active');
+            $('#build-button').attr('disabled', 1);
         }
 
         public setActiveCollateralizeButton() {
