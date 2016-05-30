@@ -92,4 +92,22 @@
         }
     }
 
+    export class BuyField {
+        static get message(): string { return "buyField"; }
+    }
+
+    export class EndOfTurn {
+        static get message(): string { return "endOfTurn"; }
+    }
+
+    export class UserBought {
+        static get message(): string { return "userBought"; }
+        static get buyerName(): string { return "username"; }
+    }
+
+    export class InvalidOperation {
+        static get message(): string { return "invalidOperatio"; }
+        static get error(): string { return "error"; }
+    }
+
 }

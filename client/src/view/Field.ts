@@ -49,45 +49,45 @@
         ];
 
         private static FieldDescription: any[] = [
-            { image: "images/go.svg", big: true },                                 // nr 0 - pole startowe
+            { image: "images/go.svg", big: true },                      // nr 0 - pole startowe
             { color: "blueviolet", name: "TODO", cash: "200$" },        // nr 1 - fioletowe
-            { image: "images/chance.svg" },                                    // nr 2 - szansa
+            { image: "images/chance.svg" },                             // nr 2 - szansa
             { color: "blueviolet", name: "TODO", cash: "200$" },        // nr 3 - fioletowe
-            { image: "images/income_tax.svg" },                                // nr 4 - podatek
-            { image: "images/railroad.svg" },                                      // nr 5 - dworzec
+            { image: "images/income_tax.svg" },                         // nr 4 - podatek
+            { image: "images/railroad.svg" },                           // nr 5 - dworzec
             { color: "lightblue", name: "TODO", cash: "200$"},          // nr 6 - niebieske
-            { image: "images/chance.svg" },                                    // nr 7 - szansa
+            { image: "images/chance.svg" },                             // nr 7 - szansa
             { color: "lightblue", name: "TODO", cash: "200$" },         // nr 8 - niebieske
             { color: "lightblue", name: "TODO", cash: "200$" },         // nr 9 - niebieske
-            { image: "images/jail.svg", big:true },                                      // nr 10 - wieznienie
+            { image: "images/jail.svg", big:true },                     // nr 10 - wiezienie
             { color: "darkred", name: "TODO", cash: "200$"},            // nr 11 - bordowe
-            { image: "images/electric_company.svg" },                         // nr 12 - elektorwnia
+            { image: "images/electric_company.svg" },                   // nr 12 - elektorwnia
             { color: "darkred", name: "TODO", cash: "200$"},            // nr 13 - bordowe
             { color: "darkred", name: "TODO", cash: "200$"},            // nr 14 - bordowe
-            { image: "images/railroad.svg" },                                      // nr 15 - dworzec
+            { image: "images/railroad.svg" },                           // nr 15 - dworzec
             { color: "orange", name: "TODO", cash: "200$" },            // nr 16 - pomaranczowe
-            { image: "images/chance.svg" },                                   // nr 17 - sznasa
+            { image: "images/chance.svg" },                             // nr 17 - sznasa
             { color: "orange", name: "TODO", cash: "200$" },            // nr 18 - pomaranczowe
             { color: "orange", name: "TODO", cash: "200$" },            // nr 19 - pomaranczowe
-            { image: "images/parking.svg", big:true },                                  // nr 20 - parking
+            { image: "images/parking.svg", big:true },                  // nr 20 - parking
             { color: "red", name: "TODO", cash: "200$" },               // nr 21 - czerwone
-            { image: "images/chance.svg" },                                   // nr 22 - szansa
+            { image: "images/chance.svg" },                             // nr 22 - szansa
             { color: "red", name: "TODO", cash: "200$" },               // nr 23 - czerwone
             { color: "red", name: "TODO", cash: "200$" },               // nr 24 - czerwone
-            { image: "images/railroad.svg" },                                      // nr 25 - dworzec
+            { image: "images/railroad.svg" },                           // nr 25 - dworzec
             { color: "yellow", name: "TODO", cash: "200$" },            // nr 26 - zolte
             { color: "yellow", name: "TODO", cash: "200$" },            // nr 27 - zolte
-            { image: "images/water_works.svg" },                              // nr 28 - wodociagi
+            { image: "images/water_works.svg" },                        // nr 28 - wodociagi
             { color: "yellow", name: "TODO", cash: "200$" },            // nr 29 - zolte
-            { image: "images/goto_jail.svg", big:true },                                // nr 30 - idz do wiezienia
+            { image: "images/goto_jail.svg", big:true },                // nr 30 - idz do wiezienia
             { color: "green", name: "TODO", cash: "200$" },             // nr 31 - zielone
             { color: "green", name: "TODO", cash: "200$" },             // nr 32 - zielone
-            { image: "images/chance.svg" },                                   // nr 33 - szansa
+            { image: "images/chance.svg" },                             // nr 33 - szansa
             { color: "green", name: "TODO", cash: "200$" },             // nr 34 - zielone
-            { image: "images/railroad.svg" },                                      // nr 35 - dworzec
-            { image: "images/chance.svg" },                                   // nr 36 - szansa
+            { image: "images/railroad.svg" },                           // nr 35 - dworzec
+            { image: "images/chance.svg" },                             // nr 36 - szansa
             { color: "darkblue", name: "TODO", cash: "200$" },          // nr 37 - granatowe
-            { image: "images/luxury_tax.svg" },                                // nr 38 - podatek od luksusu
+            { image: "images/luxury_tax.svg" },                         // nr 38 - podatek od luksusu
             { color: "darkblue", name: "TODO", cash: "200$" },          // nr 39 - granatowe
         ];
 
@@ -103,7 +103,12 @@
 
             var fieldRotation = Math.floor(fieldId / 10) * 90;
 
-            if (Field.FieldDescription[fieldId].image) {
+            if (fieldId == 5 || fieldId == 15|| fieldId == 25 || fieldId == 35 ||
+                fieldId == 12 || fieldId == 28)
+            {
+                var fieldDesc = Field.FieldDescription[fieldId];
+                this.createSpecialImageField(fieldDesc.image, this.coordinateX, this.coordinateY, fieldRotation);
+            } else if (Field.FieldDescription[fieldId].image) {
                 var fieldDesc = Field.FieldDescription[fieldId];
                 this.createImageField(fieldDesc.image, this.coordinateX, this.coordinateY, fieldRotation, fieldDesc.big);
             } else {
@@ -124,6 +129,37 @@
             return this.fieldId;
         }
 
+        public createSpecialImageField(url: string, x: number, y: number, rotation: number) {
+            var g = d3.select("svg")
+                .append("g");
+                g.append("rect")
+                    .attr("x", -35)
+                    .attr("y", -53)
+                    .attr("width", 70)
+                    .attr("height", 105)
+                    .attr("fill", "whitesmoke")
+                    .attr("stroke", "black");
+
+                // kwadracik dla kupujacego
+                g.append("rect")
+                    .attr("x", +20)
+                    .attr("y", -53)
+                    .attr("width", 15)
+                    .attr("height", 15)
+                    .attr("fill", "white")
+                    .attr("stroke", "black")
+                    .attr("id", "bought-field"+this.fieldId);
+
+                g.append("image")
+                    .attr("xlink:href", url)
+                    .attr("x", -30)
+                    .attr("y", -30)
+                    .attr("width", 60)
+                    .attr("height", 60);
+
+            g.attr("transform", "translate(" + x + " " + y + "), rotate(" + rotation + ")");
+        }
+
         public createImageField(url: string, x: number, y: number, rotation: number, big: boolean)
         {
             var g = d3.select("svg")
@@ -135,7 +171,8 @@
                     .attr("y", -53)
                     .attr("width", 105)
                     .attr("height", 105)
-                    .attr("fill", "whitesmoke");
+                    .attr("fill", "whitesmoke")
+                    .attr("stroke", "black");
                 g.append("image")
                     .attr("xlink:href", url)
                     .attr("x", -40)
@@ -148,7 +185,9 @@
                     .attr("y", -53)
                     .attr("width", 70)
                     .attr("height", 105)
-                    .attr("fill", "whitesmoke");
+                    .attr("fill", "whitesmoke")
+                    .attr("stroke", "black");
+
                 g.append("image")
                     .attr("xlink:href", url)
                     .attr("x", -30)
@@ -169,14 +208,26 @@
                 .attr("y", -53)
                 .attr("width", 70)
                 .attr("height", 15)
-                .attr("fill", color);
+                .attr("fill", color)
+                .attr("stroke", "black");
 
             g.append("rect")
                 .attr("x", -35)
                 .attr("y", -38)
                 .attr("width", 70)
                 .attr("height", 90)
-                .attr("fill", "whitesmoke");
+                .attr("fill", "whitesmoke")
+                .attr("stroke", "black");
+
+            // kwadracik dla kupujacego
+            g.append("rect")
+                .attr("x", +20)
+                .attr("y", -53)
+                .attr("width", 15)
+                .attr("height", 15)
+                .attr("fill", "white")
+                .attr("stroke", "black")
+                .attr("id", "bought-field"+this.fieldId);
 
             g.append("text")
                 .attr("text-anchor", "middle")
@@ -193,6 +244,11 @@
                 .attr("fill", "black");
 
             g.attr("transform", "translate("+x+" "+y+"), rotate("+rotation+")");
+        }
+
+        public changeBoughtFieldColor(color: string) {
+            var rect = document.getElementById("bought-field" + this.fieldId);
+            rect.style.fill = color;
         }
     }
 }

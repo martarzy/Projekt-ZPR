@@ -1,4 +1,4 @@
------------------------------------------------
+----------------------------------------------
 Gracz podaje swoją nazwę: 
 {   "message": "myName", 
     "myName": "NAZWAGRACZA" 
@@ -40,6 +40,15 @@ Serwer zwraca listę uzytkownikow:
     ] 
 }
 --------------------------------------------
+
+Wykrycie nielegalnego działania
+Serwer, w momencie wykrycia jakiegoś nielegalnego działania wysyła wiadomość do klienta, który podjął takie działanie.
+{
+    "message": "invalidOperation",
+    "error": <String - kod błędu>
+}
+
+
 Użytkownik gotowy do rozpoczęcia: 
 {   "message": "ready"    
 }
@@ -112,3 +121,4 @@ Serwer podaje informację o sprzedaży domku
     "username": <nazwaGracza>
 }
 -----------------------------------------------
+
