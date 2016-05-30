@@ -11,6 +11,14 @@
             this.reset();
         }
 
+        set mode(mode: ActionMode) {
+            this.currentMode_ = mode;
+        }
+
+        get mode(): ActionMode {
+            return this.currentMode_;
+        }
+
         get movementPerformed(): boolean {
             return this.playerMoved_;
         }

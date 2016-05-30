@@ -94,7 +94,6 @@ namespace view {
 
             for (let i = 0; i < list.length; i++) {
                 if (list[i].active) {
-		    console.log("Active player"+list[i].toString());
                     $(".current-player-name").text(list[i].username);
                     $(".current-player-money").text(list[i].cash);
                     $(".current-player-color").css("background-color", list[i].color);

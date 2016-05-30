@@ -110,4 +110,26 @@
         static get error(): string { return "error"; }
     }
 
+    export class BuyHouse {
+        static get message(): string { return "buyHouse"; }
+        static get field(): string { return "field"; }
+    }
+
+    export class SellHouse {
+        static get message(): string { return "sellHouse"; }
+        static get field(): string { return "field"; }
+    }
+
+    export class UserBoughtHouse {
+        static get message(): string { return "userBoughtHouse"; }
+        static get field(): string { return "field"; }
+        static get buyer(): string { return "username"; }
+    }
+
+    export class UserSoldHouse {
+        static get message(): string { return "userSoldHouse"; }
+        static get field(): string { return "field"; }
+        static get seller(): string { return "username"; }
+    }
+
 }

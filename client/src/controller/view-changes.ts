@@ -61,6 +61,18 @@ namespace controller {
         colorField(fieldNumber: number, color: string) {
             this.view_.setBoughtFieldColor(fieldNumber, color);
         }
+
+        highlightFields(fieldIds: Array<number>): void {
+            this.view_.highlightFields(fieldIds);
+        }
+
+        unhighlightAllFields(): void {
+            this.view_.unhighlightAllFields();
+        }
+
+        drawHousesOnField(fieldId: number, houseAmount: number) {
+            this.view_.drawHousesOnField(fieldId, houseAmount);
+        }
     }
 
 }

@@ -22,7 +22,7 @@ window.onload = () => {
     rollButton.onclick = (event: MouseEvent) => actions.rollDice();
     buyButton.onclick = (event: MouseEvent) => actions.playerBuysField();
     endTurnButton.onclick = (event: MouseEvent) => actions.playerEndsTurn();
-    buildButton.onclick = (event: MouseEvent) => actions.playerBuildsHouse();
-    sellButton.onclick = (event: MouseEvent) => actions.playerSellsHouse();
-    collateralizeButton.onclick = (event: MouseEvent) => actions.playerCollateralizesField();
+    buildButton.onclick = (event: MouseEvent) => actions.activateBuildMode();
+    sellButton.onclick = (event: MouseEvent) => actions.activateSellMode();
+    collateralizeButton.onclick = (event: MouseEvent) => actions.activateCollateralizesMode();
 };
