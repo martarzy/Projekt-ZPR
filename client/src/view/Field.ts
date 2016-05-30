@@ -351,5 +351,14 @@
             $("#house-field2-" + fieldId).attr("fill", "gray");
             $("#house-field1-" + fieldId).attr("fill", "gray");
         }
+
+        public buyBackField(fieldNumber: number) {
+            $("#main-collateralize-field-" + fieldNumber).attr("fill", "whitesmoke");
+            $("#hotel-field-" + fieldNumber).attr("fill",  "whitesmoke");
+            $("#house-field4-" + fieldNumber).attr("fill", "whitesmoke");
+            $("#house-field3-" + fieldNumber).attr("fill", "whitesmoke");
+            $("#house-field2-" + fieldNumber).attr("fill", "whitesmoke");
+            $("#house-field1-" + fieldNumber).attr("fill", "whitesmoke");
+        }
     }
 }

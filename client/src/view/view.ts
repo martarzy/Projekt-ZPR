@@ -134,10 +134,10 @@ namespace view {
             // TODO    
         }
 
-        public highlightFields(fieldIds: Array<number>) {
-            for (let i = 0; i < fieldIds.length; i++) {
+        public highlightFields(fieldNumbers: Array<number>) {
+            for (let i = 0; i < fieldNumbers.length; i++) {
                 // pole o zadanym w tablicy nr
-                var field = this.board.getField(fieldIds[i]);
+                var field = this.board.getField(fieldNumbers[i]);
                 // wspolrzedne tego pola
            
                 var x = field.getCoordX();
@@ -152,14 +152,17 @@ namespace view {
             highlightedFields.remove();
         }
 
-        public drawHousesOnField(fieldId: number, houseAmount: number) {
-            this.board.getField(fieldId).buildHouses(fieldId, houseAmount);
+        public drawHousesOnField(fieldNumber: number, houseAmount: number) {
+            this.board.getField(fieldNumber).buildHouses(fieldNumber, houseAmount);
         }
 
-        public collateralizeField(fieldId: number) {
-            this.board.getField(fieldId).collateralizeField(fieldId);
+        public collateralizeField(fieldNumber: number) {
+            this.board.getField(fieldNumber).collateralizeField(fieldNumber);
         }
 
+        public buyBackField(fieldNumber: number) {
+            this.board.getField(fieldNumber).buyBackField(fieldNumber);
+        }
         // public removeHouses..????
 	}
 }
