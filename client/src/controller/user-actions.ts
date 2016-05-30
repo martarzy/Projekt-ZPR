@@ -72,6 +72,7 @@ namespace controller {
         }
 
         fieldClicked(fieldId: number): void {
+            console.log(fieldId);
             switch (this.model_.round.mode) {
                 case model.ActionMode.BUILD:
                     this.buyHouse(fieldId);
@@ -86,6 +87,7 @@ namespace controller {
         private buyHouse(fieldId: number) {
             let toSend = this.prepareMessage(message.BuyHouse.message);
             toSend[message.BuyHouse.field] = fieldId;
+            console.log(toSend);
             this.sender_(toSend);
         }
 

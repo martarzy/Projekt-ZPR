@@ -134,14 +134,16 @@ namespace controller {
             const field: number = object[message.UserBoughtHouse.field];
             this.model.board.buyHouseOn(field);
             this.viewChanges_.drawHousesOnField(field, this.model.board.houseAmountOn(field));
-            this.userActions_.activateBuildMode();
+            if (this.model.players.iAmActive())
+                this.userActions_.activateBuildMode();
         }
 
         private userSoldHouse(object: any): void {
             const field: number = object[message.UserSoldHouse.field];
             this.model.board.sellHouseOn(field);
             this.viewChanges_.drawHousesOnField(field, this.model.board.houseAmountOn(field));
-            this.userActions_.activateSellMode();
+            if (this.model.players.iAmActive())
+                this.userActions_.activateSellMode();
         }
     }
 

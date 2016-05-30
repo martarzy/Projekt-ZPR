@@ -12,7 +12,7 @@ namespace controller {
         private enablers_: collections.Dictionary<ViewElement, () => void>;
         private disablers_: collections.Dictionary<ViewElement, () => void>;
 
-        constructor(private view_: view.View) {
+        constructor(private view_: view.View, private model_: model.Model) {
             this.initialiseButtonEnablers();
         }
 
@@ -54,7 +54,10 @@ namespace controller {
 
         movePawn(player: string, targetField: number) {
             this.enable(ViewElement.END_TURN_BTN, false);
-            this.view_.movePawn(player, targetField, () => this.enable(ViewElement.END_TURN_BTN, true) );
+            this.view_.movePawn(player, targetField, () => {
+                if (this.model_.players.iAmActive())
+                    this.enable(ViewElement.END_TURN_BTN, true);
+            });
         }
 
         colorField(fieldNumber: number, color: string) {
