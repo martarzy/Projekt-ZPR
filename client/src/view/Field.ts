@@ -250,5 +250,30 @@
             var rect = document.getElementById("bought-field" + this.fieldId);
             rect.style.fill = color;
         }
+
+        drawHighlightField(x: number, y: number) {
+            var fieldRotation = Math.floor(this.fieldId / 10) * 90;
+            var g = d3.select("svg").append("g");
+
+            g.append("rect")
+                .attr("x", -35)
+                .attr("y", -53)
+                .attr("width", 70)
+                .attr("height", 15)
+                .attr("fill", "lime")        // kolor do zmiany
+                .attr("stroke", "black")
+                .attr("fill-opacity", 0.3);
+
+            g.append("rect")
+                .attr("x", -35)
+                .attr("y", -38)
+                .attr("width", 70)
+                .attr("height", 90)
+                .attr("fill", "lime")
+                .attr("stroke", "black")
+                .attr("fill-opacity", 0.3);
+
+            g.attr("transform", "translate(" + x + " " + y + "), rotate(" + fieldRotation + ")");
+        }
     }
 }

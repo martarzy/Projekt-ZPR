@@ -10,6 +10,8 @@ namespace view {
             this.showSignInWindow();
             this.setDisabledReadyButton();
             this.setDisabledRollButton();
+
+            this.highlightFields([2, 4, 6]);
         }
 
         public showSignInWindow() {
@@ -135,6 +137,16 @@ namespace view {
 
         highlightFields(fieldIds: Array<number>): void {
             // TODO
+            for (let i = 0; i < fieldIds.length; i++) {
+                // pole o zadanym w tablicy nr
+                var field = this.board.getField(fieldIds[i]);
+                // wspolrzedne tego pola
+           
+                var x = field.getCoordX();
+                var y = field.getCoordY();
+
+                field.drawHighlightField(x, y);
+            }
         }
 
         unhighlightAllFields(): void {
