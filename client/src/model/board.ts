@@ -27,7 +27,7 @@ namespace model {
             this.fields_.push(new Field(this.fields_.length, "Utility", 150));
             this.fields_.push(new Field(this.fields_.length, "Pink", 140, 100));
             this.fields_.push(new Field(this.fields_.length, "Pink", 160, 100));
-            this.fields_.push(new Field(this.fields_.length, "Railroad"));
+            this.fields_.push(new Field(this.fields_.length, "Railroad", 200));
             this.fields_.push(new Field(this.fields_.length, "Orange", 160, 100));
             this.fields_.push(new Field(this.fields_.length, "Chance"));
             this.fields_.push(new Field(this.fields_.length, "Orange", 160, 100));
