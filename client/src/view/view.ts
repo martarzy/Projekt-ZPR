@@ -10,8 +10,6 @@ namespace view {
             this.showSignInWindow();
             this.setDisabledReadyButton();
             this.setDisabledRollButton();
-
-            this.setBoughtFieldColor(11, "red");
         }
 
         public showSignInWindow() {
