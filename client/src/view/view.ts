@@ -56,6 +56,24 @@ namespace view {
             $('#end-turn-button').attr('disabled', 1);
         }
 
+        public setActiveBuilButton() {
+            $('#buil-button').removeAttr('disabled');
+        }
+
+        public setDisabledBuildButton() {
+            $('#buil-button').removeAttr('active');
+            $('#buil-button').attr('disabled', 1);
+        }
+
+        public setActiveCollateralizeButton() {
+            $('#collateralize-button').removeAttr('disabled');
+        }
+
+        public setDisabledCollateralizeButton() {
+            $('#collateralize-button').removeAttr('active');
+            $('#collateralize-button').attr('disabled', 1);
+        }
+
         public showError(msg: string) {
             document.getElementById("message").innerHTML = msg;
         }
