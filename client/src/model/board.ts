@@ -4,15 +4,13 @@ namespace model {
         private FIELDS_NUMBER = 40;
         private START_FIELD_NUMBER = 0;
         private JAIL_FIELD_NUMBER = 10;
-        private fields_: Array<Field>;
+        private fields_: Array<Field> = [];
 
         constructor() {
             this.initializeFields();
         }
 
         private initializeFields(): void {
-            this.fields_ = new Array<Field>(this.FIELDS_NUMBER);
-
             this.fields_.concat(new Field(this.fields_.length, "Go"));
             this.fields_.concat(new Field(this.fields_.length, "Brown", 60, 50));
             this.fields_.concat(new Field(this.fields_.length, "Chance"));
