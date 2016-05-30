@@ -99,7 +99,10 @@ class GameManager:
     def on_message(self, pname, msg):
         player = self.pname_map[pname] if pname != '' else None
 
-        if msg['message'] == 'ready':
+        if self.turn != -1 and self.players[self.turn] is not player:
+            player.error('NotYourTurn')
+
+        elif msg['message'] == 'ready':
             self.ready(player)
 
         elif msg['message'] == 'rollDice':
