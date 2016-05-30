@@ -229,7 +229,7 @@
                 .attr("stroke", "black")
                 .attr("id", "bought-field" + this.fieldId);
 
-            // kwadraciki dla domow
+            // kwadraciki dla domow i hotelu
             // nr 1
             g.append("rect")
                 .attr("x", -20)
@@ -262,6 +262,14 @@
                 .attr("height", 15)
                 .attr("fill", "whitesmoke")
                 .attr("id", "house-field4-" + this.fieldId);
+            // pole dla hotelu
+            g.append("rect")
+                .attr("x", -20)
+                .attr("y", -20)
+                .attr("width", 40)
+                .attr("height", 40)
+                .attr("fill", "whitesmoke")
+                .attr("id", "hotel-field-" + this.fieldId);
 
             g.append("text")
                 .attr("text-anchor", "middle")
@@ -322,7 +330,14 @@
                     $("#house-field2-" + fieldId).attr("stroke", "black").attr("fill", "green");
                 case 1:
                     $("#house-field1-" + fieldId).attr("stroke", "black").attr("fill", "green");
+                    break;
+                case 5:
+                    $("#hotel-field-" + fieldId).attr("stroke", "black").attr("fill", "red");
             }
+        }
+
+        public buildHotel(fieldId: number) {
+            $("#hotel-field-" + fieldId).attr("stroke", "black").attr("fill", "red");
         }
     }
 }

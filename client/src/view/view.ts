@@ -154,10 +154,6 @@ namespace view {
             this.board.getField(fieldId).buildHouses(fieldId, houseAmount);
         }
 
-        public drawHotelOnField(fieldId: number) {
-            // TODO
-        }
-
         // public removeHouses..????
 	}
 }
