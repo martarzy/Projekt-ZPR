@@ -74,6 +74,15 @@ namespace view {
             $('#collateralize-button').attr('disabled', 1);
         }
 
+        public setActiveSellButton() {
+            $('#sell-button').removeAttr('disabled');
+        }
+
+        public setDisabledSellButton() {
+            $('#sell-button').removeAttr('active');
+            $('#sell-button').attr('disabled', 1);
+        }
+
         public showError(msg: string) {
             document.getElementById("message").innerHTML = msg;
         }
