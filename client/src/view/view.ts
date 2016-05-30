@@ -128,5 +128,21 @@ namespace view {
             var field = this.board.getField(fieldNumber);
             field.changeBoughtFieldColor(color);
         }
+
+        assignFieldClickedCallback(callback: (clickedId: number) => void) {
+            // TODO    
+        }
+
+        highlightFields(fieldIds: Array<number>): void {
+            // TODO
+        }
+
+        unhighlightAllFields(): void {
+            // TODO
+        }
+
+        drawHousesOnField(fieldId: number, houseAmount: number): void {
+            // TODO
+        }
 	}
 }
