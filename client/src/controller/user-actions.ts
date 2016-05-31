@@ -47,16 +47,23 @@ namespace controller {
         }
 
         activateBuildMode(): void {
+            if (!this.model_.players.iAmActive())
+                return;
             this.setRoundMode(model.ActionMode.BUILD);
             const buildable = this.model_.board.expansibleFields(this.model_.players.getMyUsername());
             this.highlightOnly(buildable);
         }
 
         activateCollateralizesMode(): void {
+            if (!this.model_.players.iAmActive())
+                return;
             this.setRoundMode(model.ActionMode.COLLATERALIZE);
+            // TODO
         }
 
         activateSellMode(): void {
+            if (!this.model_.players.iAmActive())
+                return;
             this.setRoundMode(model.ActionMode.SELL);
             const sellable = this.model_.board.fieldsWithSellableHouses(this.model_.players.getMyUsername());
             this.highlightOnly(sellable);
@@ -73,6 +80,8 @@ namespace controller {
 
         fieldClicked(fieldId: number): void {
             console.log(fieldId);
+            if (!this.model_.players.iAmActive())
+                return; // OR HANDLDE NONE STATE
             switch (this.model_.round.mode) {
                 case model.ActionMode.BUILD:
                     this.buyHouse(fieldId);
@@ -80,11 +89,13 @@ namespace controller {
                 case model.ActionMode.SELL:
                     this.sellHouse(fieldId);
                     break;
-                default: // Action on NONE mode
             }
         }
 
         private buyHouse(fieldId: number) {
+            if (this.model_.board.expansibleFields(this.model_.players.getMyUsername())
+                .map(f => f.id).indexOf(fieldId) < 0)
+                return;
             let toSend = this.prepareMessage(message.BuyHouse.message);
             toSend[message.BuyHouse.field] = fieldId;
             console.log(toSend);
@@ -92,6 +103,9 @@ namespace controller {
         }
 
         private sellHouse(fieldId: number) {
+            if (this.model_.board.fieldsWithSellableHouses(this.model_.players.getMyUsername())
+                .map(f => f.id).indexOf(fieldId) < 0)
+                return;
             let toSend = this.prepareMessage(message.SellHouse.message);
             toSend[message.SellHouse.field] = fieldId;
             this.sender_(toSend);
