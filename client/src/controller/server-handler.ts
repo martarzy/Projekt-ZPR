@@ -90,7 +90,7 @@ namespace controller {
             this.model.players.setActivePlayer(newActive);
             this.model.round.reset();
             if (this.model.players.iAmActive())
-                this.viewChanges_.enable(ViewElement.ROLL_BTN, true);
+                this.viewChanges_.enableButtonsOnRoundStart();
             this.updatePlayerList(this.model.players.getPlayers());
         }
 

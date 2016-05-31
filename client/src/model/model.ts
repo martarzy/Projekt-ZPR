@@ -49,7 +49,7 @@ namespace model {
         }
 
         expansibleFields(owner: string): Array<Field> {
-            const fields = this.fieldsOwnedBy(name)
+            const fields = this.fieldsOwnedBy(owner)
                                .filter(f => f.expansible());
             const minHouseAmount = this.minOf(fields.map(f => f.housesBuilt));
             return fields.filter(f => f.housesBuilt <= minHouseAmount)

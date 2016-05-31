@@ -5,7 +5,7 @@ namespace controller {
 
     export enum ViewElement {
         ROLL_BTN, READY_BTN, END_TURN_BTN, BUY_FIELD_BTN,
-        JOIN_MODAL
+        JOIN_MODAL, BUY_HOUSE, SELL_HOUSE, COLLATERALIZE_BTN
     }
 
     export class ViewChanges {
@@ -14,6 +14,7 @@ namespace controller {
 
         constructor(private view_: view.View, private model_: model.Model) {
             this.initialiseButtonEnablers();
+            this.disableAllButtons([ViewElement.JOIN_MODAL]);
         }
 
         private initialiseButtonEnablers() {
@@ -27,6 +28,12 @@ namespace controller {
             this.disablers_.setValue(ViewElement.END_TURN_BTN, this.view_.setDisabledEndTurnButton);
             this.enablers_.setValue(ViewElement.BUY_FIELD_BTN, this.view_.setActiveBuyButton);
             this.disablers_.setValue(ViewElement.BUY_FIELD_BTN, this.view_.setDisabledBuyButton);
+            this.enablers_.setValue(ViewElement.BUY_HOUSE, this.view_.setActiveBuilButton);
+            this.disablers_.setValue(ViewElement.BUY_HOUSE, this.view_.setDisabledBuildButton);
+            this.enablers_.setValue(ViewElement.SELL_HOUSE, this.view_.setActiveSellButton);
+            this.disablers_.setValue(ViewElement.SELL_HOUSE, this.view_.setDisabledSellButton);
+            this.enablers_.setValue(ViewElement.COLLATERALIZE_BTN, this.view_.setActiveCollateralizeButton);
+            this.disablers_.setValue(ViewElement.COLLATERALIZE_BTN, this.view_.setDisabledCollateralizeButton);
             this.enablers_.setValue(ViewElement.JOIN_MODAL, this.view_.showSignInWindow);
             this.disablers_.setValue(ViewElement.JOIN_MODAL, this.view_.hideSignInWindow);
         }
@@ -36,12 +43,21 @@ namespace controller {
             map.getValue(name).call(this.view_);
         }
 
+        enableButtonsOnRoundStart(): void {
+            const buttons = [ViewElement.BUY_HOUSE, ViewElement.SELL_HOUSE, ViewElement.ROLL_BTN];
+            for (const button of buttons)
+                this.enable(button, true);
+        }
+
         errorMessage(msg: string) {
             this.view_.showError(msg);
         }
 
-        disableAllButtons() {
-            this.disablers_.forEach((k, v) => v.call(this.view_));
+        disableAllButtons(except: Array<ViewElement> = []) {
+            this.disablers_.forEach((k, v) => {
+                if (except.indexOf(k) < 0)
+                    v.call(this.view_)
+            });
         }
 
         updatePlayerList(players: Array<view.PlayerDTO>) {
