@@ -132,13 +132,16 @@
         public createSpecialImageField(url: string, x: number, y: number, rotation: number) {
             var g = d3.select("svg")
                 .append("g");
-                g.append("rect")
-                    .attr("x", -35)
-                    .attr("y", -53)
-                    .attr("width", 70)
-                    .attr("height", 105)
-                    .attr("fill", "whitesmoke")
-                    .attr("stroke", "black");
+
+            g.attr("game-id", this.fieldId);
+
+            g.append("rect")
+                .attr("x", -35)
+                .attr("y", -53)
+                .attr("width", 70)
+                .attr("height", 105)
+                .attr("fill", "whitesmoke")
+                .attr("stroke", "black");
 
                 // kwadracik dla kupujacego
                 g.append("rect")
@@ -148,7 +151,7 @@
                     .attr("height", 15)
                     .attr("fill", "white")
                     .attr("stroke", "black")
-                    .attr("id", "bought-field"+this.fieldId);
+                    .attr("id", "bought-field" + this.fieldId);
 
                 g.append("image")
                     .attr("xlink:href", url)
@@ -165,6 +168,8 @@
             var g = d3.select("svg")
                 .append("g");
 
+            g.attr("game-id", this.fieldId);
+
             if (big) {
                 g.append("rect")
                     .attr("x", -53)
@@ -173,6 +178,7 @@
                     .attr("height", 105)
                     .attr("fill", "whitesmoke")
                     .attr("stroke", "black");
+
                 g.append("image")
                     .attr("xlink:href", url)
                     .attr("x", -40)
@@ -203,6 +209,8 @@
             var g = d3.select("svg")
                 .append("g");
 
+            g.attr("game-id", this.fieldId);
+
             // kolorowy pasek pola
             g.append("rect")
                 .attr("x", -35)
@@ -210,7 +218,7 @@
                 .attr("width", 70)
                 .attr("height", 15)
                 .attr("fill", color)
-                .attr("stroke", "black");
+                .attr("stroke", "black");                
             
             // glowny prostokat
             g.append("rect")

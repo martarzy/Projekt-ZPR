@@ -130,7 +130,9 @@ namespace view {
 
         public assignFieldClickedCallback(callback: (clickedId: number) => void) {
             var gAllElements = d3.selectAll("g");
-            gAllElements.on("click", callback);
+            gAllElements.on("click", function () {
+                callback(parseInt((<HTMLElement>this).getAttribute("game-id")));
+            });
         }
 
         public highlightFields(fieldNumbers: Array<number>) {
