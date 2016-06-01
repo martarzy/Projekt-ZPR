@@ -8,6 +8,7 @@ class Player:
         self.ready = False
         self.cash = 1500
         self.field_no = 0
+        self.mortgaged = False
 
     def error(self, error_code):
         self.handler.send_message({'message': 'invalidOperation', 'error': error_code})
@@ -115,6 +116,7 @@ class GameManager:
                 player.cash += 400
                 player.field_no -= 40
                 self.broadcast_cash_info(player)
+            self.stay_fee(player)
 
         elif msg['message'] == 'buyField':
             self.buy_field(player)
@@ -124,6 +126,12 @@ class GameManager:
 
         elif msg['message'] == 'sellHouse':
             self.sell_house(player, msg['field'])
+
+        elif msg['message'] == 'mortgage':
+            self.mortgage(player, msg['field'])
+
+        elif msg['message'] == 'unmortgage':
+            self.unmortgage(player, msg['field'])
 
         elif msg['message'] == 'endOfTurn':
             self.next_turn()
@@ -179,7 +187,7 @@ class GameManager:
 
     def buy_house(self, player, field_no):
         field = self.fields[field_no]
-        if field.owner is player and field.buildable and field.houses_no < 5 and player.cash >= field.price and self.uniform_building(field, +1) and self.own_all_in_group(player, field):
+        if field.owner is player and field.buildable and field.houses_no < 5 and player.cash >= field.price and self.uniform_building(field, +1) and self.own_all_in_group(player, field) and field.mortgaged is False:
             player.cash -= field.house_price
             self.broadcast_cash_info(player)
             field.houses_no += 1
@@ -214,6 +222,31 @@ class GameManager:
             return True
         return False
 
+    def stay_fee(self, player):
+        field = self.fields[player.field_no]
+        if field.owner is not None and field.owner is not player:
+            player.cash -= field.visit_cost[field.houses_no]
+            self.broadcast_cash_info(player)
+            field.owner.cash += field.visit_cost[field.houses_no]
+            self.broadcast_cash_info(field.owner)
+
+    def mortgage(self, player, field_no):
+        field = self.fields[field_no]
+        if field.owner is player and field.mortgaged is False and field.houses_no == 0:
+            player.cash += field.price / 2
+            self.broadcast_cash_info(player)
+            field.mortgaged = True
+            self.broadcast_mortgage(field_no)
+
+    def unmortgage(self, player, field_no):
+        field = self.fields[field_no]
+        unmortgage_price = 1.1 * (field.price / 2)
+        if field.owner is player and field.mortgaged is True and player.cash >= unmortgage_price:
+            player.cash -= unmortgage_price
+            self.broadcast_cash_info(player)
+            field.mortgaged = False
+            self.broadcast_unmortgage(field_no)
+
     def broadcast_field_buy(self, player):
         self.broadcast({'message': 'userBought', 'username': player.name})
 
@@ -225,6 +258,12 @@ class GameManager:
 
     def broadcast_house_sell_info(self, player, field_no):
         self.broadcast({'message': 'userSoldHouse', 'username': player.name, 'field': field_no})
+
+    def broadcast_mortgage(self, field_no):
+        self.broadcast({'message': 'userMortgaged', 'field': field_no})
+
+    def broadcast_unmortgage(self, field_no):
+        self.broadcast({'message': 'userUnmortgaged', 'field': field_no})
 
     def broadcast(self, msg):
         for player in self.players:
