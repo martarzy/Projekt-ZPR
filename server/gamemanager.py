@@ -129,6 +129,7 @@ class GameManager:
 
     @staticmethod
     def roll_dice():
+        return 1
         result = 0
 
         for _ in range(3):
