@@ -54,6 +54,7 @@
     <TypeScriptCompile Include="lib\jquery.d.ts" />
     <TypeScriptCompile Include="src\controller\user-actions.ts" />
     <TypeScriptCompile Include="src\controller\view-changes.ts" />
+    <TypeScriptCompile Include="src\model\utils.ts" />
     <TypeScriptCompile Include="test\model.test.ts" />
     <TypeScriptCompile Include="test\qunit.d.ts" />
     <TypeScriptCompile Include="src\controller\controller.ts" />

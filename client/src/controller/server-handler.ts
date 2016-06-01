@@ -50,7 +50,7 @@ namespace controller {
 
         private synchUsers(object: any): void {
             const usernames: string[] = object[message.UserList.usernamesList];
-            this.model.players.resetPlayers();
+            this.model.players.removeAllPlayer();
             for (let i = 0; i < usernames.length; ++i)
                 this.model.players.addNewUser(usernames[i], this.colorManager_.getColor(i));
             if (usernames.length >= 2)
@@ -74,11 +74,11 @@ namespace controller {
 
             const field = this.model.board.getField(username);
             this.viewChanges_.movePawn(username, field.id, () => {
-                if (this.model.players.iAmActive()) {
+                if (this.model.players.myTurnInProgress()) {
                     this.model.round.playerMoved();
                     this.viewChanges_.enable(ViewElement.END_TURN_BTN, true);
                     if (field.isBuyable()
-                        && field.cost <= this.model.players.getActivePlayerFunds()) {
+                        && field.cost <= this.model.players.activePlayerFunds()) {
                         this.viewChanges_.enable(ViewElement.BUY_FIELD_BTN, true);
                     }
                 }
@@ -87,9 +87,9 @@ namespace controller {
 
         private newTurn(object: any): void {
             const newActive: string = object[message.NewTurn.activePlayer];
-            this.model.players.setActivePlayer(newActive);
+            this.model.players.changeActivePlayer(newActive);
             this.model.round.reset();
-            if (this.model.players.iAmActive())
+            if (this.model.players.myTurnInProgress())
                 this.viewChanges_.enableButtonsOnRoundStart();
             this.updatePlayerList(this.model.players.getPlayers());
         }
@@ -107,7 +107,7 @@ namespace controller {
             let dto = new view.PlayerDTO();
             dto.username = player.username;
             dto.cash = player.cash;
-            dto.active = this.model.players.getActivePlayer() === player.username;
+            dto.active = this.model.players.activePlayerUsername() === player.username;
             dto.color = player.color;
             return dto;
         }
@@ -122,7 +122,7 @@ namespace controller {
         private userBought(object: any): void {
             const buyer: string = object[message.UserBought.buyerName];
             this.model.board.buyField(buyer);
-            this.viewChanges_.colorField(this.model.board.getField(buyer).id, this.model.players.getActivePlayerColor());
+            this.viewChanges_.colorField(this.model.board.getField(buyer).id, this.model.players.activePlayerColor());
         }
 
         private invalidOperation(object: any): void {
@@ -134,7 +134,7 @@ namespace controller {
             const field: number = object[message.UserBoughtHouse.field];
             this.model.board.buyHouseOn(field);
             this.viewChanges_.drawHousesOnField(field, this.model.board.houseAmountOn(field));
-            if (this.model.players.iAmActive())
+            if (this.model.players.myTurnInProgress())
                 this.userActions_.activateBuildMode();
         }
 
@@ -142,7 +142,7 @@ namespace controller {
             const field: number = object[message.UserSoldHouse.field];
             this.model.board.sellHouseOn(field);
             this.viewChanges_.drawHousesOnField(field, this.model.board.houseAmountOn(field));
-            if (this.model.players.iAmActive())
+            if (this.model.players.myTurnInProgress())
                 this.userActions_.activateSellMode();
         }
     }

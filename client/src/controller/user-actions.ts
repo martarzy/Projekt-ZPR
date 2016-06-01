@@ -15,7 +15,7 @@ namespace controller {
             let toSend = this.prepareMessage(message.MyName.message);
             toSend[message.MyName.name] = name;
             this.sender_(toSend);
-            this.model_.players.setMyUsername(name);
+            this.model_.players.saveMyUsername(name);
         }
 
         rollDice(): void {
@@ -47,28 +47,28 @@ namespace controller {
         }
 
         activateBuildMode(): void {
-            if (!this.model_.players.iAmActive())
+            if (!this.model_.players.myTurnInProgress())
                 return;
             
             this.setRoundMode(model.ActionMode.BUILD);
-            const buildable = this.model_.board.expansibleFields(this.model_.players.getMyUsername());
+            const buildable = this.model_.board.expansibleFields(this.model_.players.myUsername());
             this.viewChanges_.unhighlightAllFields();
             this.highlightOnly(buildable);
         }
 
         activateCollateralizesMode(): void {
-            if (!this.model_.players.iAmActive())
+            if (!this.model_.players.myTurnInProgress())
                 return;
             this.setRoundMode(model.ActionMode.COLLATERALIZE);
             // TODO
         }
 
         activateSellMode(): void {
-            if (!this.model_.players.iAmActive())
+            if (!this.model_.players.myTurnInProgress())
                 return;
             
             this.setRoundMode(model.ActionMode.SELL);
-            const sellable = this.model_.board.fieldsWithSellableHouses(this.model_.players.getMyUsername());
+            const sellable = this.model_.board.fieldsWithSellableHouses(this.model_.players.myUsername());
             this.viewChanges_.unhighlightAllFields();
             this.highlightOnly(sellable);
         }
@@ -84,7 +84,7 @@ namespace controller {
 
         fieldClicked(fieldId: number): void {
             console.log(fieldId);
-            if (!this.model_.players.iAmActive()
+            if (!this.model_.players.myTurnInProgress()
                 || this.model_.round.mode === model.ActionMode.NONE)
                 return;
              /* The model is updated when server sends confirmation message.
@@ -102,7 +102,7 @@ namespace controller {
         }
 
         private buyHouse(fieldId: number) {
-            if (!this.model_.board.houseMayBeBoughtOn(fieldId, this.model_.players.getMyUsername()))
+            if (!this.model_.board.houseMayBeBoughtOn(fieldId, this.model_.players.myUsername()))
                 return;
             let toSend = this.prepareMessage(message.BuyHouse.message);
             toSend[message.BuyHouse.field] = fieldId;
@@ -111,7 +111,7 @@ namespace controller {
         }
 
         private sellHouse(fieldId: number) {
-            if (this.model_.board.houseMayBeSoldOn(fieldId, this.model_.players.getMyUsername()))
+            if (this.model_.board.houseMayBeSoldOn(fieldId, this.model_.players.myUsername()))
                 return;
             let toSend = this.prepareMessage(message.SellHouse.message);
             toSend[message.SellHouse.field] = fieldId;

@@ -1,6 +1,7 @@
 /// <reference path="../../lib/collections.d.ts" />
 /// <reference path="board.ts" />
 /// <reference path="pawn.ts" />
+/// <reference path="utils.ts" />
 
 namespace model {
 
@@ -42,23 +43,10 @@ namespace model {
         }
 
         movePawn(ownerUsername: string, rollResult: number): void {
-            const targetPawn = this.pawnsOwners_.getValue(ownerUsername);
-            const currentField = this.pawnsPosition_.getValue(targetPawn);
+            const pawn = this.pawnsOwners_.getValue(ownerUsername);
+            const currentField = this.pawnsPosition_.getValue(pawn);
             const targetField = this.board_.fieldInDistanceOf(currentField, rollResult);
-            this.pawnsPosition_.setValue(targetPawn, targetField);
-        }
-
-        houseMayBeBoughtOn(fieldId: number, username: string): boolean {
-            return this.checkIfIdMatches(fieldId, username, this.expansibleFields);
-        }
-
-        houseMayBeSoldOn(fieldId: number, username: string): boolean {
-            return this.checkIfIdMatches(fieldId, username, this.fieldsWithSellableHouses);
-        }
-
-        private checkIfIdMatches(fieldId: number, username: string, dataGen: (username: string) => Array<model.Field>): boolean {
-            return dataGen(username)
-                .some(f => f.id === fieldId);
+            this.pawnsPosition_.setValue(pawn, targetField);
         }
 
         buyField(ownerUsername: string): void {
@@ -66,54 +54,22 @@ namespace model {
         }
 
         expansibleFields(username: string): Array<Field> {
-            let fields = this.fieldsOwnedBy(username)
-                             .filter(f => f.expansible());
+            let fields = this.findFieldsOwnedBy(username)
+                .filter(f => f.expansible());
             let expansible: Array<Field> = [];
             while (fields.length != 0) {
                 const districtId = fields[0].group;
-                const fieldsPartitionedById = this.partition(fields, (f: Field) => f.group === districtId);
+                const fieldsPartitionedById = utils.partition(fields, (f: Field) => f.group === districtId);
                 if (this.ownsWholeDistrict(username, districtId))
-                    expansible = expansible.concat(this.expansibleInDistrict(fieldsPartitionedById[0]));
+                    expansible = expansible.concat(this.findExpansibleInGivenDistrict(fieldsPartitionedById[0]));
                 fields = fieldsPartitionedById[1];
             }
             return expansible;
         }
 
-        private expansibleInDistrict(district: Array<Field>): Array<Field> {
-            const minHouseAmount = this.minOf(district.map(f => f.housesBuilt));
-            return district.filter(f => f.housesBuilt <= minHouseAmount);
-        }
-
-        private partition<T>(array: Array<T>, predicate: (arg: T) => boolean): [Array<T>, Array<T>] {
-            let matching: Array<T> = [];
-            let notMatching: Array<T> = [];
-            for (const elem of array)
-                if (predicate(elem))
-                    matching.push(elem);
-                else
-                    notMatching.push(elem);
-            return [matching, notMatching];
-        }
-
-        private minOf(numbers: Array<number>): number {
-            return numbers.reduce((x, y) => Math.min(x, y));
-        }
-
-        private ownsWholeDistrict(username: string, targetGroup: string) {
-            return this.board_.getFields()
-                            .filter(f => f.group === targetGroup)
-                            .every(f => f.ownerUsername() === username);
-        }
-
         fieldsWithSellableHouses(owner: string): Array<Field> {
-            return this.fieldsOwnedBy(owner)
-                       .filter(f => f.housesBuilt > 0);
-        }
-
-
-        private fieldsOwnedBy(owner: string): Array<Field> {
-            return this.board_.getFields()
-                             .filter(field => field.ownerUsername() === owner);
+            return this.findFieldsOwnedBy(owner)
+                .filter(f => f.housesBuilt > 0);
         }
 
         buyHouseOn(fieldId: number): void {
@@ -127,64 +83,93 @@ namespace model {
         houseAmountOn(fieldId: number): number {
             return this.board_.getField(fieldId).housesBuilt;
         }
+
+        houseMayBeBoughtOn(fieldId: number, username: string): boolean {
+            return this.checkIfIdMatches(fieldId, this.expansibleFields(username));
+        }
+
+        houseMayBeSoldOn(fieldId: number, username: string): boolean {
+            return this.checkIfIdMatches(fieldId, this.fieldsWithSellableHouses(username));
+        }
+
+        private checkIfIdMatches(fieldId: number,
+                                 fields: Array<model.Field>): boolean {
+            return fields.some(f => f.id === fieldId);
+        }
+
+        private findExpansibleInGivenDistrict(district: Array<Field>): Array<Field> {
+            const minHouseAmount = utils.min(district.map(f => f.housesBuilt));
+            return district.filter(f => f.housesBuilt <= minHouseAmount);
+        }
+
+        private ownsWholeDistrict(username: string, districtId: string): boolean {
+            return !this.board_.getFields()
+                .filter(f => f.group === districtId)
+                .some(f => f.ownerUsername() !== username);
+        }
+
+        private findFieldsOwnedBy(username: string): Array<Field> {
+            return this.board_.getFields()
+                .filter(field => field.ownerUsername() === username);
+        }
     }
 
     export class PlayersModel {
-        private myUsername: string;
-        private activeUsername: string;
-        private players: Array<Player> = [];
+        private myUsername_: string;
+        private activeUsername_: string;
+        private players_: Array<Player> = [];
 
-        iAmActive(): boolean {
-            return this.activeUsername === this.myUsername;
+        myTurnInProgress(): boolean {
+            return this.activeUsername_ === this.myUsername_;
         }
 
         getPlayers(): Array<Player> {
-            return this.players.slice();
+            return this.players_.slice();
         }
 
-        resetPlayers(): void {
-            this.players = [];
+        removeAllPlayer(): void {
+            this.players_ = [];
         }
 
         addNewUser(username: string, color: string): void {
-            this.players = this.players.concat(new Player(username, color));
+            this.players_ = this.players_.concat(new Player(username, color));
         }
 
-        getUsernames(): Array<string> {
-            return this.players.map(player => player.username);
+        allUsernames(): Array<string> {
+            return this.players_.map(player => player.username);
         }
 
-        setMyUsername(myUsername: string): void {
-            this.myUsername = myUsername;
+        saveMyUsername(myUsername: string): void {
+            this.myUsername_ = myUsername;
         }
 
-        getMyUsername(): string {
-            return this.myUsername;
+        myUsername(): string {
+            return this.myUsername_;
         }
 
-        setActivePlayer(activeUsername: string): void {
-            this.activeUsername = activeUsername;
+        changeActivePlayer(newActiveUsername: string): void {
+            this.activeUsername_ = newActiveUsername;
         }
 
-        getActivePlayer(): string {
-            return this.activeUsername;
+        activePlayerUsername(): string {
+            return this.activeUsername_;
         }
 
-        getActivePlayerFunds(): number {
-            return this.findActivePlayer().cash;
+        activePlayerFunds(): number {
+            return this.activePlayer().cash;
         }
 
-        getActivePlayerColor(): string {
-            return this.findActivePlayer().color;
+        activePlayerColor(): string {
+            return this.activePlayer().color;
         }
 
-        private findActivePlayer(): Player {
-            return this.players.filter(player => player.username === this.activeUsername)[0];
+        private activePlayer(): Player {
+            return this.players_.filter(player => player.username === this.activeUsername_)[0];
         }
 
         setCash(username: string, amount: number): void {
-            this.players.filter(player => player.username === username)
-                        .forEach(player => player.setCash(amount));
+            this.players_.filter(player => player.username === username)
+                .forEach(player => player.setCash(amount));
         }
     }
 }
