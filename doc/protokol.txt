@@ -94,6 +94,17 @@ Serwer podaje informację o zakupie dokonanym przez użytkownika
     "message": "userBought",
     "username": "NAZWA"
 }
+
+Użytkownik zastawia pole
+{
+	"message": "mortgage",
+	"field" : <nr pola>
+}
+Użytkownik wykupuje pole z zastawu
+{
+	"message": "unmortgage",
+	"field": <nr pola>
+}
 ---------------------------------------------
 Użytkownik kupuje domek (hotel)
 {

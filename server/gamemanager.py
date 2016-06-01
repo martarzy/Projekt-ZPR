@@ -14,11 +14,12 @@ class Player:
 
 
 class Field:
-    def __init__(self, group_name, price=0, house_price=0):
+    def __init__(self, group_name, price=0, house_price=0, visit_cost=(0,)):
         self.owner = None
         self.group_name = group_name
         self.price = price
         self.house_price = house_price
+        self.visit_cost = visit_cost
 
         self.buyable = price > 0
         self.buildable = house_price > 0
@@ -36,48 +37,48 @@ class GameManager:
         self.fields = []
 
         self.fields.append(Field("Go"))
-        self.fields.append(Field("Brown", 60, 50))
+        self.fields.append(Field("Brown", 60, 50, (2, 10, 30, 90, 160, 250)))
         self.fields.append(Field("Chance"))
-        self.fields.append(Field("Brown", 60, 50))
+        self.fields.append(Field("Brown", 60, 50, (4, 20, 60, 180, 320, 450)))
         self.fields.append(Field("Income Tax"))
         self.fields.append(Field("Railroad", 200))
-        self.fields.append(Field("Azure", 100, 50))
+        self.fields.append(Field("Azure", 100, 50, (6, 30, 90, 270, 400, 550)))
         self.fields.append(Field("Chance"))
-        self.fields.append(Field("Azure", 100, 50))
-        self.fields.append(Field("Azure", 120, 50))
+        self.fields.append(Field("Azure", 100, 50, (6, 30, 90, 270, 400, 550)))
+        self.fields.append(Field("Azure", 120, 50, (8, 40, 100, 300, 450, 600)))
 
         self.fields.append(Field("Jail"))
-        self.fields.append(Field("Pink", 140, 100))
+        self.fields.append(Field("Pink", 140, 100, (10, 50, 150, 450, 625, 750)))
         self.fields.append(Field("Utility", 150))
-        self.fields.append(Field("Pink", 140, 100))
-        self.fields.append(Field("Pink", 160, 100))
+        self.fields.append(Field("Pink", 140, 100, (10, 50, 150, 450, 625, 750)))
+        self.fields.append(Field("Pink", 160, 100, (12, 60, 180, 500, 700, 900)))
         self.fields.append(Field("Railroad", 200))
-        self.fields.append(Field("Orange", 160, 100))
+        self.fields.append(Field("Orange", 160, 100, (14, 70, 200, 550, 750, 950)))
         self.fields.append(Field("Chance"))
-        self.fields.append(Field("Orange", 160, 100))
-        self.fields.append(Field("Orange", 180, 100))
+        self.fields.append(Field("Orange", 160, 100, (14, 70, 200, 550, 750, 950)))
+        self.fields.append(Field("Orange", 180, 100, (16, 80, 220, 600, 800, 1000)))
 
         self.fields.append(Field("Parking"))
-        self.fields.append(Field("Red", 220, 150))
+        self.fields.append(Field("Red", 220, 150, (18, 90, 250, 700, 875, 1050)))
         self.fields.append(Field("Chance"))
-        self.fields.append(Field("Red", 220, 150))
-        self.fields.append(Field("Red", 240, 150))
+        self.fields.append(Field("Red", 220, 150, (18, 90, 250, 700, 875, 1050)))
+        self.fields.append(Field("Red", 240, 150, (20, 100, 300, 750, 925, 1100)))
         self.fields.append(Field("Railroad", 200))
-        self.fields.append(Field("Yellow", 260, 150))
-        self.fields.append(Field("Yellow", 260, 150))
+        self.fields.append(Field("Yellow", 260, 150, (22, 110, 330, 800, 975, 1150)))
+        self.fields.append(Field("Yellow", 260, 150, (22, 110, 330, 800, 975, 1150)))
         self.fields.append(Field("Utility", 150))
-        self.fields.append(Field("Yellow", 280, 150))
+        self.fields.append(Field("Yellow", 280, 150, (24, 120, 360, 850, 1025, 1200)))
 
         self.fields.append(Field("Go to jail"))
-        self.fields.append(Field("Green", 300, 200))
-        self.fields.append(Field("Green", 300, 200))
+        self.fields.append(Field("Green", 300, 200, (26, 130, 390, 900, 1100, 1275)))
+        self.fields.append(Field("Green", 300, 200, (26, 130, 390, 900, 1100, 1275)))
         self.fields.append(Field("Chance"))
-        self.fields.append(Field("Green", 320, 200))
+        self.fields.append(Field("Green", 320, 200, (28, 150, 450, 1000, 1200, 1400)))
         self.fields.append(Field("Railroad", 200))
         self.fields.append(Field("Chance"))
-        self.fields.append(Field("Blue", 350, 200))
+        self.fields.append(Field("Blue", 350, 200, (35, 175, 500, 1100, 1300, 1500)))
         self.fields.append(Field("Luxury tax"))
-        self.fields.append(Field("Blue", 350, 200))
+        self.fields.append(Field("Blue", 350, 200, (50, 200, 600, 1400, 1700, 2000)))
 
     def add_player(self, name, handler):
         new_player = Player(name, handler)
@@ -114,6 +115,7 @@ class GameManager:
                 player.cash += 400
                 player.field_no -= 40
                 self.broadcast_cash_info(player)
+            self.stay_fee(player)
 
         elif msg['message'] == 'buyField':
             self.buy_field(player)
@@ -212,6 +214,14 @@ class GameManager:
         else:
             return True
         return False
+
+    def stay_fee(self, player):
+        field = self.fields[player.field_no]
+        if field.owner is not None and field.owner is not player:
+            player.cash -= field.visit_cost[field.houses_no]
+            self.broadcast_cash_info(player)
+            field.owner.cash += field.visit_cost[field.houses_no]
+            self.broadcast_cash_info(field.owner)
 
     def broadcast_field_buy(self, player):
         self.broadcast({'message': 'userBought', 'username': player.name})
