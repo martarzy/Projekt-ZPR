@@ -41,17 +41,17 @@ class GameManager:
         self.fields.append(Field("Brown", 60, 50))
         self.fields.append(Field("Income Tax"))
         self.fields.append(Field("Railroad", 200))
-        self.fields.append(Field("Blue", 100, 50))
+        self.fields.append(Field("Azure", 100, 50))
         self.fields.append(Field("Chance"))
-        self.fields.append(Field("Blue", 100, 50))
-        self.fields.append(Field("Blue", 120, 50))
+        self.fields.append(Field("Azure", 100, 50))
+        self.fields.append(Field("Azure", 120, 50))
 
         self.fields.append(Field("Jail"))
         self.fields.append(Field("Pink", 140, 100))
         self.fields.append(Field("Utility", 150))
         self.fields.append(Field("Pink", 140, 100))
         self.fields.append(Field("Pink", 160, 100))
-        self.fields.append(Field("Railroad"))
+        self.fields.append(Field("Railroad", 200))
         self.fields.append(Field("Orange", 160, 100))
         self.fields.append(Field("Chance"))
         self.fields.append(Field("Orange", 160, 100))
@@ -187,7 +187,7 @@ class GameManager:
 
     def sell_house(self, player, field_no):
         field = self.fields[field_no]
-        if field.owner is player and field.buildable and field.houses_no > 1 and self.uniform_building(field, -1) and self.own_all_in_group(player, field_no):
+        if field.owner is player and field.buildable and field.houses_no > 0 and self.uniform_building(field, -1) and self.own_all_in_group(player, field_no):
             player.cash += field.house_price / 2
             self.broadcast_cash_info(player)
             field.houses_no -= 1
