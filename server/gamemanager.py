@@ -8,7 +8,6 @@ class Player:
         self.ready = False
         self.cash = 1500
         self.field_no = 0
-        self.mortgaged = False
 
     def error(self, error_code):
         self.handler.send_message({'message': 'invalidOperation', 'error': error_code})
@@ -21,6 +20,7 @@ class Field:
         self.price = price
         self.house_price = house_price
         self.visit_cost = visit_cost
+        self.mortgaged = False
 
         self.buyable = price > 0
         self.buildable = house_price > 0
