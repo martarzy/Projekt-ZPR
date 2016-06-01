@@ -241,6 +241,14 @@
                 .attr("id", "bought-field" + this.fieldId);
 
             // kwadraciki dla domow i hotelu
+            // pole dla hotelu
+            g.append("rect")
+                .attr("x", -20)
+                .attr("y", -20)
+                .attr("width", 40)
+                .attr("height", 40)
+                .attr("fill", "whitesmoke")
+                .attr("id", "hotel-field-" + this.fieldId);
             // nr 1
             g.append("rect")
                 .attr("x", -20)
@@ -273,14 +281,6 @@
                 .attr("height", 15)
                 .attr("fill", "whitesmoke")
                 .attr("id", "house-field4-" + this.fieldId);
-            // pole dla hotelu
-            g.append("rect")
-                .attr("x", -20)
-                .attr("y", -20)
-                .attr("width", 40)
-                .attr("height", 40)
-                .attr("fill", "whitesmoke")
-                .attr("id", "hotel-field-" + this.fieldId);
 
             g.append("text")
                 .attr("text-anchor", "middle")
