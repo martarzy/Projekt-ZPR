@@ -33,7 +33,7 @@ namespace controller {
             this.handlers.setValue(message.InvalidOperation.message, this.invalidOperation);
             this.handlers.setValue(message.UserBoughtHouse.message, this.userBoughtHouse);
             this.handlers.setValue(message.UserSoldHouse.message, this.userSoldHouse);
-            this.handlers.setValue(message.UserMortgagedField.message, this.userMortgagedField);
+            this.handlers.setValue(message.Mortgage.message, this.userMortgagedField);
         }
 
         handle(msgFromServer: any): void {

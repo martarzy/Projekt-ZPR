@@ -1,4 +1,4 @@
-----------------------------------------------
+﻿----------------------------------------------
 Gracz podaje swoją nazwę: 
 {   "message": "myName", 
     "myName": "NAZWAGRACZA" 
@@ -99,9 +99,22 @@ Użytkownik zastawia pole
 	"message": "mortgage",
 	"field" : <nr pola>
 }
+
+Serwer podaje informację o zastawieniu pola
+{
+	"message": userMortgaged
+	"field" : <nr pola>
+}
+
 Użytkownik wykupuje pole z zastawu
 {
 	"message": "unmortgage",
+	"field": <nr pola>
+}
+
+Serwer podaje informację o wykupieniu pola z zastawu
+{
+	"message": "userUnmortgaged",
 	"field": <nr pola>
 }
 ---------------------------------------------

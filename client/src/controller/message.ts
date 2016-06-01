@@ -90,8 +90,23 @@
         static get field(): string { return "field"; }
     }
 
-    export class UserMortgagedField {
-        static get message(): string { return "TODO"; }
+    export class Mortgage {
+        static get message(): string { return "mortgage"; }
+        static get field(): string { return "field"; }
+    }
+
+    export class UserMortgaged {
+        static get message(): string { return "userMortgaged"; }
+        static get field(): string { return "field"; }
+    }
+
+    export class Unmortgage {
+        static get message(): string { return "unmortgage"; }
+        static get field(): string { return "field"; }
+    }
+
+    export class UserUnmortgaged {
+        static get message(): string { return "userUnmortgaged"; }
         static get field(): string { return "field"; }
     }
 }
