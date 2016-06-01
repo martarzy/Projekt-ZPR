@@ -80,6 +80,12 @@ namespace model {
             });
         }
 
+        groupFieldsByGroup(fields: Array<Field>): Array<Array<Field>> {
+            
+
+            return null;
+        }
+
         buyHouseOn(fieldId: number): void {
             this.board_.getField(fieldId).buyHouse();
         }
