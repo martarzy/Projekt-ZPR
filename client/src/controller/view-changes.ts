@@ -44,7 +44,7 @@ namespace controller {
         }
 
         enableButtonsOnRoundStart(): void {
-            const buttons = [ViewElement.BUY_HOUSE, ViewElement.SELL_HOUSE, ViewElement.ROLL_BTN];
+            const buttons = [ViewElement.BUY_HOUSE, ViewElement.SELL_HOUSE, ViewElement.ROLL_BTN, ViewElement.MORTGAGE_BTN];
             for (const button of buttons)
                 this.enable(button, true);
         }
