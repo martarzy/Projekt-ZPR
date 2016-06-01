@@ -114,7 +114,7 @@ namespace controller {
                         return;
                     break;
                 case model.ActionMode.UNMORTAGE:
-                    if (!this.mortgageField(fieldId))
+                    if (!this.unmortgageField(fieldId))
                         return;
                     break;
                 default: return;
