@@ -136,16 +136,21 @@ namespace view {
         }
 
         public highlightFields(fieldNumbers: Array<number>) {
-            for (const fieldId of fieldNumbers)
-                d3.select("[game-id='" + fieldId + "']")
-                    .attr("opacity", 0.25)
-                    .classed("highlighted-field", true);
+            for (let i = 0; i < fieldNumbers.length; i++) {
+                // pole o zadanym w tablicy nr
+                var field = this.board.getField(fieldNumbers[i]);
+                // wspolrzedne tego pola
+           
+                var x = field.getCoordX();
+                var y = field.getCoordY();
+
+                field.drawHighlightField(x, y);
+            }
         }
 
         public unhighlightAllFields() {
-            d3.select(".highlighted-field")
-                .attr("opacity", null)
-                .classed("highlighted-field", false);
+            var highlightedFields = $(".highlighted-field");
+            highlightedFields.remove();
         }
 
         public drawHousesOnField(fieldNumber: number, houseAmount: number) {

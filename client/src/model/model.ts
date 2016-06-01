@@ -56,15 +56,28 @@ namespace model {
             let results: Array<Field> = [];
             while (fields.length != 0) {
                 const currentGroup = fields[0].group;
-                if (this.userOwnsWholeDistinct(owner, currentGroup)) {
-                    const chosenFields = fields.filter(f => f.group === currentGroup);
-                    const minHouseAmount = this.minOf(chosenFields.map(f => f.housesBuilt));
-                    chosenFields.filter(f => f.housesBuilt <= minHouseAmount)
-                        .forEach(f => results.push(f));
-                }                
-                fields = fields.filter(f => f.group !== currentGroup);                
+                const partitioned = this.partition(fields, (f: Field) => f.group === currentGroup);
+                if (this.userOwnsWholeDistinct(owner, currentGroup))
+                    results = results.concat(this.expansibleInDistinct(partitioned[0]));
+                fields = partitioned[1];
             }
             return results;
+        }
+
+        private expansibleInDistinct(fields: Array<Field>): Array<Field> {
+            const minHouseAmount = this.minOf(fields.map(f => f.housesBuilt));
+            return fields.filter(f => f.housesBuilt <= minHouseAmount);
+        }
+
+        private partition<T>(array: Array<T>, predicate: (arg: T) => boolean): [Array<T>, Array<T>] {
+            let matching: Array<T> = [];
+            let notMatching: Array<T> = [];
+            for (const elem of array)
+                if (predicate(elem))
+                    matching.push(elem);
+                else
+                    notMatching.push(elem);
+            return [matching, notMatching];
         }
 
         private minOf(numbers: Array<number>): number {
