@@ -65,11 +65,11 @@ namespace view {
             $('#build-button').attr('disabled', 1);
         }
 
-        public setActiveCollateralizeButton() {
+        public setActiveMortgageButton() {
             $('#collateralize-button').removeAttr('disabled');
         }
 
-        public setDisabledCollateralizeButton() {
+        public setDisabledMortgageButton() {
             $('#collateralize-button').removeAttr('active');
             $('#collateralize-button').attr('disabled', 1);
         }
@@ -148,8 +148,8 @@ namespace view {
             this.board.getField(fieldNumber).buildHouses(fieldNumber, houseAmount);
         }
 
-        public collateralizeField(fieldNumber: number) {
-            this.board.getField(fieldNumber).collateralizeField(fieldNumber);
+        public mortgageField(fieldNumber: number) {
+            this.board.getField(fieldNumber).mortgageField(fieldNumber);
         }
 
         public buyBackField(fieldNumber: number) {

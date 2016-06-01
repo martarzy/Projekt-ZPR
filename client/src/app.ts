@@ -13,7 +13,7 @@ window.onload = () => {
     const endTurnButton = <HTMLInputElement>document.getElementById("end-turn-button");
     const buildButton = <HTMLInputElement>document.getElementById("build-button");
     const sellButton = <HTMLInputElement>document.getElementById("sell-button");
-    const collateralizeButton = <HTMLInputElement>document.getElementById("collateralize-button");
+    const mortgageButton = <HTMLInputElement>document.getElementById("collateralize-button");
 
     const actions: controller.UserActions = control.actionsMap;
 
@@ -24,5 +24,5 @@ window.onload = () => {
     endTurnButton.onclick = (event: MouseEvent) => actions.playerEndsTurn();
     buildButton.onclick = (event: MouseEvent) => actions.activateBuildMode();
     sellButton.onclick = (event: MouseEvent) => actions.activateSellMode();
-    collateralizeButton.onclick = (event: MouseEvent) => actions.activateCollateralizesMode();
+    mortgageButton.onclick = (event: MouseEvent) => actions.activateMortageMode();
 };

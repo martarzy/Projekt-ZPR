@@ -360,7 +360,7 @@
             }
         }
 
-        public collateralizeField(fieldId: number) {
+        public mortgageField(fieldId: number) {
             $("#main-collateralize-field-" + fieldId).attr("fill", "gray");
             $("#hotel-field-" +  fieldId).attr("fill", "gray");
             $("#house-field4-" + fieldId).attr("fill", "gray");

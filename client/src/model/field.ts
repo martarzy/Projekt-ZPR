@@ -3,7 +3,7 @@ namespace model {
     export class Field {
         static MAX_HOUSES = 5;
         private ownerUsername_ = "";
-        private collateralized_ = false;
+        private mortgaged_ = false;
         private housesBuilt_ = 0;
 
         constructor(private id_: number,
@@ -32,8 +32,8 @@ namespace model {
             return this.housesBuilt_;
         }
 
-        get isCollateralized(): boolean {
-            return this.collateralized_;
+        get isMortgaged(): boolean {
+            return this.mortgaged_;
         }
 
         isBuyable(): boolean {
@@ -59,8 +59,8 @@ namespace model {
             return this.ownerUsername_;
         }
 
-        collateralize(): void {
-            this.collateralized_ = true;
+        mortgage(decision: boolean): void {
+            this.mortgaged_ = decision;
         }
 
         buyHouse(): void {
