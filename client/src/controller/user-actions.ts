@@ -84,8 +84,13 @@ namespace controller {
 
         fieldClicked(fieldId: number): void {
             console.log(fieldId);
-            if (!this.model_.players.iAmActive())
-                return; // OR HANDLDE NONE STATE
+            if (!this.model_.players.iAmActive()
+                || this.model_.round.mode === model.ActionMode.NONE)
+                return;
+             /* The model is updated when server sends confirmation message.
+                The mode is set to NONE to avoid situation when server haven't
+                responded yet and user clicked the field multiple times. */  
+            this.setRoundMode(model.ActionMode.NONE);
             switch (this.model_.round.mode) {
                 case model.ActionMode.BUILD:
                     this.buyHouse(fieldId);
@@ -97,8 +102,7 @@ namespace controller {
         }
 
         private buyHouse(fieldId: number) {
-            if (this.model_.board.expansibleFields(this.model_.players.getMyUsername())
-                .map(f => f.id).indexOf(fieldId) < 0)
+            if (!this.model_.board.houseMayBeBoughtOn(fieldId, this.model_.players.getMyUsername()))
                 return;
             let toSend = this.prepareMessage(message.BuyHouse.message);
             toSend[message.BuyHouse.field] = fieldId;
@@ -107,8 +111,7 @@ namespace controller {
         }
 
         private sellHouse(fieldId: number) {
-            if (this.model_.board.fieldsWithSellableHouses(this.model_.players.getMyUsername())
-                .map(f => f.id).indexOf(fieldId) < 0)
+            if (this.model_.board.houseMayBeSoldOn(fieldId, this.model_.players.getMyUsername()))
                 return;
             let toSend = this.prepareMessage(message.SellHouse.message);
             toSend[message.SellHouse.field] = fieldId;

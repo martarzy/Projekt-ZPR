@@ -1,4 +1,6 @@
 /// <reference path="../../lib/collections.d.ts" />
+/// <reference path="board.ts" />
+/// <reference path="pawn.ts" />
 
 namespace model {
 
@@ -46,27 +48,40 @@ namespace model {
             this.pawnsPosition_.setValue(targetPawn, targetField);
         }
 
-        buyField(ownerUsername: string) {
+        houseMayBeBoughtOn(fieldId: number, username: string): boolean {
+            return this.checkIfIdMatches(fieldId, username, this.expansibleFields);
+        }
+
+        houseMayBeSoldOn(fieldId: number, username: string): boolean {
+            return this.checkIfIdMatches(fieldId, username, this.fieldsWithSellableHouses);
+        }
+
+        private checkIfIdMatches(fieldId: number, username: string, dataGen: (username: string) => Array<model.Field>): boolean {
+            return dataGen(username)
+                .some(f => f.id === fieldId);
+        }
+
+        buyField(ownerUsername: string): void {
             this.getField(ownerUsername).markAsBought(ownerUsername);
         }
 
-        expansibleFields(owner: string): Array<Field> {
-            let fields = this.fieldsOwnedBy(owner)
+        expansibleFields(username: string): Array<Field> {
+            let fields = this.fieldsOwnedBy(username)
                              .filter(f => f.expansible());
-            let results: Array<Field> = [];
+            let expansible: Array<Field> = [];
             while (fields.length != 0) {
-                const currentGroup = fields[0].group;
-                const partitioned = this.partition(fields, (f: Field) => f.group === currentGroup);
-                if (this.userOwnsWholeDistinct(owner, currentGroup))
-                    results = results.concat(this.expansibleInDistinct(partitioned[0]));
-                fields = partitioned[1];
+                const districtId = fields[0].group;
+                const fieldsPartitionedById = this.partition(fields, (f: Field) => f.group === districtId);
+                if (this.ownsWholeDistrict(username, districtId))
+                    expansible = expansible.concat(this.expansibleInDistrict(fieldsPartitionedById[0]));
+                fields = fieldsPartitionedById[1];
             }
-            return results;
+            return expansible;
         }
 
-        private expansibleInDistinct(fields: Array<Field>): Array<Field> {
-            const minHouseAmount = this.minOf(fields.map(f => f.housesBuilt));
-            return fields.filter(f => f.housesBuilt <= minHouseAmount);
+        private expansibleInDistrict(district: Array<Field>): Array<Field> {
+            const minHouseAmount = this.minOf(district.map(f => f.housesBuilt));
+            return district.filter(f => f.housesBuilt <= minHouseAmount);
         }
 
         private partition<T>(array: Array<T>, predicate: (arg: T) => boolean): [Array<T>, Array<T>] {
@@ -84,7 +99,7 @@ namespace model {
             return numbers.reduce((x, y) => Math.min(x, y));
         }
 
-        private userOwnsWholeDistinct(username: string, targetGroup: string) {
+        private ownsWholeDistrict(username: string, targetGroup: string) {
             return this.board_.getFields()
                             .filter(f => f.group === targetGroup)
                             .every(f => f.ownerUsername() === username);

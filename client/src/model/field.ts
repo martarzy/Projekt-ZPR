@@ -51,7 +51,8 @@ namespace model {
         }
 
         markAsBought(owner: string): void {
-            this.ownerUsername_ = owner;
+            if (this.isBuyable())
+                this.ownerUsername_ = owner;
         }
 
         ownerUsername(): string {
