@@ -74,11 +74,11 @@ namespace view {
             $('#mortgage-button').attr('disabled', 1);
         }
         
-        public setActiveUnMortgageButton() {
+        public setActiveUnmortgageButton() {
             $('#umortgage-button').removeAttr('disabled');
         }
 
-        public setDisabledUnMortgageButton() {
+        public setDisabledUnmortgageButton() {
             $('#unmortgage-button').removeAttr('active');
             $('#unmortgage-button').attr('disabled', 1);
         }
