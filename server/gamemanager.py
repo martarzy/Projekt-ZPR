@@ -115,6 +115,7 @@ class GameManager:
                 player.cash += 400
                 player.field_no -= 40
                 self.broadcast_cash_info(player)
+            self.stay_fee(player)
 
         elif msg['message'] == 'buyField':
             self.buy_field(player)
@@ -213,6 +214,14 @@ class GameManager:
         else:
             return True
         return False
+
+    def stay_fee(self, player):
+        field = self.fields[player.field_no]
+        if field.owner is not None and field.owner is not player:
+            player.cash -= field.visit_cost[field.houses_no]
+            self.broadcast_cash_info(player)
+            field.owner.cash += field.visit_cost[field.houses_no]
+            self.broadcast_cash_info(field.owner)
 
     def broadcast_field_buy(self, player):
         self.broadcast({'message': 'userBought', 'username': player.name})
