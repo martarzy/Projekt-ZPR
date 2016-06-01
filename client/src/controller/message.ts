@@ -75,11 +75,6 @@
         static get field(): string { return "field"; }
     }
 
-    export class MortgageField {
-        static get message(): string { return "TODO"; }
-        static get field(): string { return "field"; }
-    }
-
     export class UserBoughtHouse {
         static get message(): string { return "userBoughtHouse"; }
         static get field(): string { return "field"; }

@@ -148,8 +148,8 @@ namespace controller {
         private mortgageField(fieldId: number): boolean {
             if (!this.model_.boardModel.fieldMayBeMortgaged(fieldId, this.model_.playersModel.myUsername()))
                 return false;
-            let toSend = this.prepareMessage(message.MortgageField.message);
-            toSend[message.MortgageField.field] = fieldId;
+            let toSend = this.prepareMessage(message.Mortgage.message);
+            toSend[message.Mortgage.field] = fieldId;
             this.sender_(toSend);
             return true;
         }
