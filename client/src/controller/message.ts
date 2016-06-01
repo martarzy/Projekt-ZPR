@@ -106,7 +106,7 @@
     }
 
     export class InvalidOperation {
-        static get message(): string { return "invalidOperatio"; }
+        static get message(): string { return "invalidOperation"; }
         static get error(): string { return "error"; }
     }
 
