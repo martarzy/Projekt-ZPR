@@ -87,10 +87,6 @@ namespace controller {
             if (!this.model_.players.myTurnInProgress()
                 || this.model_.round.mode === model.ActionMode.NONE)
                 return;
-             /* The model is updated when server sends confirmation message.
-                The mode is set to NONE to avoid situation when server haven't
-                responded yet and user clicked the field multiple times. */  
-            this.setRoundMode(model.ActionMode.NONE);
             switch (this.model_.round.mode) {
                 case model.ActionMode.BUILD:
                     this.buyHouse(fieldId);
@@ -99,6 +95,10 @@ namespace controller {
                     this.sellHouse(fieldId);
                     break;
             }
+            /* The model is updated when server sends confirmation message.
+               The mode is set to NONE to avoid situation when server haven't
+               responded yet and user clicked the field multiple times. */
+            this.setRoundMode(model.ActionMode.NONE);
         }
 
         private buyHouse(fieldId: number) {

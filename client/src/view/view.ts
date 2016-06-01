@@ -136,16 +136,7 @@ namespace view {
         }
 
         public highlightFields(fieldNumbers: Array<number>) {
-            for (let i = 0; i < fieldNumbers.length; i++) {
-                // pole o zadanym w tablicy nr
-                var field = this.board.getField(fieldNumbers[i]);
-                // wspolrzedne tego pola
-           
-                var x = field.getCoordX();
-                var y = field.getCoordY();
-
-                field.drawHighlightField(x, y);
-            }
+            return;
         }
 
         public unhighlightAllFields() {
