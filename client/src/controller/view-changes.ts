@@ -5,7 +5,7 @@ namespace controller {
 
     export enum ViewElement {
         ROLL_BTN, READY_BTN, END_TURN_BTN, BUY_FIELD_BTN,
-        JOIN_MODAL, BUY_HOUSE, SELL_HOUSE, COLLATERALIZE_BTN
+        JOIN_MODAL, BUY_HOUSE, SELL_HOUSE, MORTGAGE_BTN
     }
 
     export class ViewChanges {
@@ -32,8 +32,8 @@ namespace controller {
             this.disablers_.setValue(ViewElement.BUY_HOUSE, this.view_.setDisabledBuildButton);
             this.enablers_.setValue(ViewElement.SELL_HOUSE, this.view_.setActiveSellButton);
             this.disablers_.setValue(ViewElement.SELL_HOUSE, this.view_.setDisabledSellButton);
-            this.enablers_.setValue(ViewElement.COLLATERALIZE_BTN, this.view_.setActiveCollateralizeButton);
-            this.disablers_.setValue(ViewElement.COLLATERALIZE_BTN, this.view_.setDisabledCollateralizeButton);
+            this.enablers_.setValue(ViewElement.MORTGAGE_BTN, this.view_.setActiveMortgageButton);
+            this.disablers_.setValue(ViewElement.MORTGAGE_BTN, this.view_.setDisabledMortgageButton);
             this.enablers_.setValue(ViewElement.JOIN_MODAL, this.view_.showSignInWindow);
             this.disablers_.setValue(ViewElement.JOIN_MODAL, this.view_.hideSignInWindow);
         }
@@ -88,6 +88,10 @@ namespace controller {
 
         drawHousesOnField(fieldId: number, houseAmount: number) {
             this.view_.drawHousesOnField(fieldId, houseAmount);
+        }
+
+        mortgageField(id: number): void {
+            this.view_.mortgageField(id);
         }
     }
 

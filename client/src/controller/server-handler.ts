@@ -33,6 +33,7 @@ namespace controller {
             this.handlers.setValue(message.InvalidOperation.message, this.invalidOperation);
             this.handlers.setValue(message.UserBoughtHouse.message, this.userBoughtHouse);
             this.handlers.setValue(message.UserSoldHouse.message, this.userSoldHouse);
+            this.handlers.setValue(message.UserMortgagedField.message, this.userMortgagedField);
         }
 
         handle(msgFromServer: any): void {
@@ -50,19 +51,19 @@ namespace controller {
 
         private synchUsers(object: any): void {
             const usernames: string[] = object[message.UserList.usernamesList];
-            this.model.players.removeAllPlayer();
+            this.model.playersModel.removeAllPlayer();
             for (let i = 0; i < usernames.length; ++i)
-                this.model.players.addNewUser(usernames[i], this.colorManager_.getColor(i));
+                this.model.playersModel.addNewUser(usernames[i], this.colorManager_.getColor(i));
             if (usernames.length >= 2)
                 this.viewChanges_.enable(ViewElement.READY_BTN, true);
             else
                 this.viewChanges_.enable(ViewElement.READY_BTN, false);
-            this.updatePlayerList(this.model.players.getPlayers());
+            this.updatePlayerList(this.model.playersModel.getPlayers());
         }
 
         private gameStarts(object: any): void {
-            this.model.board.placePawnsOnBoard(this.model.players.getPlayers());
-            let playersDTO = this.playersToPlayersDTO(this.model.players.getPlayers());
+            this.model.boardModel.placePawnsOnBoard(this.model.playersModel.getPlayers());
+            let playersDTO = this.playersToPlayersDTO(this.model.playersModel.getPlayers());
             this.viewChanges_.startGame(playersDTO);
         }
 
@@ -70,15 +71,15 @@ namespace controller {
             const username: string = object[message.PlayerMove.playerName];
             const rollResult: number = object[message.PlayerMove.movedBy];
 
-            this.model.board.movePawn(username, rollResult);
+            this.model.boardModel.movePawn(username, rollResult);
 
-            const field = this.model.board.getField(username);
+            const field = this.model.boardModel.getField(username);
             this.viewChanges_.movePawn(username, field.id, () => {
-                if (this.model.players.myTurnInProgress()) {
+                if (this.model.playersModel.myTurnInProgress()) {
                     this.model.round.playerMoved();
                     this.viewChanges_.enable(ViewElement.END_TURN_BTN, true);
                     if (field.isBuyable()
-                        && field.cost <= this.model.players.activePlayerFunds()) {
+                        && field.cost <= this.model.playersModel.activePlayerFunds()) {
                         this.viewChanges_.enable(ViewElement.BUY_FIELD_BTN, true);
                     }
                 }
@@ -87,15 +88,15 @@ namespace controller {
 
         private newTurn(object: any): void {
             const newActive: string = object[message.NewTurn.activePlayer];
-            this.model.players.changeActivePlayer(newActive);
+            this.model.playersModel.changeActivePlayer(newActive);
             this.model.round.reset();
-            if (this.model.players.myTurnInProgress())
+            if (this.model.playersModel.myTurnInProgress())
                 this.viewChanges_.enableButtonsOnRoundStart();
-            this.updatePlayerList(this.model.players.getPlayers());
+            this.updatePlayerList(this.model.playersModel.getPlayers());
         }
 
         private updatePlayerList(players: Array<model.Player>) {
-            let toPrint = this.playersToPlayersDTO(this.model.players.getPlayers());
+            let toPrint = this.playersToPlayersDTO(this.model.playersModel.getPlayers());
             this.viewChanges_.updatePlayerList(toPrint);
         }
 
@@ -107,7 +108,7 @@ namespace controller {
             let dto = new view.PlayerDTO();
             dto.username = player.username;
             dto.cash = player.cash;
-            dto.active = this.model.players.activePlayerUsername() === player.username;
+            dto.active = this.model.playersModel.activePlayerUsername() === player.username;
             dto.color = player.color;
             return dto;
         }
@@ -115,14 +116,15 @@ namespace controller {
         private setCash(object: any): void {
             const target: string = object[message.SetCash.target];
             const cash: number = object[message.SetCash.amount];
-            this.model.players.setCash(target, cash);
-            this.updatePlayerList(this.model.players.getPlayers());
+            this.model.playersModel.setCash(target, cash);
+            this.updatePlayerList(this.model.playersModel.getPlayers());
         }
 
         private userBought(object: any): void {
-            const buyer: string = object[message.UserBought.buyerName];
-            this.model.board.buyField(buyer);
-            this.viewChanges_.colorField(this.model.board.getField(buyer).id, this.model.players.activePlayerColor());
+            const currentPlayer = this.model.playersModel.activePlayerUsername();
+            this.model.boardModel.buyField(currentPlayer);
+            this.viewChanges_.colorField(this.model.boardModel.getField(currentPlayer).id,
+                                         this.model.playersModel.activePlayerColor());
         }
 
         private invalidOperation(object: any): void {
@@ -132,18 +134,26 @@ namespace controller {
 
         private userBoughtHouse(object: any): void {
             const field: number = object[message.UserBoughtHouse.field];
-            this.model.board.buyHouseOn(field);
-            this.viewChanges_.drawHousesOnField(field, this.model.board.houseAmountOn(field));
-            if (this.model.players.myTurnInProgress())
+            this.model.boardModel.buyHouseOn(field);
+            this.viewChanges_.drawHousesOnField(field, this.model.boardModel.houseAmountOn(field));
+            if (this.model.playersModel.myTurnInProgress())
                 this.userActions_.activateBuildMode();
         }
 
         private userSoldHouse(object: any): void {
             const field: number = object[message.UserSoldHouse.field];
-            this.model.board.sellHouseOn(field);
-            this.viewChanges_.drawHousesOnField(field, this.model.board.houseAmountOn(field));
-            if (this.model.players.myTurnInProgress())
+            this.model.boardModel.sellHouseOn(field);
+            this.viewChanges_.drawHousesOnField(field, this.model.boardModel.houseAmountOn(field));
+            if (this.model.playersModel.myTurnInProgress())
                 this.userActions_.activateSellMode();
+        }
+
+        private userMortgagedField(object: any): void {
+            const field: number = object[message.MortgageField.field];
+            this.model.boardModel.mortgageField(field);
+            this.viewChanges_.mortgageField(field);
+            if (this.model.playersModel.myTurnInProgress())
+                this.userActions_.activateMortageMode();
         }
     }
 

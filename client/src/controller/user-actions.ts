@@ -15,7 +15,7 @@ namespace controller {
             let toSend = this.prepareMessage(message.MyName.message);
             toSend[message.MyName.name] = name;
             this.sender_(toSend);
-            this.model_.players.saveMyUsername(name);
+            this.model_.playersModel.saveMyUsername(name);
         }
 
         rollDice(): void {
@@ -47,28 +47,28 @@ namespace controller {
         }
 
         activateBuildMode(): void {
-            if (!this.model_.players.myTurnInProgress())
+            if (!this.model_.playersModel.myTurnInProgress())
                 return;
             
             this.setRoundMode(model.ActionMode.BUILD);
-            const buildable = this.model_.board.expansibleFields(this.model_.players.myUsername());
+            const buildable = this.model_.boardModel.expansibleFields(this.model_.playersModel.myUsername());
             this.viewChanges_.unhighlightAllFields();
             this.highlightOnly(buildable);
         }
 
-        activateCollateralizesMode(): void {
-            if (!this.model_.players.myTurnInProgress())
+        activateMortageMode(): void {
+            if (!this.model_.playersModel.myTurnInProgress())
                 return;
-            this.setRoundMode(model.ActionMode.COLLATERALIZE);
+            this.setRoundMode(model.ActionMode.MORTGAGE);
             // TODO
         }
 
         activateSellMode(): void {
-            if (!this.model_.players.myTurnInProgress())
+            if (!this.model_.playersModel.myTurnInProgress())
                 return;
             
             this.setRoundMode(model.ActionMode.SELL);
-            const sellable = this.model_.board.fieldsWithSellableHouses(this.model_.players.myUsername());
+            const sellable = this.model_.boardModel.fieldsWithSellableHouses(this.model_.playersModel.myUsername());
             this.viewChanges_.unhighlightAllFields();
             this.highlightOnly(sellable);
         }
@@ -84,7 +84,7 @@ namespace controller {
 
         fieldClicked(fieldId: number): void {
             console.log(fieldId);
-            if (!this.model_.players.myTurnInProgress()
+            if (!this.model_.playersModel.myTurnInProgress()
                 || this.model_.round.mode === model.ActionMode.NONE)
                 return;
             switch (this.model_.round.mode) {
@@ -96,6 +96,10 @@ namespace controller {
                     if (!this.sellHouse(fieldId))
                         return;
                     break;
+                case model.ActionMode.MORTGAGE:
+                    if (!this.mortgageField(fieldId))
+                        return;
+                    break;
                 default: return;
             }
             /* The model is updated when server sends confirmation message.
@@ -105,8 +109,8 @@ namespace controller {
         }
 
         private buyHouse(fieldId: number): boolean {
-            if (!this.model_.board.houseMayBeBoughtOn(fieldId, this.model_.players.myUsername())
-                || this.model_.players.activePlayerFunds() < this.model_.board.priceOfHouseOn(fieldId))
+            if (!this.model_.boardModel.houseMayBeBoughtOn(fieldId, this.model_.playersModel.myUsername())
+                || this.model_.playersModel.activePlayerFunds() < this.model_.boardModel.priceOfHouseOn(fieldId))
                 return false;
             let toSend = this.prepareMessage(message.BuyHouse.message);
             toSend[message.BuyHouse.field] = fieldId;
@@ -116,10 +120,19 @@ namespace controller {
         }
 
         private sellHouse(fieldId: number): boolean {
-            if (!this.model_.board.houseMayBeSoldOn(fieldId, this.model_.players.myUsername()))
+            if (!this.model_.boardModel.houseMayBeSoldOn(fieldId, this.model_.playersModel.myUsername()))
                 return false;
             let toSend = this.prepareMessage(message.SellHouse.message);
             toSend[message.SellHouse.field] = fieldId;
+            this.sender_(toSend);
+            return true;
+        }
+
+        private mortgageField(fieldId: number): boolean {
+            if (!this.model_.boardModel.fieldMayBeMortgaged(fieldId, this.model_.playersModel.myUsername()))
+                return false;
+            let toSend = this.prepareMessage(message.MortgageField.message);
+            toSend[message.MortgageField.field] = fieldId;
             this.sender_(toSend);
             return true;
         }

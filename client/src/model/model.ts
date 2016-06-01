@@ -13,11 +13,11 @@ namespace model {
         private players_ = new PlayersModel();
         private round_ = new Round();
 
-        get board(): BoardModel {
+        get boardModel(): BoardModel {
             return this.board_;
         }
 
-        get players(): PlayersModel {
+        get playersModel(): PlayersModel {
             return this.players_;
         }
 
@@ -80,10 +80,19 @@ namespace model {
             });
         }
 
-        groupFieldsByGroup(fields: Array<Field>): Array<Array<Field>> {
-            
+        groupFieldsByGroup(fields: Array<Field>): { [key: string]: Array<Field> } {
+            let dict: {[key: string]: Array<Field>} = {};
+            fields.forEach(f => {
+                if (!dict[f.group])
+                    dict[f.group] = [f];
+                else
+                    dict[f.group].push(f);
+            });
+            return dict;
+        }
 
-            return null;
+        mortgageField(id: number) {
+            this.board_.getField(id).mortgage(true);
         }
 
         buyHouseOn(fieldId: number): void {
@@ -104,6 +113,12 @@ namespace model {
 
         houseMayBeSoldOn(fieldId: number, username: string): boolean {
             return this.checkIfIdMatches(fieldId, this.fieldsWithSellableHouses(username));
+        }
+
+        fieldMayBeMortgaged(fieldId: number, username: string): boolean {
+            const field = this.board_.getField(fieldId);
+            return field.housesBuilt === 0
+                && field.ownerUsername() === username;
         }
 
         private checkIfIdMatches(fieldId: number,
