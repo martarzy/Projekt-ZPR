@@ -102,7 +102,8 @@ namespace controller {
         }
 
         private buyHouse(fieldId: number) {
-            if (!this.model_.board.houseMayBeBoughtOn(fieldId, this.model_.players.myUsername()))
+            if (!this.model_.board.houseMayBeBoughtOn(fieldId, this.model_.players.myUsername())
+                || this.model_.players.activePlayerFunds() < this.model_.board.priceOfHouseOn(fieldId))
                 return;
             let toSend = this.prepareMessage(message.BuyHouse.message);
             toSend[message.BuyHouse.field] = fieldId;
@@ -111,7 +112,7 @@ namespace controller {
         }
 
         private sellHouse(fieldId: number) {
-            if (this.model_.board.houseMayBeSoldOn(fieldId, this.model_.players.myUsername()))
+            if (!this.model_.board.houseMayBeSoldOn(fieldId, this.model_.players.myUsername()))
                 return;
             let toSend = this.prepareMessage(message.SellHouse.message);
             toSend[message.SellHouse.field] = fieldId;

@@ -35,6 +35,10 @@ namespace model {
             return this.pawnsPosition_.getValue(this.pawnsOwners_.getValue(ownerUsername));
         }
 
+        priceOfHouseOn(fieldId: number) {
+            return this.board_.getField(fieldId).houseCost;
+        }
+
         placePawnsOnBoard(players: Array<Player>) {
             for (const player of players)
                 this.pawnsOwners_.setValue(player.username, new Pawn(player.color));
