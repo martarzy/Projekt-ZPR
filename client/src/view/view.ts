@@ -66,12 +66,21 @@ namespace view {
         }
 
         public setActiveMortgageButton() {
-            $('#collateralize-button').removeAttr('disabled');
+            $('#mortgage-button').removeAttr('disabled');
         }
 
         public setDisabledMortgageButton() {
-            $('#collateralize-button').removeAttr('active');
-            $('#collateralize-button').attr('disabled', 1);
+            $('#mortgage-button').removeAttr('active');
+            $('#mortgage-button').attr('disabled', 1);
+        }
+        
+        public setActiveUnMortgageButton() {
+            $('#umortgage-button').removeAttr('disabled');
+        }
+
+        public setDisabledUnMortgageButton() {
+            $('#unmortgage-button').removeAttr('active');
+            $('#unmortgage-button').attr('disabled', 1);
         }
 
         public setActiveSellButton() {
