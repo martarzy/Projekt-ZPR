@@ -89,11 +89,14 @@ namespace controller {
                 return;
             switch (this.model_.round.mode) {
                 case model.ActionMode.BUILD:
-                    this.buyHouse(fieldId);
+                    if (!this.buyHouse(fieldId))
+                        return;
                     break;
                 case model.ActionMode.SELL:
-                    this.sellHouse(fieldId);
+                    if (!this.sellHouse(fieldId))
+                        return;
                     break;
+                default: return;
             }
             /* The model is updated when server sends confirmation message.
                The mode is set to NONE to avoid situation when server haven't
@@ -101,22 +104,24 @@ namespace controller {
             this.setRoundMode(model.ActionMode.NONE);
         }
 
-        private buyHouse(fieldId: number) {
+        private buyHouse(fieldId: number): boolean {
             if (!this.model_.board.houseMayBeBoughtOn(fieldId, this.model_.players.myUsername())
                 || this.model_.players.activePlayerFunds() < this.model_.board.priceOfHouseOn(fieldId))
-                return;
+                return false;
             let toSend = this.prepareMessage(message.BuyHouse.message);
             toSend[message.BuyHouse.field] = fieldId;
             console.log(toSend);
             this.sender_(toSend);
+            return true;
         }
 
-        private sellHouse(fieldId: number) {
+        private sellHouse(fieldId: number): boolean {
             if (!this.model_.board.houseMayBeSoldOn(fieldId, this.model_.players.myUsername()))
-                return;
+                return false;
             let toSend = this.prepareMessage(message.SellHouse.message);
             toSend[message.SellHouse.field] = fieldId;
             this.sender_(toSend);
+            return true;
         }
     }
 
