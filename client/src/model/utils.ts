@@ -1,9 +1,5 @@
 ﻿namespace utils {
 
-    export function min(numbers: Array<number>): number {
-        return numbers.reduce((x, y) => Math.min(x, y));
-    }
-
     export function partition<T>(array: Array<T>, predicate: (arg: T) => boolean): [Array<T>, Array<T>] {
         const partitioned: [Array<T>, Array<T>] = [[], []];
         array.forEach(elem => {
