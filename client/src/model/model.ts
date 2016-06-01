@@ -1,3 +1,5 @@
+/// <reference path="../../lib/collections.d.ts" />
+
 namespace model {
 
     /*  Model doesn't validate game rules, so for example
@@ -49,11 +51,20 @@ namespace model {
         }
 
         expansibleFields(owner: string): Array<Field> {
-            const fields = this.fieldsOwnedBy(owner)
-                               .filter(f => f.expansible());
-            const minHouseAmount = this.minOf(fields.map(f => f.housesBuilt));
-            return fields.filter(f => f.housesBuilt <= minHouseAmount)
-                         .filter(f => this.userOwnsWholeDistinct(owner, f.group));
+            let fields = this.fieldsOwnedBy(owner)
+                             .filter(f => f.expansible());
+            let results: Array<Field> = [];
+            while (fields.length != 0) {
+                const currentGroup = fields[0].group;
+                if (this.userOwnsWholeDistinct(owner, currentGroup)) {
+                    const chosenFields = fields.filter(f => f.group === currentGroup);
+                    const minHouseAmount = this.minOf(chosenFields.map(f => f.housesBuilt));
+                    chosenFields.filter(f => f.housesBuilt <= minHouseAmount)
+                        .forEach(f => results.push(f));
+                }                
+                fields = fields.filter(f => f.group !== currentGroup);                
+            }
+            return results;
         }
 
         private minOf(numbers: Array<number>): number {
@@ -67,7 +78,7 @@ namespace model {
         }
 
         fieldsWithSellableHouses(owner: string): Array<Field> {
-            return this.fieldsOwnedBy(name)
+            return this.fieldsOwnedBy(owner)
                        .filter(f => f.housesBuilt > 0);
         }
 

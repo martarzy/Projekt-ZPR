@@ -73,16 +73,16 @@ namespace controller {
             this.model.board.movePawn(username, rollResult);
 
             const field = this.model.board.getField(username);
-            if (this.model.players.iAmActive()) {
-                this.model.round.playerMoved();
-                this.viewChanges_.enable(ViewElement.END_TURN_BTN, true);
-                if (field.isBuyable()
-                    && field.cost <= this.model.players.getActivePlayerFunds()) {
-                    this.viewChanges_.enable(ViewElement.BUY_FIELD_BTN, true);
+            this.viewChanges_.movePawn(username, field.id, () => {
+                if (this.model.players.iAmActive()) {
+                    this.model.round.playerMoved();
+                    this.viewChanges_.enable(ViewElement.END_TURN_BTN, true);
+                    if (field.isBuyable()
+                        && field.cost <= this.model.players.getActivePlayerFunds()) {
+                        this.viewChanges_.enable(ViewElement.BUY_FIELD_BTN, true);
+                    }
                 }
-            }
-
-            this.viewChanges_.movePawn(username, field.id);
+            });
         }
 
         private newTurn(object: any): void {

@@ -49,8 +49,10 @@ namespace controller {
         activateBuildMode(): void {
             if (!this.model_.players.iAmActive())
                 return;
+            
             this.setRoundMode(model.ActionMode.BUILD);
             const buildable = this.model_.board.expansibleFields(this.model_.players.getMyUsername());
+            this.viewChanges_.unhighlightAllFields();
             this.highlightOnly(buildable);
         }
 
@@ -64,8 +66,10 @@ namespace controller {
         activateSellMode(): void {
             if (!this.model_.players.iAmActive())
                 return;
+            
             this.setRoundMode(model.ActionMode.SELL);
             const sellable = this.model_.board.fieldsWithSellableHouses(this.model_.players.getMyUsername());
+            this.viewChanges_.unhighlightAllFields();
             this.highlightOnly(sellable);
         }
 

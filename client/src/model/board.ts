@@ -51,9 +51,9 @@ namespace model {
             this.fields_.push(new Field(this.fields_.length, "Green", 320, 200));
             this.fields_.push(new Field(this.fields_.length, "Railroad", 200));
             this.fields_.push(new Field(this.fields_.length, "Chance"));
-            this.fields_.push(new Field(this.fields_.length, "Blue", 350, 200));
+            this.fields_.push(new Field(this.fields_.length, "Navy", 350, 200));
             this.fields_.push(new Field(this.fields_.length, "Luxury tax"));
-            this.fields_.push(new Field(this.fields_.length, "Blue", 350, 200));
+            this.fields_.push(new Field(this.fields_.length, "Navy", 350, 200));
         }
 
         getField(id: number): Field {

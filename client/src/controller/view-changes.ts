@@ -68,14 +68,10 @@ namespace controller {
             this.view_.initPawnsDictionary(players);
         }
 
-        movePawn(player: string, targetField: number) {
+        movePawn(player: string, targetField: number, onPawnMoveEnd: () => void) {
             this.enable(ViewElement.END_TURN_BTN, false);
-            this.view_.movePawn(player, targetField, () => {
-                if (this.model_.players.iAmActive()) {
-                    this.enable(ViewElement.END_TURN_BTN, true);
-                    this.enable(ViewElement.BUY_FIELD_BTN, true);
-                }                    
-            });
+            this.enable(ViewElement.BUY_FIELD_BTN, false);
+            this.view_.movePawn(player, targetField, onPawnMoveEnd);
         }
 
         colorField(fieldNumber: number, color: string) {

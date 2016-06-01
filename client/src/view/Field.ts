@@ -316,7 +316,7 @@
                 .attr("fill", "lime")    
                 .attr("stroke", "black")
                 .attr("fill-opacity", 0.3)
-                .attr("class", "highlighted-field");;
+                .attr("class", "highlighted-field");
 
             g.append("rect")
                 .attr("x", -35)
