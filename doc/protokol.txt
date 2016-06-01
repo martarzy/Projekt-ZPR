@@ -92,7 +92,6 @@ Użytkownik kończy turę
 Serwer podaje informację o zakupie dokonanym przez użytkownika
 {
     "message": "userBought",
-    "username": "NAZWA"
 }
 
 Użytkownik zastawia pole
