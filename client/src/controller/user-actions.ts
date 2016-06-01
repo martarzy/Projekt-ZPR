@@ -6,9 +6,20 @@ namespace controller {
 
     export class UserActions {
 
+        private onClickHandlers_: { [mode: number]: (id: number) => boolean } = {};
+
         constructor(private sender_: (arg: any) => void,
                     private model_: model.Model,
                     private viewChanges_: ViewChanges) {
+            this.initOnClick();
+        }
+
+        private initOnClick(): void {
+            this.onClickHandlers_[model.ActionMode.NONE] = (id) => { return false; };
+            this.onClickHandlers_[model.ActionMode.BUILD] = this.buyHouse.bind(this);
+            this.onClickHandlers_[model.ActionMode.SELL] = this.sellHouse.bind(this);
+            this.onClickHandlers_[model.ActionMode.MORTGAGE] = this.mortgageField.bind(this);
+            this.onClickHandlers_[model.ActionMode.UNMORTAGE] = this.unmortgageField.bind(this);
         }
 
         chooseName(name: string): void {
@@ -96,29 +107,11 @@ namespace controller {
         }
 
         fieldClicked(fieldId: number): void {
-            console.log(fieldId);
             if (!this.model_.playersModel.myTurnInProgress()
                 || this.model_.round.mode === model.ActionMode.NONE)
                 return;
-            switch (this.model_.round.mode) {
-                case model.ActionMode.BUILD:
-                    if (!this.buyHouse(fieldId))
-                        return;
-                    break;
-                case model.ActionMode.SELL:
-                    if (!this.sellHouse(fieldId))
-                        return;
-                    break;
-                case model.ActionMode.MORTGAGE:
-                    if (!this.mortgageField(fieldId))
-                        return;
-                    break;
-                case model.ActionMode.UNMORTAGE:
-                    if (!this.unmortgageField(fieldId))
-                        return;
-                    break;
-                default: return;
-            }
+            if (!this.onClickHandlers_[this.model_.round.mode](fieldId))
+                return;
             /* The model is updated when server sends confirmation message.
                The mode is set to NONE to avoid situation when server haven't
                responded yet and user clicked the field multiple times. */
