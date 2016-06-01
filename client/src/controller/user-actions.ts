@@ -56,13 +56,6 @@ namespace controller {
             this.highlightOnly(buildable);
         }
 
-        activateMortageMode(): void {
-            if (!this.model_.playersModel.myTurnInProgress())
-                return;
-            this.setRoundMode(model.ActionMode.MORTGAGE);
-            // TODO
-        }
-
         activateSellMode(): void {
             if (!this.model_.playersModel.myTurnInProgress())
                 return;
@@ -71,6 +64,26 @@ namespace controller {
             const sellable = this.model_.boardModel.fieldsWithSellableHouses(this.model_.playersModel.myUsername());
             this.viewChanges_.unhighlightAllFields();
             this.highlightOnly(sellable);
+        }
+
+        activateMortageMode(): void {
+            if (!this.model_.playersModel.myTurnInProgress())
+                return;
+
+            this.setRoundMode(model.ActionMode.MORTGAGE);
+            const toMortgage = this.model_.boardModel.fieldsToMortgage(this.model_.playersModel.myUsername());
+            this.viewChanges_.unhighlightAllFields();
+            this.highlightOnly(toMortgage);
+        }
+
+        activateUnmortageMode(): void {
+            if (!this.model_.playersModel.myTurnInProgress())
+                return;
+
+            this.setRoundMode(model.ActionMode.UNMORTAGE);
+            const toUnmortage = this.model_.boardModel.fieldsToUnmortgage(this.model_.playersModel.myUsername());
+            this.viewChanges_.unhighlightAllFields();
+            this.highlightOnly(toUnmortage);
         }
 
         private highlightOnly(fields: Array<model.Field>): void {
@@ -97,6 +110,10 @@ namespace controller {
                         return;
                     break;
                 case model.ActionMode.MORTGAGE:
+                    if (!this.mortgageField(fieldId))
+                        return;
+                    break;
+                case model.ActionMode.UNMORTAGE:
                     if (!this.mortgageField(fieldId))
                         return;
                     break;
@@ -133,6 +150,15 @@ namespace controller {
                 return false;
             let toSend = this.prepareMessage(message.MortgageField.message);
             toSend[message.MortgageField.field] = fieldId;
+            this.sender_(toSend);
+            return true;
+        }
+
+        private unmortgageField(fieldId: number): boolean {
+            if (!this.model_.boardModel.fieldMayBeUnmortgaged(fieldId, this.model_.playersModel.myUsername()))
+                return false;
+            let toSend = this.prepareMessage(message.UnmortgageField.message);
+            toSend[message.UnmortgageField.field] = fieldId;
             this.sender_(toSend);
             return true;
         }

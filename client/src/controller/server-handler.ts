@@ -33,7 +33,8 @@ namespace controller {
             this.handlers.setValue(message.InvalidOperation.message, this.invalidOperation);
             this.handlers.setValue(message.UserBoughtHouse.message, this.userBoughtHouse);
             this.handlers.setValue(message.UserSoldHouse.message, this.userSoldHouse);
-            this.handlers.setValue(message.Mortgage.message, this.userMortgagedField);
+            this.handlers.setValue(message.UserMortgaged.message, this.userMortgagedField);
+            this.handlers.setValue(message.UserUnmortgaged.message, this.userUnmortgagedField);
         }
 
         handle(msgFromServer: any): void {
@@ -149,11 +150,19 @@ namespace controller {
         }
 
         private userMortgagedField(object: any): void {
-            const field: number = object[message.MortgageField.field];
+            const field: number = object[message.UserMortgaged.field];
             this.model.boardModel.mortgageField(field);
             this.viewChanges_.mortgageField(field);
             if (this.model.playersModel.myTurnInProgress())
                 this.userActions_.activateMortageMode();
+        }
+
+        private userUnmortgagedField(object: any): void {
+            const field: number = object[message.UserUnmortgaged.field];
+            this.model.boardModel.unmortgageField(field);
+            this.viewChanges_.unmortgageField(field);
+            if (this.model.playersModel.myTurnInProgress())
+                this.userActions_.activateUnmortageMode();
         }
     }
 

@@ -58,7 +58,7 @@ namespace model {
         }
 
         expansibleFields(username: string): Array<Field> {
-            let fields = this.findFieldsOwnedBy(username)
+            let fields = this.fieldsOwnedBy(username)
                 .filter(f => f.expansible());
             let expansible: Array<Field> = [];
             while (fields.length != 0) {
@@ -72,7 +72,7 @@ namespace model {
         }
 
         fieldsWithSellableHouses(owner: string): Array<Field> {
-            const owned = this.findFieldsOwnedBy(owner);
+            const owned = this.fieldsOwnedBy(owner);
             const ownedWithHouses = owned.filter(f => f.housesBuilt > 0);
             return ownedWithHouses.filter(f => {
                 const maxHouses = Math.max(...owned.filter(o => f.group === o.group).map(o => o.housesBuilt));
@@ -95,6 +95,43 @@ namespace model {
             this.board_.getField(id).mortgage(true);
         }
 
+        fieldsToMortgage(owner: string): Array<Field> {
+            return this.fieldsOwnedBy(owner)
+                .filter(f => this.canBeMortgaged(f, owner));
+        }
+
+        fieldMayBeMortgaged(fieldId: number, username: string): boolean {
+            return this.canBeMortgaged(this.field(fieldId), username);
+        }
+
+        private canBeMortgaged(field: Field, owner: string) {
+            return !field.isMortgaged
+                && field.housesBuilt === 0
+                && field.ownerUsername() === owner;
+        }
+
+        fieldsToUnmortgage(owner: string): Array<Field> {
+            return this.fieldsOwnedBy(owner)
+                .filter(f => this.canBeUnmortgaged(f, owner));
+        }
+
+        fieldMayBeUnmortgaged(fieldId: number, username: string): boolean {
+            return this.canBeUnmortgaged(this.field(fieldId), username);
+        }
+
+        private canBeUnmortgaged(field: Field, owner: string) {
+            return field.isMortgaged
+                && field.ownerUsername() === owner;
+        }
+
+        private field(id: number): Field {
+            return this.board_.getField(id);
+        }
+
+        unmortgageField(id: number) {
+            this.board_.getField(id).mortgage(false);
+        }
+
         buyHouseOn(fieldId: number): void {
             this.board_.getField(fieldId).buyHouse();
         }
@@ -115,12 +152,6 @@ namespace model {
             return this.checkIfIdMatches(fieldId, this.fieldsWithSellableHouses(username));
         }
 
-        fieldMayBeMortgaged(fieldId: number, username: string): boolean {
-            const field = this.board_.getField(fieldId);
-            return field.housesBuilt === 0
-                && field.ownerUsername() === username;
-        }
-
         private checkIfIdMatches(fieldId: number,
                                  fields: Array<model.Field>): boolean {
             return fields.some(f => f.id === fieldId);
@@ -137,7 +168,7 @@ namespace model {
                 .some(f => f.ownerUsername() !== username);
         }
 
-        private findFieldsOwnedBy(username: string): Array<Field> {
+        private fieldsOwnedBy(username: string): Array<Field> {
             return this.board_.getFields()
                 .filter(field => field.ownerUsername() === username);
         }

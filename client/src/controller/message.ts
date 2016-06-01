@@ -100,7 +100,7 @@
         static get field(): string { return "field"; }
     }
 
-    export class Unmortgage {
+    export class UnmortgageField {
         static get message(): string { return "unmortgage"; }
         static get field(): string { return "field"; }
     }

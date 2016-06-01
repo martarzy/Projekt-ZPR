@@ -152,6 +152,10 @@ namespace view {
             this.board.getField(fieldNumber).mortgageField(fieldNumber);
         }
 
+        public unmortgageField(fieldNumber: number) {
+            // TODO
+        }
+
         public buyBackField(fieldNumber: number) {
             this.board.getField(fieldNumber).buyBackField(fieldNumber);
         }

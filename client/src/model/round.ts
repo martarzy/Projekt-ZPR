@@ -1,6 +1,6 @@
 ﻿namespace model {
     export enum ActionMode {
-        NONE, BUILD, SELL, MORTGAGE
+        NONE, BUILD, SELL, MORTGAGE, UNMORTAGE
     }
 
     export class Round {

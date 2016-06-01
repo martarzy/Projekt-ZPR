@@ -93,6 +93,10 @@ namespace controller {
         mortgageField(id: number): void {
             this.view_.mortgageField(id);
         }
+
+        unmortgageField(id: number): void {
+            this.view_.unmortgageField(id);
+        }
     }
 
 }

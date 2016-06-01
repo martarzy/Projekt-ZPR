@@ -13,7 +13,8 @@ window.onload = () => {
     const endTurnButton = <HTMLInputElement>document.getElementById("end-turn-button");
     const buildButton = <HTMLInputElement>document.getElementById("build-button");
     const sellButton = <HTMLInputElement>document.getElementById("sell-button");
-    const mortgageButton = <HTMLInputElement>document.getElementById("collateralize-button");
+    const mortgageButton = <HTMLInputElement>document.getElementById("mortgage-button");
+    const unmortgageButton = <HTMLInputElement>document.getElementById("unmortgage-button");
 
     const actions: controller.UserActions = control.actionsMap;
 
@@ -25,4 +26,5 @@ window.onload = () => {
     buildButton.onclick = (event: MouseEvent) => actions.activateBuildMode();
     sellButton.onclick = (event: MouseEvent) => actions.activateSellMode();
     mortgageButton.onclick = (event: MouseEvent) => actions.activateMortageMode();
+    unmortgageButton.onclick = (event: MouseEvent) => actions.activateUnmortageMode();
 };
