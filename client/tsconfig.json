@@ -4,7 +4,7 @@
         "noImplicitAny": true,
         "removeComments": true,
         "preserveConstEnums": true,
-        "sourceRoot": "src",
+        
         "out": "js/app.js",
         "sourceMap": true
     },

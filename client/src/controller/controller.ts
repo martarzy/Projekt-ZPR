@@ -16,9 +16,10 @@ namespace controller {
         constructor(serverUri: string) {
             this.model = new model.Model();
             this.view = new view.View();
-            const viewChanges = new ViewChanges(this.view);
-            this.handler = new ServerHandler(this.model, viewChanges);
+            const viewChanges = new ViewChanges(this.view, this.model);
             this.userActionsHandler = new UserActions(this.sendMessage.bind(this), this.model, viewChanges);
+            this.view.assignFieldClickedCallback(this.userActionsHandler.fieldClicked.bind(this.userActionsHandler));
+            this.handler = new ServerHandler(this.model, viewChanges, this.userActionsHandler);
             this.createSocketConnection(serverUri);
         }
 

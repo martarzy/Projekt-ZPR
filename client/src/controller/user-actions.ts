@@ -12,43 +12,117 @@ namespace controller {
         }
 
         chooseName(name: string): void {
-            let toSend: any = {};
-            toSend[message.messageTitle] = message.MyName.message;
+            let toSend = this.prepareMessage(message.MyName.message);
             toSend[message.MyName.name] = name;
-            this.model_.players.setMyUsername(name);
             this.sender_(toSend);
+            this.model_.players.saveMyUsername(name);
         }
 
         rollDice(): void {
-            let toSend: any = {};
-            toSend[message.messageTitle] = message.RollDice.message;
-            this.sender_(toSend);
+            this.sender_(this.prepareMessage(message.RollDice.message));
             this.viewChanges_.enable(ViewElement.ROLL_BTN, false);
         }
 
         playerIsReady(): void {
-            let toSend: any = {};
-            toSend[message.messageTitle] = message.Ready.message;
-            this.sender_(toSend);
+            this.sender_(this.prepareMessage(message.Ready.message));
             this.viewChanges_.enable(ViewElement.READY_BTN, false);
         }
 
         playerBuysField(): void {
-            let toSend: any = {};
-            toSend[message.messageTitle] = message.BuyField.message;
-            this.sender_(toSend);
+            this.sender_(this.prepareMessage(message.BuyField.message));
             this.viewChanges_.enable(ViewElement.BUY_FIELD_BTN, false);
         }
 
         playerEndsTurn(): void {
             if (!this.model_.round.playerMoved)
                 return;
-            let toSend: any = {};
-            toSend[message.messageTitle] = message.EndOfTurn.message;
-            this.sender_(toSend);
+            this.sender_(this.prepareMessage(message.EndOfTurn.message));
             this.viewChanges_.disableAllButtons();
         }
 
+        private prepareMessage(title: string): any {
+            let toSend: any = {};
+            toSend[message.messageTitle] = title;
+            return toSend;
+        }
+
+        activateBuildMode(): void {
+            if (!this.model_.players.myTurnInProgress())
+                return;
+            
+            this.setRoundMode(model.ActionMode.BUILD);
+            const buildable = this.model_.board.expansibleFields(this.model_.players.myUsername());
+            this.viewChanges_.unhighlightAllFields();
+            this.highlightOnly(buildable);
+        }
+
+        activateCollateralizesMode(): void {
+            if (!this.model_.players.myTurnInProgress())
+                return;
+            this.setRoundMode(model.ActionMode.COLLATERALIZE);
+            // TODO
+        }
+
+        activateSellMode(): void {
+            if (!this.model_.players.myTurnInProgress())
+                return;
+            
+            this.setRoundMode(model.ActionMode.SELL);
+            const sellable = this.model_.board.fieldsWithSellableHouses(this.model_.players.myUsername());
+            this.viewChanges_.unhighlightAllFields();
+            this.highlightOnly(sellable);
+        }
+
+        private highlightOnly(fields: Array<model.Field>): void {
+            this.viewChanges_.unhighlightAllFields();
+            this.viewChanges_.highlightFields(fields.map(f => f.id));
+        }
+
+        private setRoundMode(mode: model.ActionMode): void {
+            this.model_.round.mode = mode;
+        }
+
+        fieldClicked(fieldId: number): void {
+            console.log(fieldId);
+            if (!this.model_.players.myTurnInProgress()
+                || this.model_.round.mode === model.ActionMode.NONE)
+                return;
+            switch (this.model_.round.mode) {
+                case model.ActionMode.BUILD:
+                    if (!this.buyHouse(fieldId))
+                        return;
+                    break;
+                case model.ActionMode.SELL:
+                    if (!this.sellHouse(fieldId))
+                        return;
+                    break;
+                default: return;
+            }
+            /* The model is updated when server sends confirmation message.
+               The mode is set to NONE to avoid situation when server haven't
+               responded yet and user clicked the field multiple times. */
+            this.setRoundMode(model.ActionMode.NONE);
+        }
+
+        private buyHouse(fieldId: number): boolean {
+            if (!this.model_.board.houseMayBeBoughtOn(fieldId, this.model_.players.myUsername())
+                || this.model_.players.activePlayerFunds() < this.model_.board.priceOfHouseOn(fieldId))
+                return false;
+            let toSend = this.prepareMessage(message.BuyHouse.message);
+            toSend[message.BuyHouse.field] = fieldId;
+            console.log(toSend);
+            this.sender_(toSend);
+            return true;
+        }
+
+        private sellHouse(fieldId: number): boolean {
+            if (!this.model_.board.houseMayBeSoldOn(fieldId, this.model_.players.myUsername()))
+                return false;
+            let toSend = this.prepareMessage(message.SellHouse.message);
+            toSend[message.SellHouse.field] = fieldId;
+            this.sender_(toSend);
+            return true;
+        }
     }
 
 }

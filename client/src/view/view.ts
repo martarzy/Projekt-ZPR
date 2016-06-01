@@ -92,7 +92,6 @@ namespace view {
 
             for (let i = 0; i < list.length; i++) {
                 if (list[i].active) {
-		    console.log("Active player"+list[i].toString());
                     $(".current-player-name").text(list[i].username);
                     $(".current-player-money").text(list[i].cash);
                     $(".current-player-color").css("background-color", list[i].color);
@@ -127,6 +126,34 @@ namespace view {
         public setBoughtFieldColor(fieldNumber: number, color: string) {
             var field = this.board.getField(fieldNumber);
             field.changeBoughtFieldColor(color);
+        }
+
+        public assignFieldClickedCallback(callback: (clickedId: number) => void) {
+            var gAllElements = d3.selectAll("g");
+            gAllElements.on("click", function () {
+                callback(parseInt((<HTMLElement>this).getAttribute("game-id")));
+            });
+        }
+
+        public highlightFields(fieldNumbers: Array<number>) {
+            return;
+        }
+
+        public unhighlightAllFields() {
+            var highlightedFields = $(".highlighted-field");
+            highlightedFields.remove();
+        }
+
+        public drawHousesOnField(fieldNumber: number, houseAmount: number) {
+            this.board.getField(fieldNumber).buildHouses(fieldNumber, houseAmount);
+        }
+
+        public collateralizeField(fieldNumber: number) {
+            this.board.getField(fieldNumber).collateralizeField(fieldNumber);
+        }
+
+        public buyBackField(fieldNumber: number) {
+            this.board.getField(fieldNumber).buyBackField(fieldNumber);
         }
 	}
 }

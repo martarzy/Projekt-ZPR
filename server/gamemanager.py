@@ -7,18 +7,24 @@ class Player:
         self.handler = handler  # Handler is a class which must have write_message() function
         self.ready = False
         self.cash = 1500
-        self.field_nr = 0
+        self.field_no = 0
 
     def error(self, error_code):
         self.handler.send_message({'message': 'invalidOperation', 'error': error_code})
 
 
 class Field:
-    def __init__(self, price):
+    def __init__(self, group_name, price=0, house_price=0):
         self.owner = None
+        self.group_name = group_name
         self.price = price
+        self.house_price = house_price
+
         self.buyable = price > 0
+        self.buildable = house_price > 0
+
         self.bought = False
+        self.houses_no = 0
 
 
 class GameManager:
@@ -27,12 +33,51 @@ class GameManager:
         self.turn = -1
         self.pname_map = {}
         self.started = False
-        field_prices = [0, 60, 0, 60, 0, 200, 100, 0, 100, 120,
-                        0, 140, 150, 140, 160, 200, 180, 0, 180, 200,
-                        0, 220, 0, 220, 240, 200, 260, 260, 150, 280,
-                        0, 300, 300, 0, 320, 200, 0, 350, 0, 400]
+        self.fields = []
 
-        self.fields = [Field(price) for price in field_prices]
+        self.fields.append(Field("Go"))
+        self.fields.append(Field("Brown", 60, 50))
+        self.fields.append(Field("Chance"))
+        self.fields.append(Field("Brown", 60, 50))
+        self.fields.append(Field("Income Tax"))
+        self.fields.append(Field("Railroad", 200))
+        self.fields.append(Field("Azure", 100, 50))
+        self.fields.append(Field("Chance"))
+        self.fields.append(Field("Azure", 100, 50))
+        self.fields.append(Field("Azure", 120, 50))
+
+        self.fields.append(Field("Jail"))
+        self.fields.append(Field("Pink", 140, 100))
+        self.fields.append(Field("Utility", 150))
+        self.fields.append(Field("Pink", 140, 100))
+        self.fields.append(Field("Pink", 160, 100))
+        self.fields.append(Field("Railroad", 200))
+        self.fields.append(Field("Orange", 160, 100))
+        self.fields.append(Field("Chance"))
+        self.fields.append(Field("Orange", 160, 100))
+        self.fields.append(Field("Orange", 180, 100))
+
+        self.fields.append(Field("Parking"))
+        self.fields.append(Field("Red", 220, 150))
+        self.fields.append(Field("Chance"))
+        self.fields.append(Field("Red", 220, 150))
+        self.fields.append(Field("Red", 240, 150))
+        self.fields.append(Field("Railroad", 200))
+        self.fields.append(Field("Yellow", 260, 150))
+        self.fields.append(Field("Yellow", 260, 150))
+        self.fields.append(Field("Utility", 150))
+        self.fields.append(Field("Yellow", 280, 150))
+
+        self.fields.append(Field("Go to jail"))
+        self.fields.append(Field("Green", 300, 200))
+        self.fields.append(Field("Green", 300, 200))
+        self.fields.append(Field("Chance"))
+        self.fields.append(Field("Green", 320, 200))
+        self.fields.append(Field("Railroad", 200))
+        self.fields.append(Field("Chance"))
+        self.fields.append(Field("Blue", 350, 200))
+        self.fields.append(Field("Luxury tax"))
+        self.fields.append(Field("Blue", 350, 200))
 
     def add_player(self, name, handler):
         new_player = Player(name, handler)
@@ -54,27 +99,37 @@ class GameManager:
     def on_message(self, pname, msg):
         player = self.pname_map[pname] if pname != '' else None
 
-        if msg['message'] == 'ready':
+        if self.turn != -1 and self.players[self.turn] is not player:
+            player.error('NotYourTurn')
+
+        elif msg['message'] == 'ready':
             self.ready(player)
 
         elif msg['message'] == 'rollDice':
             result = self.roll_dice()
             msg = dict(message='playerMove', player=player.name, move=result)
             self.broadcast(msg)
-            player.field_nr += result
-            if player.field_nr >= 40:
+            player.field_no += result
+            if player.field_no >= 40:
                 player.cash += 400
-                player.field_nr -= 40
+                player.field_no -= 40
                 self.broadcast_cash_info(player)
 
         elif msg['message'] == 'buyField':
             self.buy_field(player)
+
+        elif msg['message'] == 'buyHouse':
+            self.buy_house(player, msg['field'])
+
+        elif msg['message'] == 'sellHouse':
+            self.sell_house(player, msg['field'])
 
         elif msg['message'] == 'endOfTurn':
             self.next_turn()
 
     @staticmethod
     def roll_dice():
+        return 1
         result = 0
 
         for _ in range(3):
@@ -112,7 +167,7 @@ class GameManager:
         self.broadcast(msg)
 
     def buy_field(self, player):
-        field = self.fields[player.field_nr]
+        field = self.fields[player.field_no]
         if field.buyable and field.owner is None and player.cash >= field.price:
             player.cash -= field.price
             self.broadcast_cash_info(player)
@@ -121,11 +176,54 @@ class GameManager:
         else:
             player.error('notAbleToBuy')
 
+    def buy_house(self, player, field_no):
+        field = self.fields[field_no]
+        if field.owner is player and field.buildable and field.houses_no < 5 and player.cash >= field.price and self.uniform_building(field, +1) and self.own_all_in_group(player, field):
+            player.cash -= field.house_price
+            self.broadcast_cash_info(player)
+            field.houses_no += 1
+            self.broadcast_house_buy_info(player, field_no)
+        else:
+            player.error('notAbleToBuyHouse')
+
+    def sell_house(self, player, field_no):
+        field = self.fields[field_no]
+        if field.owner is player and field.buildable and field.houses_no > 0 and self.uniform_building(field, -1) and self.own_all_in_group(player, field):
+            player.cash += field.house_price / 2
+            self.broadcast_cash_info(player)
+            field.houses_no -= 1
+            self.broadcast_house_sell_info(player, field_no)
+        else:
+            player.error('notAbleToSell')
+
+    def uniform_building(self, field, diff):
+        houses_numbers = [f.houses_no for f in self.fields if f is not field and f.group_name == field.group_name]
+        houses_numbers.append(field.houses_no + diff)
+        if max(houses_numbers) - min(houses_numbers) <= 1:
+            return True
+        return False
+
+    def own_all_in_group(self, player, field):
+        owners = [f.owner for f in self.fields if f.group_name == field.group_name]
+
+        for owner in owners:
+            if owner is not player:
+                break
+        else:
+            return True
+        return False
+
     def broadcast_field_buy(self, player):
         self.broadcast({'message': 'userBought', 'username': player.name})
 
     def broadcast_cash_info(self, player):
         self.broadcast({'message': 'setCash', 'cash': player.cash, 'player': player.name})
+
+    def broadcast_house_buy_info(self, player, field_no):
+        self.broadcast({'message': 'userBoughtHouse', 'username': player.name, 'field': field_no})
+
+    def broadcast_house_sell_info(self, player, field_no):
+        self.broadcast({'message': 'userSoldHouse', 'username': player.name, 'field': field_no})
 
     def broadcast(self, msg):
         for player in self.players:
