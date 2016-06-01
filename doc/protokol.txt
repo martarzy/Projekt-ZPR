@@ -116,8 +116,6 @@ Serwer podaje informację o zakupie domku
 {
     "message": "userBoughtHouse",
     "field": <nrPola>,
-    "username": <nazwaGracza>
-}
 
 Użytkownik sprzedaje domek (hotel)
 {
@@ -128,8 +126,7 @@ Użytkownik sprzedaje domek (hotel)
 Serwer podaje informację o sprzedaży domku
 {
     "message": "userSoldHouse",
-    "field": <nrPola>,
-    "username": <nazwaGracza>
+    "field": <nrPola>
 }
 -----------------------------------------------
 
