@@ -72,8 +72,12 @@ namespace model {
         }
 
         fieldsWithSellableHouses(owner: string): Array<Field> {
-            return this.findFieldsOwnedBy(owner)
-                .filter(f => f.housesBuilt > 0);
+            const owned = this.findFieldsOwnedBy(owner);
+            const ownedWithHouses = owned.filter(f => f.housesBuilt > 0);
+            return ownedWithHouses.filter(f => {
+                const maxHouses = Math.max(...owned.filter(o => f.group === o.group).map(o => o.housesBuilt));
+                return maxHouses - f.housesBuilt < 1;
+            });
         }
 
         buyHouseOn(fieldId: number): void {
@@ -102,7 +106,7 @@ namespace model {
         }
 
         private findExpansibleInGivenDistrict(district: Array<Field>): Array<Field> {
-            const minHouseAmount = utils.min(district.map(f => f.housesBuilt));
+            const minHouseAmount = Math.min(...district.map(f => f.housesBuilt));
             return district.filter(f => f.housesBuilt <= minHouseAmount);
         }
 
