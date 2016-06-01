@@ -188,7 +188,7 @@ class GameManager:
 
     def sell_house(self, player, field_no):
         field = self.fields[field_no]
-        if field.owner is player and field.buildable and field.houses_no > 0 and self.uniform_building(field, -1) and self.own_all_in_group(player, field_no):
+        if field.owner is player and field.buildable and field.houses_no > 0 and self.uniform_building(field, -1) and self.own_all_in_group(player, field):
             player.cash += field.house_price / 2
             self.broadcast_cash_info(player)
             field.houses_no -= 1
