@@ -352,13 +352,17 @@
                     $("#house-field1-" + fieldId).attr("stroke", "black").attr("fill", "green");
                     break;
                 case 5:
-                    $("#hotel-field-" + fieldId).attr("stroke", "black").attr("fill", "red");
+                    $("#house-field4-" + fieldId).attr("stroke", "red").attr("fill", "red");
+                    $("#house-field3-" + fieldId).attr("stroke", "red").attr("fill", "red");
+                    $("#house-field2-" + fieldId).attr("stroke", "red").attr("fill", "red");
+                    $("#house-field1-" + fieldId).attr("stroke", "red").attr("fill", "red");
+                    $("#hotel-field-" + fieldId).attr("stroke",  "red").attr("fill", "red");
             }
         }
 
         public collateralizeField(fieldId: number) {
             $("#main-collateralize-field-" + fieldId).attr("fill", "gray");
-            $("#hotel-field-" + fieldId).attr("fill", "gray");
+            $("#hotel-field-" +  fieldId).attr("fill", "gray");
             $("#house-field4-" + fieldId).attr("fill", "gray");
             $("#house-field3-" + fieldId).attr("fill", "gray");
             $("#house-field2-" + fieldId).attr("fill", "gray");
@@ -367,7 +371,7 @@
 
         public buyBackField(fieldNumber: number) {
             $("#main-collateralize-field-" + fieldNumber).attr("fill", "whitesmoke");
-            $("#hotel-field-" + fieldNumber).attr("fill",  "whitesmoke");
+            $("#hotel-field-" +  fieldNumber).attr("fill", "whitesmoke");
             $("#house-field4-" + fieldNumber).attr("fill", "whitesmoke");
             $("#house-field3-" + fieldNumber).attr("fill", "whitesmoke");
             $("#house-field2-" + fieldNumber).attr("fill", "whitesmoke");
