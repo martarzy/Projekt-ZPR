@@ -107,24 +107,24 @@ namespace controller {
         }
 
         private buyHouse(fieldId: number): boolean {
-            const check = () => !this.model_.boardModel.houseMayBeBoughtOn(fieldId, this.model_.playersModel.myUsername())
+            const blockIf = () => !this.model_.boardModel.houseMayBeBoughtOn(fieldId, this.model_.playersModel.myUsername())
                 || this.model_.playersModel.activePlayerFunds() < this.model_.boardModel.priceOfHouseOn(fieldId);
-            return this.sendMessageWithCheck(fieldId, check, message.BuyHouse);
+            return this.sendMessageWithCheck(fieldId, blockIf, message.BuyHouse);
         }
 
         private sellHouse(fieldId: number): boolean {
-            const check = () => !this.model_.boardModel.houseMayBeSoldOn(fieldId, this.model_.playersModel.myUsername());
-            return this.sendMessageWithCheck(fieldId, check, message.SellHouse);
+            const blockIf = () => !this.model_.boardModel.houseMayBeSoldOn(fieldId, this.model_.playersModel.myUsername());
+            return this.sendMessageWithCheck(fieldId, blockIf, message.SellHouse);
         }
 
         private mortgageField(fieldId: number): boolean {
-            const check = () => !this.model_.boardModel.fieldMayBeMortgaged(fieldId, this.model_.playersModel.myUsername());
-            return this.sendMessageWithCheck(fieldId, check, message.Mortgage);
+            const blockIf = () => !this.model_.boardModel.fieldMayBeMortgaged(fieldId, this.model_.playersModel.myUsername());
+            return this.sendMessageWithCheck(fieldId, blockIf, message.Mortgage);
         }
 
         private unmortgageField(fieldId: number): boolean {
-            const check = () => !this.model_.boardModel.fieldMayBeUnmortgaged(fieldId, this.model_.playersModel.myUsername());
-            return this.sendMessageWithCheck(fieldId, check, message.UnmortgageField);
+            const blockIf = () => !this.model_.boardModel.fieldMayBeUnmortgaged(fieldId, this.model_.playersModel.myUsername());
+            return this.sendMessageWithCheck(fieldId, blockIf, message.UnmortgageField);
         }
 
         private sendMessageWithCheck(fieldId: number,
