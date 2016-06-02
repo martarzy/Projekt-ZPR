@@ -138,32 +138,33 @@ namespace controller {
             const field: number = object[message.UserBoughtHouse.field];
             this.model.boardModel.buyHouseOn(field);
             this.viewChanges_.drawHousesOnField(field, this.model.boardModel.houseAmountOn(field));
-            if (this.model.playersModel.myTurnInProgress())
-                this.userActions_.activateBuildMode();
+            this.activateIfMyTurn(this.userActions_.activateBuildMode);
         }
 
         private userSoldHouse(object: any): void {
             const field: number = object[message.UserSoldHouse.field];
             this.model.boardModel.sellHouseOn(field);
             this.viewChanges_.drawHousesOnField(field, this.model.boardModel.houseAmountOn(field));
-            if (this.model.playersModel.myTurnInProgress())
-                this.userActions_.activateSellMode();
+            this.activateIfMyTurn(this.userActions_.activateSellMode);
         }
 
         private userMortgagedField(object: any): void {
             const field: number = object[message.UserMortgaged.field];
             this.model.boardModel.mortgageField(field);
             this.viewChanges_.mortgageField(field);
-            if (this.model.playersModel.myTurnInProgress())
-                this.userActions_.activateMortageMode();
+            this.activateIfMyTurn(this.userActions_.activateMortgageMode);
         }
 
         private userUnmortgagedField(object: any): void {
             const field: number = object[message.UserUnmortgaged.field];
             this.model.boardModel.unmortgageField(field);
             this.viewChanges_.unmortgageField(field);
+            this.activateIfMyTurn(this.userActions_.activateUnmortgageMode);
+        }
+
+        private activateIfMyTurn(modeActivateCallback: () => void) {
             if (this.model.playersModel.myTurnInProgress())
-                this.userActions_.activateUnmortageMode();
+                modeActivateCallback.call(this.userActions_);
         }
     }
 

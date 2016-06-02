@@ -25,6 +25,6 @@ window.onload = () => {
     endTurnButton.onclick = (event: MouseEvent) => actions.playerEndsTurn();
     buildButton.onclick = (event: MouseEvent) => actions.activateBuildMode();
     sellButton.onclick = (event: MouseEvent) => actions.activateSellMode();
-    mortgageButton.onclick = (event: MouseEvent) => actions.activateMortageMode();
-    unmortgageButton.onclick = (event: MouseEvent) => actions.activateUnmortageMode();
+    mortgageButton.onclick = (event: MouseEvent) => actions.activateMortgageMode();
+    unmortgageButton.onclick = (event: MouseEvent) => actions.activateUnmortgageMode();
 };

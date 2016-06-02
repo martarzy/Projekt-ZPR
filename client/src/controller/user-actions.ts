@@ -65,14 +65,14 @@ namespace controller {
             this.activateMode(model.ActionMode.SELL, sellable);
         }
 
-        activateMortageMode(): void {
+        activateMortgageMode(): void {
             const toMortgage = this.model_.boardModel.fieldsToMortgage(this.model_.playersModel.myUsername());
             this.activateMode(model.ActionMode.MORTGAGE, toMortgage);
         }
 
-        activateUnmortageMode(): void {
-            const toUnmortage = this.model_.boardModel.fieldsToUnmortgage(this.model_.playersModel.myUsername());
-            this.activateMode(model.ActionMode.UNMORTGAGE, toUnmortage);
+        activateUnmortgageMode(): void {
+            const toUnmortgage = this.model_.boardModel.fieldsToUnmortgage(this.model_.playersModel.myUsername());
+            this.activateMode(model.ActionMode.UNMORTGAGE, toUnmortgage);
         }
 
         private activateMode(mode: model.ActionMode, toHighlight: Array<model.Field>): void {
