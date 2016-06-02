@@ -1,7 +1,7 @@
 ﻿/// <reference path="../src/model/round.ts" />
-/// <reference path="../src/model/player.ts" />
+/// <reference path="../src/model/domain/player.ts" />
 /// <reference path="../src/model/model.ts" />
-/// <reference path="../src/model/field.ts" />
+/// <reference path="../src/model/domain/field.ts" />
 /// <reference path="qunit.d.ts" />
 
 test("player test", function () {
