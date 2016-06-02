@@ -90,7 +90,7 @@ namespace model {
         private canBeMortgaged(field: Field, owner: string) {
             return !field.isMortgaged
                 && field.housesBuilt === 0
-                && field.ownerUsername() === owner;
+                && this.matchingOwner(field, owner);
         }
 
         unmortgageField(id: number) {
@@ -108,7 +108,7 @@ namespace model {
 
         private canBeUnmortgaged(field: Field, owner: string) {
             return field.isMortgaged
-                && field.ownerUsername() === owner;
+                && this.matchingOwner(field, owner);
         }
 
         private checkIfIdMatches(fieldId: number, fields: Array<model.Field>): boolean {
@@ -121,13 +121,13 @@ namespace model {
         }
 
         private ownsWholeDistrict(owner: string, districtId: string): boolean {
-            return !this.fields()
+            return this.fields()
                 .filter(f => f.group === districtId)
-                .some(f => !this.matchingOwner(f, owner));
+                .every(f => this.matchingOwner(f, owner));
         }
 
         private fieldsOwnedBy(owner: string): Array<Field> {
-            return this.fields().filter(f => f.ownerUsername() === owner);
+            return this.fields().filter(f => this.matchingOwner(f, owner));
         }
 
         private matchingOwner(field: Field, owner: string) {
