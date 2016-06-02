@@ -58,43 +58,31 @@ namespace controller {
         }
 
         activateBuildMode(): void {
-            if (!this.model_.playersModel.myTurnInProgress())
-                return;
-            
-            this.setRoundMode(model.ActionMode.BUILD);
             const buildable = this.model_.boardModel.expansibleFields(this.model_.playersModel.myUsername());
-            this.viewChanges_.unhighlightAllFields();
-            this.highlightOnly(buildable);
+            this.activateMode(model.ActionMode.BUILD, buildable);
         }
 
         activateSellMode(): void {
-            if (!this.model_.playersModel.myTurnInProgress())
-                return;
-            
-            this.setRoundMode(model.ActionMode.SELL);
             const sellable = this.model_.boardModel.fieldsWithSellableHouses(this.model_.playersModel.myUsername());
-            this.viewChanges_.unhighlightAllFields();
-            this.highlightOnly(sellable);
+            this.activateMode(model.ActionMode.SELL, sellable);
         }
 
         activateMortageMode(): void {
-            if (!this.model_.playersModel.myTurnInProgress())
-                return;
-
-            this.setRoundMode(model.ActionMode.MORTGAGE);
             const toMortgage = this.model_.boardModel.fieldsToMortgage(this.model_.playersModel.myUsername());
-            this.viewChanges_.unhighlightAllFields();
-            this.highlightOnly(toMortgage);
+            this.activateMode(model.ActionMode.MORTGAGE, toMortgage);
         }
 
         activateUnmortageMode(): void {
+            const toUnmortage = this.model_.boardModel.fieldsToUnmortgage(this.model_.playersModel.myUsername());
+            this.activateMode(model.ActionMode.UNMORTAGE, toUnmortage);
+        }
+
+        private activateMode(mode: model.ActionMode, toHighlight: Array<model.Field>): void {
             if (!this.model_.playersModel.myTurnInProgress())
                 return;
-
-            this.setRoundMode(model.ActionMode.UNMORTAGE);
-            const toUnmortage = this.model_.boardModel.fieldsToUnmortgage(this.model_.playersModel.myUsername());
+            this.setRoundMode(mode);
             this.viewChanges_.unhighlightAllFields();
-            this.highlightOnly(toUnmortage);
+            this.highlightOnly(toHighlight);
         }
 
         private highlightOnly(fields: Array<model.Field>): void {
@@ -119,39 +107,33 @@ namespace controller {
         }
 
         private buyHouse(fieldId: number): boolean {
-            if (!this.model_.boardModel.houseMayBeBoughtOn(fieldId, this.model_.playersModel.myUsername())
-                || this.model_.playersModel.activePlayerFunds() < this.model_.boardModel.priceOfHouseOn(fieldId))
-                return false;
-            let toSend = this.prepareMessage(message.BuyHouse.message);
-            toSend[message.BuyHouse.field] = fieldId;
-            console.log(toSend);
-            this.sender_(toSend);
-            return true;
+            const check = () => !this.model_.boardModel.houseMayBeBoughtOn(fieldId, this.model_.playersModel.myUsername())
+                || this.model_.playersModel.activePlayerFunds() < this.model_.boardModel.priceOfHouseOn(fieldId);
+            return this.sendMessageWithCheck(fieldId, check, message.BuyHouse);
         }
 
         private sellHouse(fieldId: number): boolean {
-            if (!this.model_.boardModel.houseMayBeSoldOn(fieldId, this.model_.playersModel.myUsername()))
-                return false;
-            let toSend = this.prepareMessage(message.SellHouse.message);
-            toSend[message.SellHouse.field] = fieldId;
-            this.sender_(toSend);
-            return true;
+            const check = () => !this.model_.boardModel.houseMayBeSoldOn(fieldId, this.model_.playersModel.myUsername());
+            return this.sendMessageWithCheck(fieldId, check, message.SellHouse);
         }
 
         private mortgageField(fieldId: number): boolean {
-            if (!this.model_.boardModel.fieldMayBeMortgaged(fieldId, this.model_.playersModel.myUsername()))
-                return false;
-            let toSend = this.prepareMessage(message.Mortgage.message);
-            toSend[message.Mortgage.field] = fieldId;
-            this.sender_(toSend);
-            return true;
+            const check = () => !this.model_.boardModel.fieldMayBeMortgaged(fieldId, this.model_.playersModel.myUsername());
+            return this.sendMessageWithCheck(fieldId, check, message.Mortgage);
         }
 
         private unmortgageField(fieldId: number): boolean {
-            if (!this.model_.boardModel.fieldMayBeUnmortgaged(fieldId, this.model_.playersModel.myUsername()))
+            const check = () => !this.model_.boardModel.fieldMayBeUnmortgaged(fieldId, this.model_.playersModel.myUsername());
+            return this.sendMessageWithCheck(fieldId, check, message.UnmortgageField);
+        }
+
+        private sendMessageWithCheck(fieldId: number,
+                                     failureCondition: () => boolean,
+                                     msgData: { message: string, field: string }): boolean {
+            if (failureCondition())
                 return false;
-            let toSend = this.prepareMessage(message.UnmortgageField.message);
-            toSend[message.UnmortgageField.field] = fieldId;
+            let toSend = this.prepareMessage(msgData.message);
+            toSend[msgData.field] = fieldId;
             this.sender_(toSend);
             return true;
         }
