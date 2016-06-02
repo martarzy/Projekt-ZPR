@@ -19,7 +19,7 @@ namespace controller {
             this.onClickHandlers_[model.ActionMode.BUILD] = this.buyHouse.bind(this);
             this.onClickHandlers_[model.ActionMode.SELL] = this.sellHouse.bind(this);
             this.onClickHandlers_[model.ActionMode.MORTGAGE] = this.mortgageField.bind(this);
-            this.onClickHandlers_[model.ActionMode.UNMORTAGE] = this.unmortgageField.bind(this);
+            this.onClickHandlers_[model.ActionMode.UNMORTGAGE] = this.unmortgageField.bind(this);
         }
 
         chooseName(name: string): void {
@@ -74,7 +74,7 @@ namespace controller {
 
         activateUnmortageMode(): void {
             const toUnmortage = this.model_.boardModel.fieldsToUnmortgage(this.model_.playersModel.myUsername());
-            this.activateMode(model.ActionMode.UNMORTAGE, toUnmortage);
+            this.activateMode(model.ActionMode.UNMORTGAGE, toUnmortage);
         }
 
         private activateMode(mode: model.ActionMode, toHighlight: Array<model.Field>): void {
