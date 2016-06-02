@@ -30,6 +30,16 @@ class Field:
         self.houses_no = 0
 
 
+class Trade:
+    def __init__(self, player, other_player, offered_fields_nos, offered_cash, demanded_fields_nos, demanded_cash):
+        self.player = player
+        self.other_player = other_player
+        self.offered_fields_nos = offered_fields_nos
+        self.offered_cash = offered_cash
+        self.demanded_fields_nos = demanded_fields_nos
+        self.demanded_cash = demanded_cash
+
+
 class GameManager:
     def __init__(self):
         self.players = []
@@ -37,6 +47,7 @@ class GameManager:
         self.pname_map = {}
         self.started = False
         self.fields = []
+        self.trade = None
 
         self.fields.append(Field("Go"))
         self.fields.append(Field("Brown", 60, 50, (2, 10, 30, 90, 160, 250)))
@@ -102,7 +113,10 @@ class GameManager:
     def on_message(self, pname, msg):
         player = self.pname_map[pname] if pname != '' else None
 
-        if self.turn != -1 and self.players[self.turn] is not player:
+        if self.trade is not None and player is not self.trade.other_player:
+            player.error('WaitingForTradeDecision')
+
+        elif self.turn != -1 and self.players[self.turn] is not player:
             player.error('NotYourTurn')
 
         elif msg['message'] == 'ready':
@@ -128,6 +142,17 @@ class GameManager:
 
         elif msg['message'] == 'endOfTurn':
             self.next_turn()
+
+        elif msg['message'] == 'trade':
+            other_player = self.pname_map[msg['other_username']]
+            trade = Trade(player, other_player, msg['offeredFields'], msg['offeredCash'], msg['demandedFields'], msg['demandedCash'])
+            self.trade_offer(trade)
+
+        elif msg['message'] == 'tradeAcceptance':
+            self.trade_acceptance(msg['accepted'])
+
+        else:
+            player.error('Improper message')
 
     def roll_dice(self, player):
         player.last_roll = self.generate_roll()
@@ -271,6 +296,37 @@ class GameManager:
             field.mortgaged = False
             self.broadcast_unmortgage(field_no)
 
+    def trade_offer(self, trade):
+
+        offered_fields_owners = [self.fields[i].owner for i in trade.offered_fields_nos]
+        demanded_fields_owners = [self.fields[i].owner for i in trade.demanded_fields_nos]
+        offered_fields_valid = len(offered_fields_owners) == offered_fields_owners.count(trade.player)
+        demanded_fields_valid = len(demanded_fields_owners) == demanded_fields_owners.count(trade.other_player)
+
+        if trade.player.cash >= trade.offered_cash and trade.other_player.cash >= trade.demanded_cash and offered_fields_valid and demanded_fields_valid:
+            self.trade = trade
+            self.broadcast_trade_offer(trade)
+        else:
+            trade.player.error('ImproperTradeOffer')
+
+    def trade_acceptance(self, accepted):
+        if accepted:
+            self.trade.player.cash -= self.trade.offered_cash
+            self.trade.player.cash += self.trade.demanded_cash
+            self.broadcast_cash_info(self.trade.player)
+            self.trade.other_player.cash += self.trade.offered_cash
+            self.trade.other_player.cash -= self.trade.demanded_cash
+            self.broadcast_cash_info(self.trade.other_player)
+
+            for field_no in self.trade.offered_fields_nos:
+                self.fields[field_no].owner = self.trade.other_player
+
+            for field_no in self.trade.demanded_fields_nos:
+                self.fields[field_no].owner = self.trade.player
+
+        self.trade = None
+        self.broadcast_trade_acceptance(accepted)
+
     def broadcast_field_buy(self, player):
         self.broadcast({'message': 'userBought', 'username': player.name})
 
@@ -288,6 +344,17 @@ class GameManager:
 
     def broadcast_unmortgage(self, field_no):
         self.broadcast({'message': 'userUnmortgaged', 'field': field_no})
+
+    def broadcast_trade_offer(self, trade):
+        self.broadcast({'message': 'trade',
+                        'otherUsername': trade.other_player.name,
+                        'offeredFields': trade.offered_fields_nos,
+                        'offeredCash': trade.offered_cash,
+                        'demandedFields': trade.demanded_fields_nos,
+                        'demandedCash': trade.demanded_cash})
+
+    def broadcast_trade_acceptance(self, accepted):
+        self.broadcast({'message': 'tradeAcceptance', 'accepted': accepted})
 
     def broadcast(self, msg):
         for player in self.players:
