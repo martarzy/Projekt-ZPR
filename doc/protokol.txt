@@ -159,3 +159,34 @@ Użytkownik odpowiada na ofertę:
     "message": "tradeAcceptance",
     "accepted": true/false
 }
+------------------------------------------------
+Serwer informuje o wylosowanej karcie szansy:
+
+1. GOTO
+{
+    "message": "chance",
+    "action": "goto",
+    "field": <nr pola>
+}
+
+2. MOVE
+{
+    "message": "chance",
+    "action": "move",
+    "move": <liczba pól, o które ma się przesunąć, może być ujemna!>
+}
+
+3. CASH ( = PAY / GET)
+{
+    "message": "chance"
+    "action": "cash"
+    "reason": <powód, dla którego trzeba zapłacić>
+    "cash": <kwota, jaką otrzymujesz - może być ujemna!>
+}
+
+4. GET OUT OF JAIL
+{
+    "message": "chance"
+    "action": "getOut"
+}
+-------------------------------------------------
