@@ -8,6 +8,7 @@ class Player:
         self.ready = False
         self.cash = 1500
         self.field_no = 0
+        self.last_roll = 0
 
     def error(self, error_code):
         self.handler.send_message({'message': 'invalidOperation', 'error': error_code})
@@ -108,15 +109,7 @@ class GameManager:
             self.ready(player)
 
         elif msg['message'] == 'rollDice':
-            result = self.roll_dice()
-            msg = dict(message='playerMove', player=player.name, move=result)
-            self.broadcast(msg)
-            player.field_no += result
-            if player.field_no >= 40:
-                player.cash += 400
-                player.field_no -= 40
-                self.broadcast_cash_info(player)
-            self.stay_fee(player)
+            self.roll_dice(player)
 
         elif msg['message'] == 'buyField':
             self.buy_field(player)
@@ -136,8 +129,19 @@ class GameManager:
         elif msg['message'] == 'endOfTurn':
             self.next_turn()
 
+    def roll_dice(self, player):
+        player.last_roll = self.generate_roll()
+        msg = dict(message='playerMove', player=player.name, move=result)
+        self.broadcast(msg)
+        player.field_no += player.last_roll
+        if player.field_no >= 40:
+            player.cash += 400
+            player.field_no -= 40
+            self.broadcast_cash_info(player)
+        self.stay_fee(player)
+
     @staticmethod
-    def roll_dice():
+    def generate_roll():
         return 1
         result = 0
 
@@ -225,10 +229,30 @@ class GameManager:
     def stay_fee(self, player):
         field = self.fields[player.field_no]
         if field.owner is not None and field.owner is not player:
-            player.cash -= field.visit_cost[field.houses_no]
+            if field.group_name == 'Railroad':
+                fee = 25 * 2 ** (len([f for f in self.fields if f.group_name == 'Railroad' and f.owner is field.owner]) - 1)
+
+            elif field.group_name == 'Utility':
+                if len([f for f in self.fields if f.group_name == 'Utility' and f.owner is field.owner]) == 2:
+                    fee = 10 * player.last_roll
+                else:
+                    fee = 4 * player.last_roll
+
+            else:
+                fee = field.visit_cost[field.houses_no]
+
+            player.cash -= fee
             self.broadcast_cash_info(player)
-            field.owner.cash += field.visit_cost[field.houses_no]
+            field.owner.cash += fee
             self.broadcast_cash_info(field.owner)
+
+        elif field.group_name == 'Income Tax':
+            player.cash -= 200
+            self.broadcast_cash_info(player)
+
+        elif field.group_name == 'Luxury Tax':
+            player.cash -= 100
+            self.broadcast_cash_info(player)
 
     def mortgage(self, player, field_no):
         field = self.fields[field_no]
