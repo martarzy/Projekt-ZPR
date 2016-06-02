@@ -8,7 +8,6 @@ namespace model {
     export class BoardModel {
         private board_ = new Board();
         private pawns: { [username: string]: Field } = {};
-        private ownedFields: { [username: string]: Array<Field> } = {};
 
         getField(username: string): Field {
             return this.pawns[username];
@@ -20,7 +19,6 @@ namespace model {
 
         placePawnsOnBoard(players: Array<Player>) {
             players.forEach(player => this.pawns[player.username] = this.board_.startField());
-            players.forEach(player => this.ownedFields[player.username] = []);
         }
 
         movePawn(username: string, rollResult: number): void {
@@ -30,9 +28,7 @@ namespace model {
         }
 
         buyField(username: string): void {
-            const field = this.getField(username);
-            field.markAsBought(username);
-            this.ownedFields[username].push(field);
+            this.getField(username).markAsBought(username);
         }
 
         buyHouseOn(fieldId: number): void {
@@ -131,7 +127,7 @@ namespace model {
         }
 
         private fieldsOwnedBy(owner: string): Array<Field> {
-            return this.ownedFields[owner];
+            return this.fields().filter(f => f.ownerUsername() === owner);
         }
 
         private matchingOwner(field: Field, owner: string) {
@@ -139,7 +135,7 @@ namespace model {
         }
 
         private fields(): Array<Field> {
-            return this.board_.getFields();
+            return this.board_.fields();
         }
 
         private field(id: number): Field {

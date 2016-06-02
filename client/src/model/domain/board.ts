@@ -73,7 +73,7 @@ namespace model {
             return this.getField(this.JAIL_FIELD_NUMBER);
         }
 
-        getFields(): Array<Field> {
+        fields(): Array<Field> {
             return this.fields_;
         }
     }
