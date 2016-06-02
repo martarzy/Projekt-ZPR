@@ -4,15 +4,6 @@
 /// <reference path="../src/model/field.ts" />
 /// <reference path="qunit.d.ts" />
 
-test("round test", function () {
-    let round = new model.Round();
-    deepEqual(round.movementPerformed, false);
-    round.playerMoved();
-    deepEqual(round.movementPerformed, true);
-    round.reset();
-    deepEqual(round.movementPerformed, false);
-});
-
 test("player test", function () {
     let player = new model.Player("Tester", "red");
     deepEqual(player.username, "Tester");

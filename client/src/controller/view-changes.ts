@@ -7,7 +7,7 @@ namespace controller {
             this.disableAllButtons();
         }
 
-        enableJoinModal(decision: boolean): void {
+        showJoinModal(decision: boolean): void {
             decision ? this.view_.showSignInWindow():
                        this.view_.hideSignInWindow();
         }

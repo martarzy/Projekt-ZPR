@@ -50,7 +50,7 @@ namespace controller {
                 return;
             }
             this.viewChanges_.disableAllButtons();
-            this.viewChanges_.enableJoinModal(false);
+            this.viewChanges_.showJoinModal(false);
         }
 
         private synchUsers(object: any): void {
@@ -58,10 +58,7 @@ namespace controller {
             this.model.playersModel.removeAllPlayer();
             for (let i = 0; i < usernames.length; ++i)
                 this.model.playersModel.addNewUser(usernames[i], this.colorManager_.getColor(i));
-            if (usernames.length >= 2)
-                this.viewChanges_.enable(view.ViewElement.READY_BTN, true);
-            else
-                this.viewChanges_.enable(view.ViewElement.READY_BTN, false);
+            this.viewChanges_.enable(view.ViewElement.READY_BTN, usernames.length >= 2);
             this.updatePlayerList(this.model.playersModel.getPlayers());
         }
 
@@ -78,16 +75,17 @@ namespace controller {
             this.model.boardModel.movePawn(username, rollResult);
 
             const field = this.model.boardModel.getField(username);
-            this.viewChanges_.movePawn(username, field.id, () => {
-                if (this.model.playersModel.myTurnInProgress()) {
-                    this.model.round.playerMoved();
-                    this.viewChanges_.enable(view.ViewElement.END_TURN_BTN, true);
-                    if (field.isBuyable()
-                        && field.cost <= this.model.playersModel.activePlayerFunds()) {
-                        this.viewChanges_.enable(view.ViewElement.BUY_FIELD_BTN, true);
-                    }
-                }
-            });
+            this.viewChanges_.movePawn(username, field.id, this.doOnPawnMoveEnd.bind(this, field));
+        }
+
+        private doOnPawnMoveEnd(field: model.Field): void {
+            if (!this.model.playersModel.myTurnInProgress())
+                return;
+            this.viewChanges_.enable(view.ViewElement.END_TURN_BTN, true);
+            if (field.isBuyable()
+                && field.cost <= this.model.playersModel.activePlayerFunds()) {
+                this.viewChanges_.enable(view.ViewElement.BUY_FIELD_BTN, true);
+            }
         }
 
         private newTurn(object: any): void {

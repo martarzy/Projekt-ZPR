@@ -45,8 +45,6 @@ namespace controller {
         }
 
         playerEndsTurn(): void {
-            if (!this.model_.round.playerMoved)
-                return;
             this.sender_(this.prepareMessage(message.EndOfTurn.message));
             this.viewChanges_.disableAllButtons();
         }
