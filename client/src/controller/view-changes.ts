@@ -32,7 +32,11 @@ namespace controller {
         }
 
         disableAllButtons() {
-            this.view_.disableAllButtons();
+            for (const elem in view.ViewElement) {
+                const toNumber = parseInt(elem);
+                if (!isNaN(toNumber))
+                    this.view_.disableButton(toNumber);
+            }
         }
 
         updatePlayerList(players: Array<view.PlayerDTO>) {

@@ -29,14 +29,6 @@ namespace view {
             this.buttonsIds[ViewElement.UNMORTGAGE_BTN] = "unmortgage-button";
         }
 
-        public disableAllButtons() {
-            for (const elem in ViewElement) {
-                const toNumber = parseInt(elem);
-                if (!isNaN(toNumber))
-                    this.disableButton(toNumber);
-            }                
-        }
-
         public enableButton(id: ViewElement | number) {
             $("#" + this.buttonsIds[id]).removeAttr("disabled");
         }
