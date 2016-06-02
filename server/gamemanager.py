@@ -1,3 +1,4 @@
+from chance import ChanceStack
 from random import randint
 
 
@@ -9,6 +10,7 @@ class Player:
         self.cash = 1500
         self.field_no = 0
         self.last_roll = 0
+        self.get_out_cards_no = 0
 
     def error(self, error_code):
         self.handler.send_message({'message': 'invalidOperation', 'error': error_code})
@@ -48,6 +50,7 @@ class GameManager:
         self.started = False
         self.fields = []
         self.trade = None
+        self.chance_stack = ChanceStack()
 
         self.fields.append(Field("Go"))
         self.fields.append(Field("Brown", 60, 50, (2, 10, 30, 90, 160, 250)))
@@ -164,6 +167,8 @@ class GameManager:
             player.field_no -= 40
             self.broadcast_cash_info(player)
         self.stay_fee(player)
+        if self.fields[player.field_no].group_name == 'Chance':
+            self.chance(player)
 
     @staticmethod
     def generate_roll():
@@ -297,7 +302,6 @@ class GameManager:
             self.broadcast_unmortgage(field_no)
 
     def trade_offer(self, trade):
-
         offered_fields_owners = [self.fields[i].owner for i in trade.offered_fields_nos]
         demanded_fields_owners = [self.fields[i].owner for i in trade.demanded_fields_nos]
         offered_fields_without_houses = [self.fields[i] for i in trade.offered_fields_nos if self.fields[i].houses == 0]
@@ -328,6 +332,29 @@ class GameManager:
 
         self.trade = None
         self.broadcast_trade_acceptance(accepted)
+
+    def chance(self, player):
+        card = self.chance_stack.get_card()
+        self.broadcast(card)
+        if card['action'] == 'goto':
+            old_field_no = player.field_no
+            player.field_no = card['field']
+            if player.field_no < old_field_no:
+                player.cash += 400
+                self.broadcast_cash_info(player)
+            self.stay_fee(player)
+        elif card['action'] == 'move':
+            player.field_no += card['move']
+            if player.field_no >= 40:
+                player.cash += 400
+                player.field_no -= 40
+                self.broadcast_cash_info(player)
+            self.stay_fee(player)
+        elif card['action'] == 'cash':
+            player.cash += card['cash']
+            self.broadcast_cash_info(player)
+        elif card['action'] == 'getOut':
+            player.get_out_cards_no += 1
 
     def broadcast_field_buy(self, player):
         self.broadcast({'message': 'userBought', 'username': player.name})
