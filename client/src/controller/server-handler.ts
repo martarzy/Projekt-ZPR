@@ -9,7 +9,7 @@ namespace controller {
 
     export class ServerHandler {
         private handlers = new collections.Dictionary<string, EventHandler>();
-        private colorManager_: model.ColorManager;
+        private colorManager_: model.Colors;
 
         constructor(private model: model.Model,
                     private viewChanges_: ViewChanges,
@@ -19,7 +19,7 @@ namespace controller {
         }
 
         private initialise() {
-            this.colorManager_ = new model.ColorManager();
+            this.colorManager_ = new model.Colors();
         }
 
         private installHandlers(): void {
