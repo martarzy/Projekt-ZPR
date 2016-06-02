@@ -35,6 +35,8 @@ namespace controller {
             this.handlers.setValue(message.UserSoldHouse.message, this.userSoldHouse);
             this.handlers.setValue(message.UserMortgaged.message, this.userMortgagedField);
             this.handlers.setValue(message.UserUnmortgaged.message, this.userUnmortgagedField);
+            this.handlers.setValue(message.Trade.message, this.tradeRequest);
+            this.handlers.setValue(message.TradeAnswer.message, this.tradeAnswer);
         }
 
         handle(msgFromServer: any): void {
@@ -72,6 +74,7 @@ namespace controller {
             const username: string = object[message.PlayerMove.playerName];
             const rollResult: number = object[message.PlayerMove.movedBy];
 
+            this.model.round.playerMoved = true;
             this.model.board.movePawn(username, rollResult);
 
             const field = this.model.board.getField(username);
@@ -163,6 +166,35 @@ namespace controller {
         private activateIfMyTurn(modeActivateCallback: () => void) {
             if (this.model.users.isMyTurn())
                 modeActivateCallback.call(this.userActions_);
+        }
+
+        private tradeRequest(object: any) {
+            const targetUsername: string = object[message.Trade.otherUsername];
+            if (this.model.users.myUsername() !== targetUsername)
+                return;
+            const offeredFields: Array<number> = object[message.Trade.offeredFields];
+            const demandedFields: Array<number> = object[message.Trade.demandedFields];
+            const offeredCash: number = object[message.Trade.offeredCash]; 
+            const demandedCash: number = object[message.Trade.demandedCash];
+            this.viewChanges_.showTradeOffer(offeredCash, offeredFields, demandedCash, demandedFields);
+            this.viewChanges_.enable(view.ViewElement.ACCEPT_OFFER_BTN, true);
+            this.viewChanges_.enable(view.ViewElement.DECLINE_OFFER_BTN, true);
+        }
+
+        private tradeAnswer(object: any) {
+            const decision: boolean = object[message.TradeAnswer.decision];
+            if (!this.model.users.isMyTurn())
+                return;
+            this.viewChanges_.enableButtonsOnRoundStart();
+            if (this.model.round.playerMoved)
+                this.viewChanges_.enable(view.ViewElement.ROLL_BTN, false);
+            decision ? this.viewChanges_.tradeSuccessful() :
+                this.viewChanges_.tradeUnsuccessful();
+            if (!decision)
+                return;
+            this.model.board.changeOwner(this.model.round.offeredFields, this.model.round.tradingWith);
+            this.model.board.changeOwner(this.model.round.demandedFields, this.model.users.myUsername());
+            this.model.round.reset();
         }
     }
 

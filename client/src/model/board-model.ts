@@ -106,7 +106,11 @@ namespace model {
             return this.canBeUnmortgaged(this.field(fieldId), username);
         }
 
-        private canBeUnmortgaged(field: Field, owner: string) {
+        changeOwner(fieldsIds: Array<number>, newOwner: string) {
+            fieldsIds.forEach(id => this.field(id).markAsBought(newOwner));
+        }
+
+        private canBeUnmortgaged(field: Field, owner: string): boolean {
             return field.isMortgaged
                 && this.matchingOwner(field, owner);
         }

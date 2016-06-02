@@ -19,6 +19,11 @@ namespace model {
             return this.players_.slice();
         }
 
+        getEnemies(): Array<string> {
+            return this.players_.filter(p => p.username !== this.myUsername_)
+                                .map(p => p.username);
+        }
+
         usernames(): Array<string> {
             return this.players_.map(player => player.username);
         }

@@ -104,4 +104,18 @@
         static get message(): string { return "userUnmortgaged"; }
         static get field(): string { return "field"; }
     }
+
+    export class Trade {
+        static get message(): string { return "trade"; }
+        static get otherUsername(): string { return "otherUsername"; }
+        static get offeredFields(): string { return "offeredFields"; }
+        static get offeredCash(): string { return "offeredCash"; }
+        static get demandedFields(): string { return "demandedFields"; }
+        static get demandedCash(): string { return "demandedCash"; }
+    }
+
+    export class TradeAnswer {
+        static get message(): string { return "tradeAcceptance"; }
+        static get decision(): string { return "accepted"; }
+    }
 }

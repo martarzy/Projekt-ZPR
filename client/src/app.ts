@@ -15,6 +15,9 @@ window.onload = () => {
     const sellButton = <HTMLInputElement>document.getElementById("sell-button");
     const mortgageButton = <HTMLInputElement>document.getElementById("mortgage-button");
     const unmortgageButton = <HTMLInputElement>document.getElementById("unmortgage-button");
+    // TODO button to start trade
+    // TODO button to offer trade
+    // TODO buttons to accept/decline trade
 
     const actions: controller.UserActions = control.actionsMap;
 
