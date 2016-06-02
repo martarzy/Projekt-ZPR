@@ -31,17 +31,17 @@ namespace controller {
 
         rollDice(): void {
             this.sender_(this.prepareMessage(message.RollDice.message));
-            this.viewChanges_.enable(ViewElement.ROLL_BTN, false);
+            this.viewChanges_.enable(view.ViewElement.ROLL_BTN, false);
         }
 
         playerIsReady(): void {
             this.sender_(this.prepareMessage(message.Ready.message));
-            this.viewChanges_.enable(ViewElement.READY_BTN, false);
+            this.viewChanges_.enable(view.ViewElement.READY_BTN, false);
         }
 
         playerBuysField(): void {
             this.sender_(this.prepareMessage(message.BuyField.message));
-            this.viewChanges_.enable(ViewElement.BUY_FIELD_BTN, false);
+            this.viewChanges_.enable(view.ViewElement.BUY_FIELD_BTN, false);
         }
 
         playerEndsTurn(): void {

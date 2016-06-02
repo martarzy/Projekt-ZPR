@@ -2,14 +2,47 @@
 
 namespace view {
 
+    export enum ViewElement {
+        ROLL_BTN, READY_BTN, END_TURN_BTN, BUY_FIELD_BTN,
+        BUY_HOUSE, SELL_HOUSE, MORTGAGE_BTN, UNMORTGAGE_BTN
+    }
+
     export class View {
         private board: Board;
 
         constructor() {
             this.board = new Board();
             this.showSignInWindow();
-            this.setDisabledReadyButton();
-            this.setDisabledRollButton();
+            this.initButtonsIds();
+        }
+
+        private buttonsIds: { [elem: number]: string } = {};
+
+        private initButtonsIds(): void {
+            this.buttonsIds[ViewElement.ROLL_BTN] = "roll-button";
+            this.buttonsIds[ViewElement.READY_BTN] = "ready-button";
+            this.buttonsIds[ViewElement.BUY_FIELD_BTN] = "buy-button";
+            this.buttonsIds[ViewElement.END_TURN_BTN] = "end-turn-button";
+            this.buttonsIds[ViewElement.BUY_HOUSE] = "build-button";
+            this.buttonsIds[ViewElement.SELL_HOUSE] = "sell-button";
+            this.buttonsIds[ViewElement.MORTGAGE_BTN] = "mortgage-button";
+            this.buttonsIds[ViewElement.UNMORTGAGE_BTN] = "unmortgage-button";
+        }
+
+        public disableAllButtons() {
+            for (const elem in ViewElement) {
+                const toNumber = parseInt(elem);
+                if (!isNaN(toNumber))
+                    this.disableButton(toNumber);
+            }                
+        }
+
+        public enableButton(id: ViewElement | number) {
+            $("#" + this.buttonsIds[id]).removeAttr("disabled");
+        }
+
+        public disableButton(id: ViewElement | number) {
+            $("#" + this.buttonsIds[id]).attr("disabled", 1);
         }
 
         public showSignInWindow() {
@@ -18,78 +51,6 @@ namespace view {
 
         public hideSignInWindow() {
             $("#myModal").modal('hide');
-        }
-
-        public setActiveRollButton() {
-            $('#roll-button').removeAttr('disabled');
-        }
-
-        public setDisabledRollButton() {
-            $('#roll-button').removeAttr('active');
-            $('#roll-button').attr('disabled', 1);
-        }
-
-        public setActiveReadyButton() {
-            $('#ready-button').removeAttr('disabled');
-        }
-
-        public setDisabledReadyButton() {
-            $('#ready-button').removeAttr('active');
-            $('#ready-button').attr('disabled', 1);
-        }
-
-        public setActiveBuyButton() {
-            $('#buy-button').removeAttr('disabled');
-        }
-
-        public setDisabledBuyButton() {
-            $('#buy-button').removeAttr('active');
-            $('#buy-button').attr('disabled', 1);
-        }
-
-        public setActiveEndTurnButton() {
-            $('#end-turn-button').removeAttr('disabled');
-        }
-
-        public setDisabledEndTurnButton() {
-            $('#end-turn-button').removeAttr('active');
-            $('#end-turn-button').attr('disabled', 1);
-        }
-
-        public setActiveBuilButton() {
-            $('#build-button').removeAttr('disabled');
-        }
-
-        public setDisabledBuildButton() {
-            $('#build-button').removeAttr('active');
-            $('#build-button').attr('disabled', 1);
-        }
-
-        public setActiveMortgageButton() {
-            $('#mortgage-button').removeAttr('disabled');
-        }
-
-        public setDisabledMortgageButton() {
-            $('#mortgage-button').removeAttr('active');
-            $('#mortgage-button').attr('disabled', 1);
-        }
-        
-        public setActiveUnmortgageButton() {
-            $('#umortgage-button').removeAttr('disabled');
-        }
-
-        public setDisabledUnmortgageButton() {
-            $('#unmortgage-button').removeAttr('active');
-            $('#unmortgage-button').attr('disabled', 1);
-        }
-
-        public setActiveSellButton() {
-            $('#sell-button').removeAttr('disabled');
-        }
-
-        public setDisabledSellButton() {
-            $('#sell-button').removeAttr('active');
-            $('#sell-button').attr('disabled', 1);
         }
 
         public showError(msg: string) {

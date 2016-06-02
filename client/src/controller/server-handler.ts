@@ -44,10 +44,13 @@ namespace controller {
         }
 
         private nameAccepted(object: any): void {
-            if (object[message.NameAccepted.decision])
-                this.viewChanges_.disableAllButtons();
-            const errorMessage = object[message.NameAccepted.reason];
-            this.viewChanges_.errorMessage(errorMessage);
+            if (!object[message.NameAccepted.decision]) {
+                const errorMessage = object[message.NameAccepted.reason];
+                this.viewChanges_.errorMessage(errorMessage);
+                return;
+            }
+            this.viewChanges_.disableAllButtons();
+            this.viewChanges_.enableJoinModal(false);
         }
 
         private synchUsers(object: any): void {
@@ -56,9 +59,9 @@ namespace controller {
             for (let i = 0; i < usernames.length; ++i)
                 this.model.playersModel.addNewUser(usernames[i], this.colorManager_.getColor(i));
             if (usernames.length >= 2)
-                this.viewChanges_.enable(ViewElement.READY_BTN, true);
+                this.viewChanges_.enable(view.ViewElement.READY_BTN, true);
             else
-                this.viewChanges_.enable(ViewElement.READY_BTN, false);
+                this.viewChanges_.enable(view.ViewElement.READY_BTN, false);
             this.updatePlayerList(this.model.playersModel.getPlayers());
         }
 
@@ -78,10 +81,10 @@ namespace controller {
             this.viewChanges_.movePawn(username, field.id, () => {
                 if (this.model.playersModel.myTurnInProgress()) {
                     this.model.round.playerMoved();
-                    this.viewChanges_.enable(ViewElement.END_TURN_BTN, true);
+                    this.viewChanges_.enable(view.ViewElement.END_TURN_BTN, true);
                     if (field.isBuyable()
                         && field.cost <= this.model.playersModel.activePlayerFunds()) {
-                        this.viewChanges_.enable(ViewElement.BUY_FIELD_BTN, true);
+                        this.viewChanges_.enable(view.ViewElement.BUY_FIELD_BTN, true);
                     }
                 }
             });
