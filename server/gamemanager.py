@@ -131,7 +131,7 @@ class GameManager:
 
     def roll_dice(self, player):
         player.last_roll = self.generate_roll()
-        msg = dict(message='playerMove', player=player.name, move=result)
+        msg = dict(message='playerMove', player=player.name, move=player.last_roll)
         self.broadcast(msg)
         player.field_no += player.last_roll
         if player.field_no >= 40:

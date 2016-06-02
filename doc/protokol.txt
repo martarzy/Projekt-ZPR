@@ -141,4 +141,21 @@ Serwer podaje informację o sprzedaży domku
     "field": <nrPola>
 }
 -----------------------------------------------
+Użytkownik składa ofertę innemu:
+{
+    "message": "trade",
+    "otherUsername": <other user name>
+    "offeredFields": [ field1_no, field2_no ]
+    "offeredCash": <cash>
+    "demandedFields": [ field1_no, field2_no ]
+    "demandedCash": <cash>
+}
 
+Serwer informuje o ofercie (wszystkich graczy):
+Identyczna wiadomość, jak złożenie oferty
+
+Użytkownik odpowiada na ofertę:
+{
+    "message": "tradeAcceptance",
+    "accepted": true/false
+}
