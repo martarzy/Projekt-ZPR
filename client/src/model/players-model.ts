@@ -7,27 +7,27 @@ namespace model {
         private activeUsername_: string;
         private players_: Array<Player> = [];
 
-        myTurnInProgress(): boolean {
-            return this.activeUsername_ === this.myUsername_;
+        addNew(username: string, color: string): void {
+            this.players_.push(new Player(username, color));
         }
 
-        getPlayers(): Array<Player> {
-            return this.players_.slice();
-        }
-
-        removeAllPlayer(): void {
+        removeAll(): void {
             this.players_ = [];
         }
 
-        addNewUser(username: string, color: string): void {
-            this.players_ = this.players_.concat(new Player(username, color));
+        getAll(): Array<Player> {
+            return this.players_.slice();
         }
 
-        allUsernames(): Array<string> {
+        usernames(): Array<string> {
             return this.players_.map(player => player.username);
         }
 
-        saveMyUsername(myUsername: string): void {
+        isMyTurn(): boolean {
+            return this.activeUsername_ === this.myUsername_;
+        }
+
+        setMyUsername(myUsername: string): void {
             this.myUsername_ = myUsername;
         }
 
@@ -35,19 +35,19 @@ namespace model {
             return this.myUsername_;
         }
 
-        changeActivePlayer(newActiveUsername: string): void {
+        setActive(newActiveUsername: string): void {
             this.activeUsername_ = newActiveUsername;
         }
 
-        activePlayerUsername(): string {
+        activeUsername(): string {
             return this.activeUsername_;
         }
 
-        activePlayerFunds(): number {
+        activeCash(): number {
             return this.activePlayer().cash;
         }
 
-        activePlayerColor(): string {
+        activeColor(): string {
             return this.activePlayer().color;
         }
 

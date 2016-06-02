@@ -8,15 +8,15 @@ namespace model {
 
     export class Model {
         private board_ = new BoardModel();
-        private players_ = new PlayersModel();
+        private users_ = new PlayersModel();
         private round_ = new Round();
 
-        get boardModel(): BoardModel {
+        get board(): BoardModel {
             return this.board_;
         }
 
-        get playersModel(): PlayersModel {
-            return this.players_;
+        get users(): PlayersModel {
+            return this.users_;
         }
 
         get round(): Round {

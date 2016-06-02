@@ -41,7 +41,7 @@ namespace model {
                 && !this.hasOwner();
         }
 
-        expansible(): boolean {
+        buildable(): boolean {
             return this.houseCost_ > 0
                    && !this.mortgaged_
                    && this.housesBuilt_ < Field.MAX_HOUSES;

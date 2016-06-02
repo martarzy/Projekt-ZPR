@@ -65,7 +65,7 @@
     <TypeScriptCompile Include="src\model\domain\board.ts" />
     <TypeScriptCompile Include="src\model\domain\field.ts" />
     <TypeScriptCompile Include="src\model\model.ts" />
-    <TypeScriptCompile Include="src\model\domain\pawn.ts" />
+    <TypeScriptCompile Include="src\model\domain\colors.ts" />
     <TypeScriptCompile Include="src\app.ts" />
     <TypeScriptCompile Include="src\controller\message.ts" />
     <TypeScriptCompile Include="src\model\domain\player.ts" />

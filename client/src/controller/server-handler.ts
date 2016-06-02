@@ -52,19 +52,19 @@ namespace controller {
             this.viewChanges_.disableAllButtons();
             this.viewChanges_.showJoinModal(false);
         }
-
+        
         private synchUsers(object: any): void {
             const usernames: string[] = object[message.UserList.usernamesList];
-            this.model.playersModel.removeAllPlayer();
+            this.model.users.removeAll();
             for (let i = 0; i < usernames.length; ++i)
-                this.model.playersModel.addNewUser(usernames[i], this.colorManager_.getColor(i));
+                this.model.users.addNew(usernames[i], this.colorManager_.getColor(i));
             this.viewChanges_.enable(view.ViewElement.READY_BTN, usernames.length >= 2);
-            this.updatePlayerList(this.model.playersModel.getPlayers());
+            this.updatePlayerList(this.model.users.getAll());
         }
 
         private gameStarts(object: any): void {
-            this.model.boardModel.placePawnsOnBoard(this.model.playersModel.getPlayers());
-            let playersDTO = this.playersToPlayersDTO(this.model.playersModel.getPlayers());
+            this.model.board.placePawnsOnBoard(this.model.users.getAll());
+            let playersDTO = this.playersToPlayersDTO(this.model.users.getAll());
             this.viewChanges_.startGame(playersDTO);
         }
 
@@ -72,33 +72,33 @@ namespace controller {
             const username: string = object[message.PlayerMove.playerName];
             const rollResult: number = object[message.PlayerMove.movedBy];
 
-            this.model.boardModel.movePawn(username, rollResult);
+            this.model.board.movePawn(username, rollResult);
 
-            const field = this.model.boardModel.getField(username);
+            const field = this.model.board.getField(username);
             this.viewChanges_.movePawn(username, field.id, this.doOnPawnMoveEnd.bind(this, field));
         }
 
         private doOnPawnMoveEnd(field: model.Field): void {
-            if (!this.model.playersModel.myTurnInProgress())
+            if (!this.model.users.isMyTurn())
                 return;
             this.viewChanges_.enable(view.ViewElement.END_TURN_BTN, true);
             if (field.isBuyable()
-                && field.cost <= this.model.playersModel.activePlayerFunds()) {
+                && field.cost <= this.model.users.activeCash()) {
                 this.viewChanges_.enable(view.ViewElement.BUY_FIELD_BTN, true);
             }
         }
 
         private newTurn(object: any): void {
             const newActive: string = object[message.NewTurn.activePlayer];
-            this.model.playersModel.changeActivePlayer(newActive);
+            this.model.users.setActive(newActive);
             this.model.round.reset();
-            if (this.model.playersModel.myTurnInProgress())
+            if (this.model.users.isMyTurn())
                 this.viewChanges_.enableButtonsOnRoundStart();
-            this.updatePlayerList(this.model.playersModel.getPlayers());
+            this.updatePlayerList(this.model.users.getAll());
         }
 
         private updatePlayerList(players: Array<model.Player>) {
-            let toPrint = this.playersToPlayersDTO(this.model.playersModel.getPlayers());
+            let toPrint = this.playersToPlayersDTO(this.model.users.getAll());
             this.viewChanges_.updatePlayerList(toPrint);
         }
 
@@ -110,7 +110,7 @@ namespace controller {
             let dto = new view.PlayerDTO();
             dto.username = player.username;
             dto.cash = player.cash;
-            dto.active = this.model.playersModel.activePlayerUsername() === player.username;
+            dto.active = this.model.users.activeUsername() === player.username;
             dto.color = player.color;
             return dto;
         }
@@ -118,15 +118,15 @@ namespace controller {
         private setCash(object: any): void {
             const target: string = object[message.SetCash.target];
             const cash: number = object[message.SetCash.amount];
-            this.model.playersModel.setCash(target, cash);
-            this.updatePlayerList(this.model.playersModel.getPlayers());
+            this.model.users.setCash(target, cash);
+            this.updatePlayerList(this.model.users.getAll());
         }
 
         private userBought(object: any): void {
-            const currentPlayer = this.model.playersModel.activePlayerUsername();
-            this.model.boardModel.buyField(currentPlayer);
-            this.viewChanges_.colorField(this.model.boardModel.getField(currentPlayer).id,
-                                         this.model.playersModel.activePlayerColor());
+            const currentPlayer = this.model.users.activeUsername();
+            this.model.board.buyField(currentPlayer);
+            this.viewChanges_.colorField(this.model.board.getField(currentPlayer).id,
+                                         this.model.users.activeColor());
         }
 
         private invalidOperation(object: any): void {
@@ -136,34 +136,34 @@ namespace controller {
 
         private userBoughtHouse(object: any): void {
             const field: number = object[message.UserBoughtHouse.field];
-            this.model.boardModel.buyHouseOn(field);
-            this.viewChanges_.drawHousesOnField(field, this.model.boardModel.houseAmountOn(field));
+            this.model.board.buyHouseOn(field);
+            this.viewChanges_.drawHousesOnField(field, this.model.board.houseAmountOn(field));
             this.activateIfMyTurn(this.userActions_.activateBuildMode);
         }
 
         private userSoldHouse(object: any): void {
             const field: number = object[message.UserSoldHouse.field];
-            this.model.boardModel.sellHouseOn(field);
-            this.viewChanges_.drawHousesOnField(field, this.model.boardModel.houseAmountOn(field));
+            this.model.board.sellHouseOn(field);
+            this.viewChanges_.drawHousesOnField(field, this.model.board.houseAmountOn(field));
             this.activateIfMyTurn(this.userActions_.activateSellMode);
         }
 
         private userMortgagedField(object: any): void {
             const field: number = object[message.UserMortgaged.field];
-            this.model.boardModel.mortgageField(field);
+            this.model.board.mortgageField(field);
             this.viewChanges_.mortgageField(field);
             this.activateIfMyTurn(this.userActions_.activateMortgageMode);
         }
 
         private userUnmortgagedField(object: any): void {
             const field: number = object[message.UserUnmortgaged.field];
-            this.model.boardModel.unmortgageField(field);
+            this.model.board.unmortgageField(field);
             this.viewChanges_.unmortgageField(field);
             this.activateIfMyTurn(this.userActions_.activateUnmortgageMode);
         }
 
         private activateIfMyTurn(modeActivateCallback: () => void) {
-            if (this.model.playersModel.myTurnInProgress())
+            if (this.model.users.isMyTurn())
                 modeActivateCallback.call(this.userActions_);
         }
     }

@@ -26,7 +26,7 @@ namespace controller {
             let toSend = this.prepareMessage(message.MyName.message);
             toSend[message.MyName.name] = name;
             this.sender_(toSend);
-            this.model_.playersModel.saveMyUsername(name);
+            this.model_.users.setMyUsername(name);
         }
 
         rollDice(): void {
@@ -56,27 +56,27 @@ namespace controller {
         }
 
         activateBuildMode(): void {
-            const buildable = this.model_.boardModel.expansibleFields(this.model_.playersModel.myUsername());
+            const buildable = this.model_.board.buildableFields(this.model_.users.myUsername());
             this.activateMode(model.ActionMode.BUILD, buildable);
         }
 
         activateSellMode(): void {
-            const sellable = this.model_.boardModel.fieldsWithSellableHouses(this.model_.playersModel.myUsername());
+            const sellable = this.model_.board.fieldsWithSellableHouses(this.model_.users.myUsername());
             this.activateMode(model.ActionMode.SELL, sellable);
         }
 
         activateMortgageMode(): void {
-            const toMortgage = this.model_.boardModel.fieldsToMortgage(this.model_.playersModel.myUsername());
+            const toMortgage = this.model_.board.fieldsToMortgage(this.model_.users.myUsername());
             this.activateMode(model.ActionMode.MORTGAGE, toMortgage);
         }
 
         activateUnmortgageMode(): void {
-            const toUnmortgage = this.model_.boardModel.fieldsToUnmortgage(this.model_.playersModel.myUsername());
+            const toUnmortgage = this.model_.board.fieldsToUnmortgage(this.model_.users.myUsername());
             this.activateMode(model.ActionMode.UNMORTGAGE, toUnmortgage);
         }
 
         private activateMode(mode: model.ActionMode, toHighlight: Array<model.Field>): void {
-            if (!this.model_.playersModel.myTurnInProgress())
+            if (!this.model_.users.isMyTurn())
                 return;
             this.setRoundMode(mode);
             this.viewChanges_.unhighlightAllFields();
@@ -93,7 +93,7 @@ namespace controller {
         }
 
         fieldClicked(fieldId: number): void {
-            if (!this.model_.playersModel.myTurnInProgress()
+            if (!this.model_.users.isMyTurn()
                 || this.model_.round.mode === model.ActionMode.NONE)
                 return;
             if (!this.onClickHandlers_[this.model_.round.mode](fieldId))
@@ -105,23 +105,23 @@ namespace controller {
         }
 
         private buyHouse(fieldId: number): boolean {
-            const blockIf = () => !this.model_.boardModel.houseMayBeBoughtOn(fieldId, this.model_.playersModel.myUsername())
-                || this.model_.playersModel.activePlayerFunds() < this.model_.boardModel.priceOfHouseOn(fieldId);
+            const blockIf = () => !this.model_.board.houseMayBeBoughtOn(fieldId, this.model_.users.myUsername())
+                || this.model_.users.activeCash() < this.model_.board.priceOfHouseOn(fieldId);
             return this.sendMessageWithCheck(fieldId, blockIf, message.BuyHouse);
         }
 
         private sellHouse(fieldId: number): boolean {
-            const blockIf = () => !this.model_.boardModel.houseMayBeSoldOn(fieldId, this.model_.playersModel.myUsername());
+            const blockIf = () => !this.model_.board.houseMayBeSoldOn(fieldId, this.model_.users.myUsername());
             return this.sendMessageWithCheck(fieldId, blockIf, message.SellHouse);
         }
 
         private mortgageField(fieldId: number): boolean {
-            const blockIf = () => !this.model_.boardModel.fieldMayBeMortgaged(fieldId, this.model_.playersModel.myUsername());
+            const blockIf = () => !this.model_.board.fieldMayBeMortgaged(fieldId, this.model_.users.myUsername());
             return this.sendMessageWithCheck(fieldId, blockIf, message.Mortgage);
         }
 
         private unmortgageField(fieldId: number): boolean {
-            const blockIf = () => !this.model_.boardModel.fieldMayBeUnmortgaged(fieldId, this.model_.playersModel.myUsername());
+            const blockIf = () => !this.model_.board.fieldMayBeUnmortgaged(fieldId, this.model_.users.myUsername());
             return this.sendMessageWithCheck(fieldId, blockIf, message.UnmortgageField);
         }
 

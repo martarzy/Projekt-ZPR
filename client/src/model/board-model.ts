@@ -1,6 +1,5 @@
-﻿/// <reference path="../../lib/collections.d.ts" />
-/// <reference path="domain/board.ts" />
-/// <reference path="domain/pawn.ts" />
+﻿/// <reference path="domain/board.ts" />
+/// <reference path="domain/colors.ts" />
 /// <reference path="domain/field.ts" />
 /// <reference path="utils.ts" />
 
@@ -8,11 +7,11 @@ namespace model {
 
     export class BoardModel {
         private board_ = new Board();
-        private pawnsOwners_ = new collections.Dictionary<string, Pawn>();
-        private pawnsPosition_ = new collections.Dictionary<Pawn, Field>();
+        private pawns: { [username: string]: Field } = {};
+        private ownedFields: { [username: string]: Array<Field> } = {};
 
-        getField(ownerUsername: string): Field {
-            return this.pawnsPosition_.getValue(this.pawnsOwners_.getValue(ownerUsername));
+        getField(username: string): Field {
+            return this.pawns[username];
         }
 
         priceOfHouseOn(fieldId: number) {
@@ -20,36 +19,67 @@ namespace model {
         }
 
         placePawnsOnBoard(players: Array<Player>) {
-            for (const player of players)
-                this.pawnsOwners_.setValue(player.username, new Pawn(player.color));
-            this.pawnsOwners_
-                .forEach((username, pawn) => this.pawnsPosition_.setValue(pawn, this.board_.startField()));
+            players.forEach(player => this.pawns[player.username] = this.board_.startField());
+            players.forEach(player => this.ownedFields[player.username] = []);
         }
 
-        movePawn(ownerUsername: string, rollResult: number): void {
-            const pawn = this.pawnsOwners_.getValue(ownerUsername);
-            const currentField = this.pawnsPosition_.getValue(pawn);
+        movePawn(username: string, rollResult: number): void {
+            const currentField = this.pawns[username];
             const targetField = this.board_.fieldInDistanceOf(currentField, rollResult);
-            this.pawnsPosition_.setValue(pawn, targetField);
+            this.pawns[username] = targetField;
         }
 
-        buyField(ownerUsername: string): void {
-            this.getField(ownerUsername).markAsBought(ownerUsername);
+        buyField(username: string): void {
+            const field = this.getField(username);
+            field.markAsBought(username);
+            this.ownedFields[username].push(field);
         }
 
-        groupFieldsByGroup(fields: Array<Field>): { [key: string]: Array<Field> } {
-            let dict: { [key: string]: Array<Field> } = {};
-            fields.forEach(f => {
-                if (!dict[f.group])
-                    dict[f.group] = [f];
-                else
-                    dict[f.group].push(f);
+        buyHouseOn(fieldId: number): void {
+            this.board_.getField(fieldId).buyHouse();
+        }
+
+        houseMayBeBoughtOn(fieldId: number, username: string): boolean {
+            return this.checkIfIdMatches(fieldId, this.buildableFields(username));
+        }
+
+        buildableFields(username: string): Array<Field> {
+            let fields = this.fieldsOwnedBy(username)
+                .filter(f => f.buildable());
+            let buildables: Array<Field> = [];
+            while (fields.length != 0) {
+                const districtId = fields[0].group;
+                const fieldsPartitionedById = utils.partition(fields, (f: Field) => f.group === districtId);
+                if (this.ownsWholeDistrict(username, districtId))
+                    buildables = buildables.concat(this.findBuildableInGivenDistrict(fieldsPartitionedById[0]));
+                fields = fieldsPartitionedById[1];
+            }
+            return buildables;
+        }
+
+        sellHouseOn(fieldId: number): void {
+            this.board_.getField(fieldId).sellHouse();
+        }
+
+        houseMayBeSoldOn(fieldId: number, owner: string): boolean {
+            return this.checkIfIdMatches(fieldId, this.fieldsWithSellableHouses(owner));
+        }
+
+        fieldsWithSellableHouses(owner: string): Array<Field> {
+            const owned = this.fieldsOwnedBy(owner);
+            const ownedWithHouses = owned.filter(f => f.housesBuilt > 0);
+            return ownedWithHouses.filter(f => {
+                const maxHouses = Math.max(...owned.filter(o => f.group === o.group).map(o => o.housesBuilt));
+                return maxHouses - f.housesBuilt < 1;
             });
-            return dict;
+        }
+
+        houseAmountOn(fieldId: number): number {
+            return this.board_.getField(fieldId).housesBuilt;
         }
 
         mortgageField(id: number) {
-            this.board_.getField(id).mortgage(true);
+            this.field(id).mortgage(true);
         }
 
         fieldsToMortgage(owner: string): Array<Field> {
@@ -85,54 +115,11 @@ namespace model {
                 && field.ownerUsername() === owner;
         }
 
-        buyHouseOn(fieldId: number): void {
-            this.board_.getField(fieldId).buyHouse();
-        }
-
-        sellHouseOn(fieldId: number): void {
-            this.board_.getField(fieldId).sellHouse();
-        }
-
-        houseAmountOn(fieldId: number): number {
-            return this.board_.getField(fieldId).housesBuilt;
-        }
-
-        houseMayBeBoughtOn(fieldId: number, username: string): boolean {
-            return this.checkIfIdMatches(fieldId, this.expansibleFields(username));
-        }
-
-        expansibleFields(username: string): Array<Field> {
-            let fields = this.fieldsOwnedBy(username)
-                .filter(f => f.expansible());
-            let expansible: Array<Field> = [];
-            while (fields.length != 0) {
-                const districtId = fields[0].group;
-                const fieldsPartitionedById = utils.partition(fields, (f: Field) => f.group === districtId);
-                if (this.ownsWholeDistrict(username, districtId))
-                    expansible = expansible.concat(this.findExpansibleInGivenDistrict(fieldsPartitionedById[0]));
-                fields = fieldsPartitionedById[1];
-            }
-            return expansible;
-        }
-
-        houseMayBeSoldOn(fieldId: number, owner: string): boolean {
-            return this.checkIfIdMatches(fieldId, this.fieldsWithSellableHouses(owner));
-        }
-
-        fieldsWithSellableHouses(owner: string): Array<Field> {
-            const owned = this.fieldsOwnedBy(owner);
-            const ownedWithHouses = owned.filter(f => f.housesBuilt > 0);
-            return ownedWithHouses.filter(f => {
-                const maxHouses = Math.max(...owned.filter(o => f.group === o.group).map(o => o.housesBuilt));
-                return maxHouses - f.housesBuilt < 1;
-            });
-        }
-
         private checkIfIdMatches(fieldId: number, fields: Array<model.Field>): boolean {
             return fields.some(f => f.id === fieldId);
         }
 
-        private findExpansibleInGivenDistrict(district: Array<Field>): Array<Field> {
+        private findBuildableInGivenDistrict(district: Array<Field>): Array<Field> {
             const minHouseAmount = Math.min(...district.map(f => f.housesBuilt));
             return district.filter(f => f.housesBuilt <= minHouseAmount);
         }
@@ -144,8 +131,7 @@ namespace model {
         }
 
         private fieldsOwnedBy(owner: string): Array<Field> {
-            return this.fields()
-                .filter(field => this.matchingOwner(field, owner));
+            return this.ownedFields[owner];
         }
 
         private matchingOwner(field: Field, owner: string) {

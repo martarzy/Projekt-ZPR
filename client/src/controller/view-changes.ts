@@ -3,7 +3,7 @@
 namespace controller {
 
     export class ViewChanges {
-        constructor(private view_: view.View, private model_: model.Model) {
+        constructor(private view_: view.View) {
             this.disableAllButtons();
         }
 
