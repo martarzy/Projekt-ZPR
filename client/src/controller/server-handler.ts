@@ -82,10 +82,8 @@ namespace controller {
             if (!this.model.users.isMyTurn())
                 return;
             this.viewChanges_.enable(view.ViewElement.END_TURN_BTN, true);
-            if (field.isBuyable()
-                && field.cost <= this.model.users.activeCash()) {
-                this.viewChanges_.enable(view.ViewElement.BUY_FIELD_BTN, true);
-            }
+            this.viewChanges_.enable(view.ViewElement.BUY_FIELD_BTN, field.isBuyable()
+                                                                     && field.cost <= this.model.users.activeCash());
         }
 
         private newTurn(object: any): void {
