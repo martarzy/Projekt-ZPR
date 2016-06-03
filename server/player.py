@@ -3,7 +3,7 @@ class Player:
         self.name = name
         self.handler = handler  # Handler is a class which must have write_message() function
         self.ready = False
-        self.cash = 1500
+        self.cash = 200
         self.field_no = 0
         self.last_roll = 0
         self.get_out_cards_no = 0
@@ -37,11 +37,14 @@ class Player:
     def jail_state(self, action):
         accepted1 = {'getOut'}
         accepted2 = {'declareBankruptcy'}
+        accepted3 = {'buyHouse', 'sellHouse', 'mortgage', 'unmortgage', 'trade'}
         if action in accepted1:
             self.state = self.start_state
             return True
         if action in accepted2:
             self.state = None
+            return True
+        if action in accepted3:
             return True
         return False
 
@@ -61,8 +64,9 @@ class Player:
 
     def buy_state(self, action):
         accepted1 = {'buyField'}
-        accepted2 = {'endOfTurn', 'declareBankruptcy'}
+        accepted2 = {'declareBankruptcy'}
         accepted3 = {'buyHouse', 'sellHouse', 'mortgage', 'unmortgage', 'trade'}
+        accepted4 = {'endOfTurn'}
         if action in accepted1:
             self.state = self.end_state
             return True
@@ -71,14 +75,19 @@ class Player:
             return True
         if action in accepted3:
             return True
+        if action in accepted4 and self.cash >= 0:
+            return True
         return False
 
     def end_state(self, action):
-        accepted1 = {'endOfTurn', 'declareBankruptcy'}
+        accepted1 = {'declareBankruptcy'}
         accepted2 = {'buyHouse', 'sellHouse', 'mortgage', 'unmortgage', 'trade'}
+        accepted3 = {'endOfTurn'}
         if action in accepted1:
             self.state = None
             return True
         if action in accepted2:
+            return True
+        if action in accepted3 and self.cash >= 0:
             return True
         return False
