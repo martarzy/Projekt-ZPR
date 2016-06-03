@@ -196,3 +196,9 @@ Serwer informuje o wylosowanej karcie szansy:
     "action": "gotoJail"
 }
 -------------------------------------------------
+Użytkownik wychodzi z więzienia
+{
+    "message": "getOut",
+    "method": "pay"/"useCard"
+}
+-------------------------------------------------
