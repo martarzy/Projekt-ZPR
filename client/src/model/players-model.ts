@@ -61,12 +61,16 @@ namespace model {
         }
 
         private activePlayer(): Player {
-            return this.players_.filter(player => player.username === this.activeUsername_)[0];
+            return this.get(this.activeUsername_);
         }
 
         setCash(username: string, amount: number): void {
-            this.players_.filter(player => player.username === username)
-                .forEach(player => player.setCash(amount));
+            this.get(username).setCash(amount);
+        }
+
+        addCash(username: string, amount: number): void {
+            const player = this.get(username);
+            player.cash += amount;
         }
     }
 

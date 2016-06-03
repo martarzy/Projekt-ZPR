@@ -56,12 +56,12 @@ function initModel(test: boolean = false): [model.Model, string] {
     testModel.board.placePawnsOnBoard([player]);
     const moves = [6, 2];
     moves.forEach(roll => {
-        testModel.board.movePawn(player.username, roll);
+        testModel.board.movePawnBy(player.username, roll);
         testModel.board.buyField(player.username);
         if (test)
             deepEqual(testModel.board.buildableFields(player.username), []);
     });
-    testModel.board.movePawn(player.username, 1);
+    testModel.board.movePawnBy(player.username, 1);
     testModel.board.buyField(player.username);
     return [testModel, player.username];
 }

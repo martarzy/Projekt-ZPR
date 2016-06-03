@@ -12,8 +12,8 @@ namespace controller {
         private colorManager_: model.Colors;
 
         constructor(private model: model.Model,
-                    private viewChanges_: ViewChanges,
-                    private userActions_: UserActions) {
+            private viewChanges_: ViewChanges,
+            private userActions_: UserActions) {
             this.installHandlers();
             this.initialise();
         }
@@ -37,6 +37,7 @@ namespace controller {
             this.handlers.setValue(message.UserUnmortgaged.message, this.userUnmortgagedField);
             this.handlers.setValue(message.Trade.message, this.tradeRequest);
             this.handlers.setValue(message.TradeAnswer.message, this.tradeAnswer);
+            this.handlers.setValue(message.ChanceCard.message, this.chanceCard);
         }
 
         handle(msgFromServer: any): void {
@@ -54,7 +55,7 @@ namespace controller {
             this.viewChanges_.disableAllButtons();
             this.viewChanges_.showJoinModal(false);
         }
-        
+
         private synchUsers(object: any): void {
             const usernames: string[] = object[message.UserList.usernamesList];
             this.model.users.removeAll();
@@ -73,9 +74,12 @@ namespace controller {
         private someoneMoved(object: any): void {
             const username: string = object[message.PlayerMove.playerName];
             const rollResult: number = object[message.PlayerMove.movedBy];
-
             this.model.round.playerMoved = true;
-            this.model.board.movePawn(username, rollResult);
+            this.performMovement(username, rollResult);
+        }
+
+        private performMovement(username: string, rollResult: number) {
+            this.model.board.movePawnBy(username, rollResult);
 
             const field = this.model.board.getField(username);
             this.viewChanges_.movePawn(username, field.id, this.doOnPawnMoveEnd.bind(this, field));
@@ -203,6 +207,29 @@ namespace controller {
 
         private recolorFields(ids: Array<number>, username: string): void {
             ids.forEach(f => this.viewChanges_.colorField(f, this.model.users.get(username).color));
+        }
+
+        private chanceCard(object: any) {
+            this.activateIfMyTurn(() => {
+                const furtherDispatchInfo: string = object[message.ChanceCard.action];
+                const myUsername = this.model.users.myUsername();
+                switch (furtherDispatchInfo) {
+                    case "goto":
+                        const field: model.Field = this.model.board.getField(object[message.ChanceCard.field]);
+                        this.model.board.movePawnOn(myUsername, field.id);
+                        this.viewChanges_.movePawn(myUsername, field.id, this.doOnPawnMoveEnd.bind(this, field));
+                        break;
+                    case "move":
+                        this.performMovement(myUsername, object[message.ChanceCard.move]);
+                        break;
+                    case "getOut":
+                        ++this.model.users.get(myUsername).jailExitCards;
+                        break;
+                    case "cash":
+                        // Currently hadled by server. It sends setCash message.
+                        break;
+                }
+            });
         }
     }
 

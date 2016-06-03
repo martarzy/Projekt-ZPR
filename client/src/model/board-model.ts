@@ -21,10 +21,14 @@ namespace model {
             players.forEach(player => this.pawns[player.username] = this.board_.startField());
         }
 
-        movePawn(username: string, rollResult: number): void {
+        movePawnBy(username: string, rollResult: number): void {
             const currentField = this.pawns[username];
             const targetField = this.board_.fieldInDistanceOf(currentField, rollResult);
             this.pawns[username] = targetField;
+        }
+
+        movePawnOn(username: string, targetField: number): void {
+            this.pawns[username] = this.field(targetField);
         }
 
         buyField(username: string): void {
