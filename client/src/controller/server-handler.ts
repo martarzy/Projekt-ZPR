@@ -214,8 +214,8 @@ namespace controller {
             const activeUsername = this.model.users.activeUsername();
             switch (furtherDispatchInfo) {
                 case "goto":
-                    const field: model.Field = this.model.board.getField(object[message.ChanceCard.field]);
-                    this.model.board.movePawnOn(activeUsername, field.id);
+                    this.model.board.movePawnOn(activeUsername, object[message.ChanceCard.field]);
+                    const field: model.Field = this.model.board.getField(activeUsername);
                     this.viewChanges_.movePawn(activeUsername, field.id, this.doOnPawnMoveEnd.bind(this, field));
                     break;
                 case "move":
