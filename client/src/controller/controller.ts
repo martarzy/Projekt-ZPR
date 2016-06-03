@@ -7,24 +7,26 @@
 namespace controller {
 
     export class Controller {
+        private server: SocketServer;
         private model: model.Model;
         private view: view.View;
-        private handler: ServerHandler;
-        private userActionsHandler: UserActions;
-        private server: SocketServer;
+        private serverHandler: ServerHandler;
+        private userActions: UserActions;
 
         constructor(serverUri: string) {
             this.model = new model.Model();
             this.view = new view.View();
-            const viewChanges = new ViewChanges(this.view, this.model);
-            this.userActionsHandler = new UserActions(this.sendMessage.bind(this), this.model, viewChanges);
-            this.view.assignFieldClickedCallback(this.userActionsHandler.fieldClicked.bind(this.userActionsHandler));
-            this.handler = new ServerHandler(this.model, viewChanges, this.userActionsHandler);
+
+            const viewChanges = new ViewChanges(this.view);
+            this.userActions = new UserActions(this.sendMessage.bind(this), this.model, viewChanges);
+            this.serverHandler = new ServerHandler(this.model, viewChanges, this.userActions);
+
+            this.view.assignFieldClickedCallback(this.userActions.fieldClicked.bind(this.userActions));
             this.createSocketConnection(serverUri);
         }
 
         get actionsMap(): UserActions {
-            return this.userActionsHandler;
+            return this.userActions;
         }
 
         private createSocketConnection(uri: string): void {
@@ -40,8 +42,8 @@ namespace controller {
         }
 
         private delegateMessageToHandler(message: any): void {
-            console.log(message);
-            this.handler.handle(JSON.parse(message));
+            console.log("Server sent: " + message);
+            this.serverHandler.handle(JSON.parse(message));
         }
     }
 

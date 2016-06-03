@@ -1,17 +1,8 @@
 ﻿/// <reference path="../src/model/round.ts" />
-/// <reference path="../src/model/player.ts" />
+/// <reference path="../src/model/domain/player.ts" />
 /// <reference path="../src/model/model.ts" />
-/// <reference path="../src/model/field.ts" />
+/// <reference path="../src/model/domain/field.ts" />
 /// <reference path="qunit.d.ts" />
-
-test("round test", function () {
-    let round = new model.Round();
-    deepEqual(round.movementPerformed, false);
-    round.playerMoved();
-    deepEqual(round.movementPerformed, true);
-    round.reset();
-    deepEqual(round.movementPerformed, false);
-});
 
 test("player test", function () {
     let player = new model.Player("Tester", "red");
@@ -44,19 +35,19 @@ test("buying houses only after obtaining while district", function () {
     let gameSituation = initModel(true);
     let testModel = gameSituation[0];
     let username = gameSituation[1];
-    const expansible = testModel.board.expansibleFields(username);
-    deepEqual(expansible.length, 3);
+    const buildables = testModel.board.buildableFields(username);
+    deepEqual(buildables.length, 3);
 });
 
 test("buying houses with difference of 1 blocked", function () {
     let gameSituation = initModel();
     let testModel = gameSituation[0];
     let username = gameSituation[1];
-    const expansible = testModel.board.expansibleFields(username);
-    expansible[0].buyHouse();
-    deepEqual(expansible[0].housesBuilt, 1);
-    const expansibleAfterBuy = testModel.board.expansibleFields(username);
-    deepEqual(expansibleAfterBuy.length, 2);
+    const buildables = testModel.board.buildableFields(username);
+    buildables[0].buyHouse();
+    deepEqual(buildables[0].housesBuilt, 1);
+    const buildablesAfterBuild = testModel.board.buildableFields(username);
+    deepEqual(buildablesAfterBuild.length, 2);
 });
 
 function initModel(test: boolean = false): [model.Model, string] {
@@ -68,9 +59,13 @@ function initModel(test: boolean = false): [model.Model, string] {
         testModel.board.movePawn(player.username, roll);
         testModel.board.buyField(player.username);
         if (test)
-            deepEqual(testModel.board.expansibleFields(player.username), []);
+            deepEqual(testModel.board.buildableFields(player.username), []);
     });
     testModel.board.movePawn(player.username, 1);
     testModel.board.buyField(player.username);
     return [testModel, player.username];
+}
+
+function fieldsIdToString(fields: Array<model.Field>): string {
+    return fields.map(e => e.id).join(",");
 }

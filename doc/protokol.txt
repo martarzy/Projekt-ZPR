@@ -1,4 +1,4 @@
-----------------------------------------------
+﻿----------------------------------------------
 Gracz podaje swoją nazwę: 
 {   "message": "myName", 
     "myName": "NAZWAGRACZA" 
@@ -92,7 +92,6 @@ Użytkownik kończy turę
 Serwer podaje informację o zakupie dokonanym przez użytkownika
 {
     "message": "userBought",
-    "username": "NAZWA"
 }
 
 Użytkownik zastawia pole
@@ -100,9 +99,22 @@ Użytkownik zastawia pole
 	"message": "mortgage",
 	"field" : <nr pola>
 }
+
+Serwer podaje informację o zastawieniu pola
+{
+	"message": userMortgaged
+	"field" : <nr pola>
+}
+
 Użytkownik wykupuje pole z zastawu
 {
 	"message": "unmortgage",
+	"field": <nr pola>
+}
+
+Serwer podaje informację o wykupieniu pola z zastawu
+{
+	"message": "userUnmortgaged",
 	"field": <nr pola>
 }
 ---------------------------------------------
@@ -116,8 +128,6 @@ Serwer podaje informację o zakupie domku
 {
     "message": "userBoughtHouse",
     "field": <nrPola>,
-    "username": <nazwaGracza>
-}
 
 Użytkownik sprzedaje domek (hotel)
 {
@@ -128,8 +138,55 @@ Użytkownik sprzedaje domek (hotel)
 Serwer podaje informację o sprzedaży domku
 {
     "message": "userSoldHouse",
-    "field": <nrPola>,
-    "username": <nazwaGracza>
+    "field": <nrPola>
 }
 -----------------------------------------------
+Użytkownik składa ofertę innemu:
+{
+    "message": "trade",
+    "otherUsername": <other user name>
+    "offeredFields": [ field1_no, field2_no ]
+    "offeredCash": <cash>
+    "demandedFields": [ field1_no, field2_no ]
+    "demandedCash": <cash>
+}
 
+Serwer informuje o ofercie (wszystkich graczy):
+Identyczna wiadomość, jak złożenie oferty
+
+Użytkownik odpowiada na ofertę:
+{
+    "message": "tradeAcceptance",
+    "accepted": true/false
+}
+------------------------------------------------
+Serwer informuje o wylosowanej karcie szansy:
+
+1. GOTO
+{
+    "message": "chance",
+    "action": "goto",
+    "field": <nr pola>
+}
+
+2. MOVE
+{
+    "message": "chance",
+    "action": "move",
+    "move": <liczba pól, o które ma się przesunąć, może być ujemna!>
+}
+
+3. CASH ( = PAY / GET)
+{
+    "message": "chance"
+    "action": "cash"
+    "reason": <powód, dla którego trzeba zapłacić>
+    "cash": <kwota, jaką otrzymujesz - może być ujemna!>
+}
+
+4. GET OUT OF JAIL
+{
+    "message": "chance"
+    "action": "getOut"
+}
+-------------------------------------------------

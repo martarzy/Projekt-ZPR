@@ -1,3 +1,4 @@
+from chance import ChanceStack
 from random import randint
 
 
@@ -8,6 +9,8 @@ class Player:
         self.ready = False
         self.cash = 1500
         self.field_no = 0
+        self.last_roll = 0
+        self.get_out_cards_no = 0
 
     def error(self, error_code):
         self.handler.send_message({'message': 'invalidOperation', 'error': error_code})
@@ -20,12 +23,23 @@ class Field:
         self.price = price
         self.house_price = house_price
         self.visit_cost = visit_cost
+        self.mortgaged = False
 
         self.buyable = price > 0
         self.buildable = house_price > 0
 
         self.bought = False
         self.houses_no = 0
+
+
+class Trade:
+    def __init__(self, player, other_player, offered_fields_nos, offered_cash, demanded_fields_nos, demanded_cash):
+        self.player = player
+        self.other_player = other_player
+        self.offered_fields_nos = offered_fields_nos
+        self.offered_cash = offered_cash
+        self.demanded_fields_nos = demanded_fields_nos
+        self.demanded_cash = demanded_cash
 
 
 class GameManager:
@@ -35,6 +49,8 @@ class GameManager:
         self.pname_map = {}
         self.started = False
         self.fields = []
+        self.trade = None
+        self.chance_stack = ChanceStack()
 
         self.fields.append(Field("Go"))
         self.fields.append(Field("Brown", 60, 50, (2, 10, 30, 90, 160, 250)))
@@ -100,22 +116,17 @@ class GameManager:
     def on_message(self, pname, msg):
         player = self.pname_map[pname] if pname != '' else None
 
-        if self.turn != -1 and self.players[self.turn] is not player:
+        if self.trade is not None and player is not self.trade.other_player:
+            player.error('WaitingForTradeDecision')
+
+        elif self.turn != -1 and self.players[self.turn] is not player:
             player.error('NotYourTurn')
 
         elif msg['message'] == 'ready':
             self.ready(player)
 
         elif msg['message'] == 'rollDice':
-            result = self.roll_dice()
-            msg = dict(message='playerMove', player=player.name, move=result)
-            self.broadcast(msg)
-            player.field_no += result
-            if player.field_no >= 40:
-                player.cash += 400
-                player.field_no -= 40
-                self.broadcast_cash_info(player)
-            self.stay_fee(player)
+            self.roll_dice(player)
 
         elif msg['message'] == 'buyField':
             self.buy_field(player)
@@ -126,11 +137,41 @@ class GameManager:
         elif msg['message'] == 'sellHouse':
             self.sell_house(player, msg['field'])
 
+        elif msg['message'] == 'mortgage':
+            self.mortgage(player, msg['field'])
+
+        elif msg['message'] == 'unmortgage':
+            self.unmortgage(player, msg['field'])
+
         elif msg['message'] == 'endOfTurn':
             self.next_turn()
 
+        elif msg['message'] == 'trade':
+            other_player = self.pname_map[msg['other_username']]
+            trade = Trade(player, other_player, msg['offeredFields'], msg['offeredCash'], msg['demandedFields'], msg['demandedCash'])
+            self.trade_offer(trade)
+
+        elif msg['message'] == 'tradeAcceptance':
+            self.trade_acceptance(msg['accepted'])
+
+        else:
+            player.error('Improper message')
+
+    def roll_dice(self, player):
+        player.last_roll = self.generate_roll()
+        msg = dict(message='playerMove', player=player.name, move=player.last_roll)
+        self.broadcast(msg)
+        player.field_no += player.last_roll
+        if player.field_no >= 40:
+            player.cash += 400
+            player.field_no -= 40
+            self.broadcast_cash_info(player)
+        self.stay_fee(player)
+        if self.fields[player.field_no].group_name == 'Chance':
+            self.chance(player)
+
     @staticmethod
-    def roll_dice():
+    def generate_roll():
         return 1
         result = 0
 
@@ -180,7 +221,7 @@ class GameManager:
 
     def buy_house(self, player, field_no):
         field = self.fields[field_no]
-        if field.owner is player and field.buildable and field.houses_no < 5 and player.cash >= field.price and self.uniform_building(field, +1) and self.own_all_in_group(player, field):
+        if field.owner is player and field.buildable and field.houses_no < 5 and player.cash >= field.price and self.uniform_building(field, +1) and self.own_all_in_group(player, field) and field.mortgaged is False:
             player.cash -= field.house_price
             self.broadcast_cash_info(player)
             field.houses_no += 1
@@ -218,10 +259,102 @@ class GameManager:
     def stay_fee(self, player):
         field = self.fields[player.field_no]
         if field.owner is not None and field.owner is not player:
-            player.cash -= field.visit_cost[field.houses_no]
+            if field.group_name == 'Railroad':
+                fee = 25 * 2 ** (len([f for f in self.fields if f.group_name == 'Railroad' and f.owner is field.owner]) - 1)
+
+            elif field.group_name == 'Utility':
+                if len([f for f in self.fields if f.group_name == 'Utility' and f.owner is field.owner]) == 2:
+                    fee = 10 * player.last_roll
+                else:
+                    fee = 4 * player.last_roll
+
+            else:
+                fee = field.visit_cost[field.houses_no]
+
+            player.cash -= fee
             self.broadcast_cash_info(player)
-            field.owner.cash += field.visit_cost[field.houses_no]
+            field.owner.cash += fee
             self.broadcast_cash_info(field.owner)
+
+        elif field.group_name == 'Income Tax':
+            player.cash -= 200
+            self.broadcast_cash_info(player)
+
+        elif field.group_name == 'Luxury Tax':
+            player.cash -= 100
+            self.broadcast_cash_info(player)
+
+    def mortgage(self, player, field_no):
+        field = self.fields[field_no]
+        if field.owner is player and field.mortgaged is False and field.houses_no == 0:
+            player.cash += field.price / 2
+            self.broadcast_cash_info(player)
+            field.mortgaged = True
+            self.broadcast_mortgage(field_no)
+
+    def unmortgage(self, player, field_no):
+        field = self.fields[field_no]
+        unmortgage_price = 1.1 * (field.price / 2)
+        if field.owner is player and field.mortgaged is True and player.cash >= unmortgage_price:
+            player.cash -= unmortgage_price
+            self.broadcast_cash_info(player)
+            field.mortgaged = False
+            self.broadcast_unmortgage(field_no)
+
+    def trade_offer(self, trade):
+        offered_fields_owners = [self.fields[i].owner for i in trade.offered_fields_nos]
+        demanded_fields_owners = [self.fields[i].owner for i in trade.demanded_fields_nos]
+        offered_fields_without_houses = [self.fields[i] for i in trade.offered_fields_nos if self.fields[i].houses == 0]
+        demanded_fields_without_houses = [self.fields[i] for i in trade.demanded_fields_nos if self.fields[i].houses == 0]
+        offered_fields_valid = len(offered_fields_owners) == offered_fields_owners.count(trade.player) == offered_fields_without_houses
+        demanded_fields_valid = len(demanded_fields_owners) == demanded_fields_owners.count(trade.other_player) == demanded_fields_without_houses
+
+        if trade.player.cash >= trade.offered_cash and trade.other_player.cash >= trade.demanded_cash and offered_fields_valid and demanded_fields_valid:
+            self.trade = trade
+            self.broadcast_trade_offer(trade)
+        else:
+            trade.player.error('ImproperTradeOffer')
+
+    def trade_acceptance(self, accepted):
+        if accepted:
+            self.trade.player.cash -= self.trade.offered_cash
+            self.trade.player.cash += self.trade.demanded_cash
+            self.broadcast_cash_info(self.trade.player)
+            self.trade.other_player.cash += self.trade.offered_cash
+            self.trade.other_player.cash -= self.trade.demanded_cash
+            self.broadcast_cash_info(self.trade.other_player)
+
+            for field_no in self.trade.offered_fields_nos:
+                self.fields[field_no].owner = self.trade.other_player
+
+            for field_no in self.trade.demanded_fields_nos:
+                self.fields[field_no].owner = self.trade.player
+
+        self.trade = None
+        self.broadcast_trade_acceptance(accepted)
+
+    def chance(self, player):
+        card = self.chance_stack.get_card()
+        self.broadcast(card)
+        if card['action'] == 'goto':
+            old_field_no = player.field_no
+            player.field_no = card['field']
+            if player.field_no < old_field_no:
+                player.cash += 400
+                self.broadcast_cash_info(player)
+            self.stay_fee(player)
+        elif card['action'] == 'move':
+            player.field_no += card['move']
+            if player.field_no >= 40:
+                player.cash += 400
+                player.field_no -= 40
+                self.broadcast_cash_info(player)
+            self.stay_fee(player)
+        elif card['action'] == 'cash':
+            player.cash += card['cash']
+            self.broadcast_cash_info(player)
+        elif card['action'] == 'getOut':
+            player.get_out_cards_no += 1
 
     def broadcast_field_buy(self, player):
         self.broadcast({'message': 'userBought', 'username': player.name})
@@ -234,6 +367,23 @@ class GameManager:
 
     def broadcast_house_sell_info(self, player, field_no):
         self.broadcast({'message': 'userSoldHouse', 'username': player.name, 'field': field_no})
+
+    def broadcast_mortgage(self, field_no):
+        self.broadcast({'message': 'userMortgaged', 'field': field_no})
+
+    def broadcast_unmortgage(self, field_no):
+        self.broadcast({'message': 'userUnmortgaged', 'field': field_no})
+
+    def broadcast_trade_offer(self, trade):
+        self.broadcast({'message': 'trade',
+                        'otherUsername': trade.other_player.name,
+                        'offeredFields': trade.offered_fields_nos,
+                        'offeredCash': trade.offered_cash,
+                        'demandedFields': trade.demanded_fields_nos,
+                        'demandedCash': trade.demanded_cash})
+
+    def broadcast_trade_acceptance(self, accepted):
+        self.broadcast({'message': 'tradeAcceptance', 'accepted': accepted})
 
     def broadcast(self, msg):
         for player in self.players:

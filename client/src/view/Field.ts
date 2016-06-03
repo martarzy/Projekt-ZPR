@@ -228,7 +228,7 @@
                 .attr("height", 90)
                 .attr("fill", "whitesmoke")
                 .attr("stroke", "black")
-                .attr("id","main-collateralize-field-" + this.fieldId);
+                .attr("id","main-mortgage-field-" + this.fieldId);
 
             // kwadracik dla kupujacego
             g.append("rect")
@@ -360,17 +360,26 @@
             }
         }
 
-        public collateralizeField(fieldId: number) {
-            $("#main-collateralize-field-" + fieldId).attr("fill", "gray");
+        public mortgageField(fieldId: number) {
+            $("#main-mortgage-field-" + fieldId).attr("fill", "gray");
             $("#hotel-field-" +  fieldId).attr("fill", "gray");
             $("#house-field4-" + fieldId).attr("fill", "gray");
             $("#house-field3-" + fieldId).attr("fill", "gray");
             $("#house-field2-" + fieldId).attr("fill", "gray");
             $("#house-field1-" + fieldId).attr("fill", "gray");
         }
+        
+        public unmortgageField(fieldId: number) {
+			$("#main-mortgage-field-" + fieldId).attr("fill", "whitesmoke");
+            $("#hotel-field-" +  fieldId).attr("fill", "whitesmoke");
+            $("#house-field4-" + fieldId).attr("fill", "whitesmoke");
+            $("#house-field3-" + fieldId).attr("fill", "whitesmoke");
+            $("#house-field2-" + fieldId).attr("fill", "whitesmoke");
+            $("#house-field1-" + fieldId).attr("fill", "whitesmoke");
+        }
 
         public buyBackField(fieldNumber: number) {
-            $("#main-collateralize-field-" + fieldNumber).attr("fill", "whitesmoke");
+            $("#main-mortgage-field-" + fieldNumber).attr("fill", "whitesmoke");
             $("#hotel-field-" +  fieldNumber).attr("fill", "whitesmoke");
             $("#house-field4-" + fieldNumber).attr("fill", "whitesmoke");
             $("#house-field3-" + fieldNumber).attr("fill", "whitesmoke");
