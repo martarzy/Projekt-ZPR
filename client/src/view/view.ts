@@ -5,7 +5,8 @@ namespace view {
     export enum ViewElement {
         ROLL_BTN, READY_BTN, END_TURN_BTN, BUY_FIELD_BTN,
         BUY_HOUSE, SELL_HOUSE, MORTGAGE_BTN, UNMORTGAGE_BTN,
-        ACCEPT_OFFER_BTN, DECLINE_OFFER_BTN, MAKE_BID_BTN
+        ACCEPT_OFFER_BTN, DECLINE_OFFER_BTN, MAKE_BID_BTN,
+        JAIL_PAY_BTN, JAIL_USE_CARD_BTN
     }
 
     export class View {
@@ -31,6 +32,8 @@ namespace view {
             this.buttonsIds[ViewElement.ACCEPT_OFFER_BTN] = "accept-offer-button";
             this.buttonsIds[ViewElement.DECLINE_OFFER_BTN] = "decline-offer-button";
             this.buttonsIds[ViewElement.MAKE_BID_BTN] = "make-bid-button";
+            this.buttonsIds[ViewElement.JAIL_PAY_BTN] = "jail-pay-button";
+            this.buttonsIds[ViewElement.JAIL_USE_CARD_BTN] = "jail-use-card-button";
         }
 
         public enableButton(id: ViewElement | number) {

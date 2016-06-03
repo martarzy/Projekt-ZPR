@@ -107,6 +107,11 @@ namespace controller {
                        demandedFields: Array<number>): void {
             // TODO
         }
+
+        showJailExitOptions(canPay: boolean, canUseCard: boolean) {
+            this.enable(view.ViewElement.JAIL_PAY_BTN, canPay);
+            this.enable(view.ViewElement.JAIL_USE_CARD_BTN, canUseCard);
+        }
     }
 
 }

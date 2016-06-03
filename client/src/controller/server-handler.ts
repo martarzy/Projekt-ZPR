@@ -80,15 +80,27 @@ namespace controller {
 
         private performMovement(username: string, rollResult: number) {
             this.model.board.movePawnBy(username, rollResult);
+            this.updateModelIfInJail(username);
 
             const field = this.model.board.getField(username);
             this.viewChanges_.movePawn(username, field.id, this.doOnPawnMoveEnd.bind(this, field));
         }
 
+        private updateModelIfInJail(username: string) {
+            if (!this.model.board.userInJail(username))
+                return;
+            this.viewChanges_.disableAllButtons();
+            const me = this.model.users.getMe();
+            const canPay = me.cash >= 50;
+            const canUseCard = me.jailExitCards > 0;
+            this.viewChanges_.showJailExitOptions(canPay, canUseCard);
+        }
+
         private doOnPawnMoveEnd(field: model.Field): void {
             if (!this.model.users.isMyTurn())
                 return;
-            this.viewChanges_.enable(view.ViewElement.END_TURN_BTN, true);
+            if (!this.model.board.userInJail(this.model.users.myUsername()))
+                this.viewChanges_.enable(view.ViewElement.END_TURN_BTN, true);
             this.viewChanges_.enable(view.ViewElement.BUY_FIELD_BTN, field.isBuyable()
                                                                      && field.cost <= this.model.users.activeCash());
         }
@@ -214,9 +226,7 @@ namespace controller {
             const activeUsername = this.model.users.activeUsername();
             switch (furtherDispatchInfo) {
                 case "goto":
-                    this.model.board.movePawnOn(activeUsername, object[message.ChanceCard.field]);
-                    const field: model.Field = this.model.board.getField(activeUsername);
-                    this.viewChanges_.movePawn(activeUsername, field.id, this.doOnPawnMoveEnd.bind(this, field));
+                    this.moveTo(activeUsername, object[message.ChanceCard.field]);
                     break;
                 case "move":
                     this.performMovement(activeUsername, object[message.ChanceCard.move]);
@@ -229,7 +239,17 @@ namespace controller {
                 case "cash":
                     // Currently hadled by server. It sends setCash message.
                     break;
+                case "gotoJail":
+                    this.moveTo(activeUsername, model.Board.JAIL_FIELD_NUMBER);
+                    break;
             }
+            this.updateModelIfInJail(activeUsername);
+        }
+
+        private moveTo(username: string, fieldId: number) {
+            this.model.board.movePawnOn(username, fieldId);
+            const field: model.Field = this.model.board.getField(username);
+            this.viewChanges_.movePawn(username, field.id, this.doOnPawnMoveEnd.bind(this, field));
         }
     }
 

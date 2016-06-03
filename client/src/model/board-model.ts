@@ -9,6 +9,10 @@ namespace model {
         private board_ = new Board();
         private pawns: { [username: string]: Field } = {};
 
+        userInJail(username: string) {
+            return this.pawns[username].id === Board.JAIL_FIELD_NUMBER;
+        }
+
         getField(username: string): Field {
             return this.pawns[username];
         }

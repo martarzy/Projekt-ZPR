@@ -3,7 +3,7 @@ namespace model {
     export class Board {
         private FIELDS_NUMBER = 40;
         private START_FIELD_NUMBER = 0;
-        private JAIL_FIELD_NUMBER = 10;
+        static JAIL_FIELD_NUMBER = 10;
         private fields_: Array<Field> = [];
 
         constructor() {
@@ -22,10 +22,6 @@ namespace model {
 
         startField(): Field {
             return this.getField(this.START_FIELD_NUMBER);
-        }
-
-        jailField(): Field {
-            return this.getField(this.JAIL_FIELD_NUMBER);
         }
 
         fields(): Array<Field> {

@@ -3,31 +3,41 @@
 window.onload = () => {
     const wsUri = "ws://localhost:8888/ws";
     const control = new controller.Controller(wsUri);
-    
-    // adding function from controller to html element
-    const usernameField = <HTMLInputElement>document.getElementById("username");
-    const submitUsernameButton = <HTMLInputElement>document.getElementById("submit-username");
-    const readyButton = <HTMLInputElement>document.getElementById("ready-button");
-    const rollButton = <HTMLInputElement>document.getElementById("roll-button");
-    const buyButton = <HTMLInputElement>document.getElementById("buy-button");
-    const endTurnButton = <HTMLInputElement>document.getElementById("end-turn-button");
-    const buildButton = <HTMLInputElement>document.getElementById("build-button");
-    const sellButton = <HTMLInputElement>document.getElementById("sell-button");
-    const mortgageButton = <HTMLInputElement>document.getElementById("mortgage-button");
-    const unmortgageButton = <HTMLInputElement>document.getElementById("unmortgage-button");
-    // TODO button to start trade
-    // TODO button to offer trade
-    // TODO buttons to accept/decline trade
-
     const actions: controller.UserActions = control.actionsMap;
 
-    submitUsernameButton.onclick = (event: MouseEvent) => actions.chooseName(usernameField.value);
-    readyButton.onclick = (event: MouseEvent) => actions.playerIsReady();
-    rollButton.onclick = (event: MouseEvent) => actions.rollDice();
-    buyButton.onclick = (event: MouseEvent) => actions.playerBuysField();
-    endTurnButton.onclick = (event: MouseEvent) => actions.playerEndsTurn();
-    buildButton.onclick = (event: MouseEvent) => actions.activateBuildMode();
-    sellButton.onclick = (event: MouseEvent) => actions.activateSellMode();
-    mortgageButton.onclick = (event: MouseEvent) => actions.activateMortgageMode();
-    unmortgageButton.onclick = (event: MouseEvent) => actions.activateUnmortgageMode();
+    // adding function from controller to html element
+    const usernameField = <HTMLInputElement>document.getElementById("username");
+    (<HTMLInputElement>document.getElementById("submit-username"))
+        .onclick = (event: MouseEvent) => actions.chooseName(usernameField.value);
+
+    (<HTMLInputElement>document.getElementById("ready-button"))
+        .onclick = (event: MouseEvent) => actions.playerIsReady();
+    (<HTMLInputElement>document.getElementById("roll-button"))
+        .onclick = (event: MouseEvent) => actions.rollDice();
+    (<HTMLInputElement>document.getElementById("buy-button"))
+        .onclick = (event: MouseEvent) => actions.playerBuysField();
+    (<HTMLInputElement>document.getElementById("end-turn-button"))
+        .onclick = (event: MouseEvent) => actions.playerEndsTurn();
+
+    (<HTMLInputElement>document.getElementById("build-button"))
+        .onclick = (event: MouseEvent) => actions.activateBuildMode();
+    (<HTMLInputElement>document.getElementById("sell-button"))
+        .onclick = (event: MouseEvent) => actions.activateSellMode();
+    (<HTMLInputElement>document.getElementById("mortgage-button"))
+        .onclick = (event: MouseEvent) => actions.activateMortgageMode();
+    (<HTMLInputElement>document.getElementById("unmortgage-button"))
+        .onclick = (event: MouseEvent) => actions.activateUnmortgageMode();
+
+    // TODO button to start trade
+    (<HTMLInputElement>document.getElementById("make-bid-button"))
+        .onclick = (event: MouseEvent) => actions.offerTrade();
+    (<HTMLInputElement>document.getElementById("accept-offer-button"))
+        .onclick = (event: MouseEvent) => actions.responseTrade(true);
+    (<HTMLInputElement>document.getElementById("decline-offer-button"))
+        .onclick = (event: MouseEvent) => actions.responseTrade(false);
+    
+    (<HTMLInputElement>document.getElementById("jail-pay-button"))
+        .onclick = (event: MouseEvent) => actions.exitJailPaying();
+    (<HTMLInputElement>document.getElementById("jail-use-card-button"))
+        .onclick = (event: MouseEvent) => actions.exitJailUsingChanceCard();  
 };

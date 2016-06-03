@@ -132,4 +132,9 @@
         static get reason(): string { return "reason"; }
         static get cash(): string { return "cash"; }
     }
+
+    export class GetOut {
+        static get message(): string { return "getOut"; }
+        static get method(): string { return "method"; }
+    }
 }

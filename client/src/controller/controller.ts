@@ -34,6 +34,7 @@ namespace controller {
         }
 
         sendMessage(toSend: any): void {
+            console.log("Client sent: " + JSON.stringify(toSend));
             this.server.sendMessage(this.prepareToSend(toSend));
         }
 

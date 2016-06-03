@@ -151,7 +151,7 @@ namespace controller {
             this.viewChanges_.showEnemiesFields(enemiesFields);
         }
 
-        private offerTrade(): void {
+        offerTrade(): void {
             // TODO
             // get cash and fields from view
             const cashOffered = 0, cashRequired = 0;
@@ -169,12 +169,37 @@ namespace controller {
             this.viewChanges_.disableAllButtons();
         }
 
-        private responseTrade(): void {
+        responseTrade(decision: boolean): void {
             const toSend = this.prepareMessage(message.TradeAnswer.message);
-            toSend[message.TradeAnswer.decision] = true; // TODO get decision from view
+            toSend[message.TradeAnswer.decision] = decision;
             this.sender_(toSend);
             this.viewChanges_.closeTradeDecisionPanel();
             this.viewChanges_.disableAllButtons();
+        }
+
+        exitJailPaying() {
+            const me = this.model_.users.get(this.model_.users.myUsername());
+            if (me.cash < 50)
+                return;
+            me.paidForJailExit = true;
+            this.exitJailWithMethod("pay");
+        }
+
+        exitJailUsingChanceCard() {
+            const me = this.model_.users.get(this.model_.users.myUsername());
+            if (me.jailExitCards === 0)
+                return;
+            --me.jailExitCards;
+            me.paidForJailExit = true;
+            this.exitJailWithMethod("useCard");
+        }
+
+        private exitJailWithMethod(method: string): void {
+            this.viewChanges_.enable(view.ViewElement.END_TURN_BTN, true);
+            this.viewChanges_.showJailExitOptions(false, false);
+            let toSend = this.prepareMessage(message.GetOut.message);
+            toSend[message.GetOut.method] = method;
+            this.sender_(toSend);
         }
     }
 
