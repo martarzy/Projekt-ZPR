@@ -2,6 +2,7 @@
     export class Player {
         private cash_ = 0;
         jailExitCards = 0;
+        inJail = false;
 
         constructor(private username_: string, private color_: string) {
         }

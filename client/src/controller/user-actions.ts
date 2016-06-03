@@ -178,17 +178,21 @@ namespace controller {
         }
 
         exitJailPaying() {
-            const me = this.model_.users.get(this.model_.users.myUsername());
+            const me = this.model_.users.getMe();
             if (me.cash < 50)
                 return;
+            me.inJail = false;
+            this.viewChanges_.enableButtonsOnRoundStart();
             this.exitJailWithMethod("pay");
         }
 
         exitJailUsingChanceCard() {
-            const me = this.model_.users.get(this.model_.users.myUsername());
+            const me = this.model_.users.getMe();
             if (me.jailExitCards === 0)
                 return;
+            me.inJail = false;
             --me.jailExitCards;
+            this.viewChanges_.enableButtonsOnRoundStart();
             this.exitJailWithMethod("useCard");
         }
 

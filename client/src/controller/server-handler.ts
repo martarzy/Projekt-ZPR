@@ -80,15 +80,14 @@ namespace controller {
 
         private performMovement(username: string, rollResult: number) {
             this.model.board.movePawnBy(username, rollResult);
-            this.updateModelIfInJail(username);
 
             const field = this.model.board.getField(username);
             this.viewChanges_.movePawn(username, field.id, this.doOnPawnMoveEnd.bind(this, field));
         }
 
         private updateModelIfInJail(username: string) {
-            if (!this.model.board.userInJail(username)
-                || !this.model.users.isMyTurn())
+            if (!this.model.users.isMyTurn()
+                || !this.model.users.getMe().inJail)
                 return;
             this.viewChanges_.disableAllButtons();
             const me = this.model.users.getMe();
@@ -100,8 +99,7 @@ namespace controller {
         private doOnPawnMoveEnd(field: model.Field): void {
             if (!this.model.users.isMyTurn())
                 return;
-            if (!this.model.board.userInJail(this.model.users.myUsername()))
-                this.viewChanges_.enable(view.ViewElement.END_TURN_BTN, true);
+            this.viewChanges_.enable(view.ViewElement.END_TURN_BTN, true);
             this.viewChanges_.enable(view.ViewElement.BUY_FIELD_BTN, field.isBuyable()
                                                                      && field.cost <= this.model.users.activeCash());
         }
@@ -110,8 +108,11 @@ namespace controller {
             const newActive: string = object[message.NewTurn.activePlayer];
             this.model.users.setActive(newActive);
             this.model.round.reset();
-            if (this.model.users.isMyTurn())
+            if (this.model.users.isMyTurn()) {
                 this.viewChanges_.enableButtonsOnRoundStart();
+                if (this.model.users.getMe().inJail)
+                    this.updateModelIfInJail(this.model.users.myUsername());
+            }                
             this.updatePlayerList(this.model.users.getAll());
         }
 
@@ -241,10 +242,11 @@ namespace controller {
                     // Currently hadled by server. It sends setCash message.
                     break;
                 case "gotoJail":
+                    if (this.model.users.isMyTurn())
+                        this.model.users.getMe().inJail = true;
                     this.moveTo(activeUsername, model.Board.JAIL_FIELD_NUMBER);
                     break;
             }
-            this.updateModelIfInJail(activeUsername);
         }
 
         private moveTo(username: string, fieldId: number) {
