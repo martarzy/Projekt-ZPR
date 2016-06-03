@@ -118,4 +118,18 @@
         static get message(): string { return "tradeAcceptance"; }
         static get decision(): string { return "accepted"; }
     }
+
+    /* Only one class for 4 protocol messages. Server dispatches
+       message only by message field. */
+    export class ChanceCard {
+        static get message(): string { return "chance"; }
+        static get action(): string { return "action"; }
+        // GOTO
+        static get field(): string { return "field"; }
+        // MOVE
+        static get move(): string { return "move"; }
+        // CASH
+        static get reason(): string { return "reason"; }
+        static get cash(): string { return "cash"; }
+    }
 }
