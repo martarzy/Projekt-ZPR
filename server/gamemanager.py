@@ -1,20 +1,6 @@
+from player import Player
 from chance import ChanceStack
 from random import randint
-
-
-class Player:
-    def __init__(self, name, handler):
-        self.name = name
-        self.handler = handler  # Handler is a class which must have write_message() function
-        self.ready = False
-        self.cash = 1500
-        self.field_no = 0
-        self.last_roll = 0
-        self.get_out_cards_no = 0
-        self.in_jail = False
-
-    def error(self, error_code):
-        self.handler.send_message({'message': 'invalidOperation', 'error': error_code})
 
 
 class Field:
@@ -126,40 +112,43 @@ class GameManager:
         elif msg['message'] == 'ready':
             self.ready(player)
 
-        elif msg['message'] == 'rollDice':
-            self.roll_dice(player)
-
-        elif msg['message'] == 'buyField':
-            self.buy_field(player)
-
-        elif msg['message'] == 'buyHouse':
-            self.buy_house(player, msg['field'])
-
-        elif msg['message'] == 'sellHouse':
-            self.sell_house(player, msg['field'])
-
-        elif msg['message'] == 'mortgage':
-            self.mortgage(player, msg['field'])
-
-        elif msg['message'] == 'unmortgage':
-            self.unmortgage(player, msg['field'])
-
-        elif msg['message'] == 'endOfTurn':
-            self.next_turn()
-
-        elif msg['message'] == 'trade':
-            other_player = self.pname_map[msg['other_username']]
-            trade = Trade(player, other_player, msg['offeredFields'], msg['offeredCash'], msg['demandedFields'], msg['demandedCash'])
-            self.trade_offer(trade)
-
-        elif msg['message'] == 'tradeAcceptance':
-            self.trade_acceptance(msg['accepted'])
-
-        elif msg['message'] == 'getOut':
-            self.get_out_of_jail(player, msg['method'])
-
         else:
-            player.error('Improper message')
+            if player.update_state(msg['message']):
+
+                if msg['message'] == 'rollDice':
+                    self.roll_dice(player)
+
+                elif msg['message'] == 'buyField':
+                    self.buy_field(player)
+
+                elif msg['message'] == 'buyHouse':
+                    self.buy_house(player, msg['field'])
+
+                elif msg['message'] == 'sellHouse':
+                    self.sell_house(player, msg['field'])
+
+                elif msg['message'] == 'mortgage':
+                    self.mortgage(player, msg['field'])
+
+                elif msg['message'] == 'unmortgage':
+                    self.unmortgage(player, msg['field'])
+
+                elif msg['message'] == 'endOfTurn':
+                    self.next_turn()
+
+                elif msg['message'] == 'trade':
+                    other_player = self.pname_map[msg['other_username']]
+                    trade = Trade(player, other_player, msg['offeredFields'], msg['offeredCash'], msg['demandedFields'], msg['demandedCash'])
+                    self.trade_offer(trade)
+
+                elif msg['message'] == 'tradeAcceptance':
+                    self.trade_acceptance(msg['accepted'])
+
+                elif msg['message'] == 'getOut':
+                    self.get_out_of_jail(player, msg['method'])
+
+            else:
+                player.error('notAllowedMessage')
 
     def roll_dice(self, player):
         player.last_roll = self.generate_roll()
@@ -212,6 +201,7 @@ class GameManager:
 
     def next_turn(self):
         self.turn = (self.turn + 1) % len(self.players)
+        self.players[self.turn].init_state(self.trade is not None)
         msg = {'message': 'newTurn', 'player': self.players[self.turn].name}
         self.broadcast(msg)
 
@@ -371,8 +361,8 @@ class GameManager:
 
     def get_out_of_jail(self, player, method):
         if method == 'useCard':
-            if player.get_out_cards > 0:
-                player.get_out_cards -= 1
+            if player.get_out_cards_no > 0:
+                player.get_out_cards_no -= 1
             else:
                 player.error('LackOfGetOutCards')
         elif method == 'pay':
