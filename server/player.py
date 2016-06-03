@@ -11,6 +11,8 @@ class Player:
         self.bankrupt = False
         self.state = None
 
+    common_actions = {'buyHouse', 'sellHouse', 'mortgage', 'unmortgage', 'trade'}
+
     def error(self, error_code):
         self.handler.send_message({'message': 'invalidOperation', 'error': error_code})
 
@@ -28,66 +30,42 @@ class Player:
         return self.state(action)
 
     def trade_acceptance_state(self, action):
-        accepted = {'tradeAcceptance'}
-        if action in accepted:
+        if action == 'tradeAcceptance':
             self.state = None
             return True
         return False
 
     def jail_state(self, action):
-        accepted1 = {'getOut'}
-        accepted2 = {'declareBankruptcy'}
-        accepted3 = {'buyHouse', 'sellHouse', 'mortgage', 'unmortgage', 'trade'}
-        if action in accepted1:
+        if action == 'getOut':
             self.state = self.start_state
-            return True
-        if action in accepted2:
+        elif action == 'declareBankruptcy':
             self.state = None
-            return True
-        if action in accepted3:
-            return True
-        return False
+        else:
+            return action in Player.common_actions
+        return True
 
     def start_state(self, action):
-        accepted1 = {'rollDice'}
-        accepted2 = {'buyHouse', 'sellHouse', 'mortgage', 'unmortgage', 'trade'}
-        accepted3 = {'declareBankruptcy'}
-        if action in accepted1:
+        if action == 'rollDice':
             self.state = self.buy_state
-            return True
-        if action in accepted2:
-            return True
-        if action in accepted3:
+        elif action == 'declareBankruptcy':
             self.state = None
-            return True
-        return False
+        else:
+            return action in Player.common_actions
+        return True
 
     def buy_state(self, action):
-        accepted1 = {'buyField'}
-        accepted2 = {'declareBankruptcy'}
-        accepted3 = {'buyHouse', 'sellHouse', 'mortgage', 'unmortgage', 'trade'}
-        accepted4 = {'endOfTurn'}
-        if action in accepted1:
+        if action == 'buyField' and self.cash >= 0:
             self.state = self.end_state
-            return True
-        if action in accepted2:
+        elif action == 'declareBankruptcy' or (action == 'endOfTurn' and self.cash >= 0):
             self.state = None
-            return True
-        if action in accepted3:
-            return True
-        if action in accepted4 and self.cash >= 0:
-            return True
-        return False
+        else:
+            return action in Player.common_actions
+        return True
 
     def end_state(self, action):
-        accepted1 = {'declareBankruptcy'}
-        accepted2 = {'buyHouse', 'sellHouse', 'mortgage', 'unmortgage', 'trade'}
-        accepted3 = {'endOfTurn'}
-        if action in accepted1:
+        if action == 'declareBankruptcy' or (action == 'endOfTurn' and self.cash >= 0):
             self.state = None
-            return True
-        if action in accepted2:
-            return True
-        if action in accepted3 and self.cash >= 0:
-            return True
-        return False
+        else:
+            return action in Player.common_actions
+        return True
+
