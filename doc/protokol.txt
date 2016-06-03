@@ -202,3 +202,14 @@ Użytkownik wychodzi z więzienia
     "method": "pay"/"useCard"
 }
 -------------------------------------------------
+Użytkownik deklaruje bankructwo:
+{
+    "message": "declareBankruptcy"
+}
+Serwer rozsyła tę wiadomość wszystkim.
+-------------------------------------------------
+KONIEC GRY
+Serwer informuje o końcu gry:
+{
+    "message": "gameOver"
+}
