@@ -197,6 +197,7 @@ namespace controller {
         }
 
         private exitJailWithMethod(method: string): void {
+            console.log("On exit jail");
             this.viewChanges_.enable(view.ViewElement.END_TURN_BTN, true);
             this.viewChanges_.showJailExitOptions(false, false);
             let toSend = this.prepareMessage(message.GetOut.message);
