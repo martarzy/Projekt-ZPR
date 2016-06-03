@@ -15,7 +15,8 @@ namespace model {
         }
 
         fieldInDistanceOf(field: Field, distance: number): Field {
-            let newId = (field.id + distance) % this.FIELDS_NUMBER;
+            const newField = field.id + distance;
+            let newId = (newField >= 0 ? newField : 40 - newField) % this.FIELDS_NUMBER;
             return this.fields_[newId];
         }
 

@@ -104,4 +104,32 @@
         static get message(): string { return "userUnmortgaged"; }
         static get field(): string { return "field"; }
     }
+
+    export class Trade {
+        static get message(): string { return "trade"; }
+        static get otherUsername(): string { return "otherUsername"; }
+        static get offeredFields(): string { return "offeredFields"; }
+        static get offeredCash(): string { return "offeredCash"; }
+        static get demandedFields(): string { return "demandedFields"; }
+        static get demandedCash(): string { return "demandedCash"; }
+    }
+
+    export class TradeAnswer {
+        static get message(): string { return "tradeAcceptance"; }
+        static get decision(): string { return "accepted"; }
+    }
+
+    /* Only one class for 4 protocol messages. Server dispatches
+       message only by message field. */
+    export class ChanceCard {
+        static get message(): string { return "chance"; }
+        static get action(): string { return "action"; }
+        // GOTO
+        static get field(): string { return "field"; }
+        // MOVE
+        static get move(): string { return "move"; }
+        // CASH
+        static get reason(): string { return "reason"; }
+        static get cash(): string { return "cash"; }
+    }
 }

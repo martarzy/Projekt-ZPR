@@ -4,10 +4,22 @@
     }
 
     export class Round {
-        mode: ActionMode = ActionMode.NONE;
+        mode: ActionMode;
+        tradingWith: string;
+        offeredFields: Array<number>;
+        demandedFields: Array<number>;
+        playerMoved: boolean;
+
+        constructor() {
+            this.reset();
+        }
 
         reset(): void {
-            this.mode = ActionMode.NONE
+            this.mode = ActionMode.NONE;
+            this.playerMoved = false;
+            this.tradingWith = "";
+            this.offeredFields = [];
+            this.demandedFields = [];
         }
     }
 }

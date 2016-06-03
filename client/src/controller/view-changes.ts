@@ -76,6 +76,37 @@ namespace controller {
         unmortgageField(id: number): void {
             this.view_.unmortgageField(id);
         }
+
+        showTradePanel(enemiesUsernames: Array<string>, myFields: Array<model.Field>) {
+            // TODO
+        }
+
+        showEnemiesFields(selectedEnemyFields: Array<model.Field>): void {
+            // TODO
+        }
+
+        clearTradePanel(): void {
+            // TODO
+        }
+
+        closeTradeDecisionPanel(): void {
+            // TODO
+        }
+
+        tradeSuccessful(): void {
+            // TODO
+        }
+
+        tradeUnsuccessful(): void {
+            // TODO
+        }
+
+        showTradeOffer(offeredCash: number,
+                       offeredFields: Array<number>,
+                       demandedCash: number,
+                       demandedFields: Array<number>): void {
+            // TODO
+        }
     }
 
 }

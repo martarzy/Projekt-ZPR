@@ -1,6 +1,5 @@
 ﻿/// <reference path="message.ts" />
 /// <reference path="../model/model.ts" />
-/// <reference path="../view/view.ts" />
 
 namespace controller {
 
@@ -134,6 +133,48 @@ namespace controller {
             toSend[msgData.field] = fieldId;
             this.sender_(toSend);
             return true;
+        }
+
+        private startTrade(): void {
+            // TODO
+            const others = this.model_.users.getEnemies();
+            const myFields = this.model_.board.fieldsToMortgage(this.model_.users.myUsername());
+            this.viewChanges_.showTradePanel(others, myFields);
+            this.viewChanges_.enable(view.ViewElement.MAKE_BID_BTN, true);
+        }
+
+        private userToTradeSelected(): void {
+            // TODO
+            const selected = "" // TODO get it from view
+            const enemiesFields = this.model_.board.fieldsToMortgage(selected);
+            this.model_.round.tradingWith = selected;
+            this.viewChanges_.showEnemiesFields(enemiesFields);
+        }
+
+        private offerTrade(): void {
+            // TODO
+            // get cash and fields from view
+            const cashOffered = 0, cashRequired = 0;
+            const offeredFields: Array<number> = [], demandedFields: Array<number> = [];
+            this.model_.round.offeredFields = offeredFields;
+            this.model_.round.demandedFields = demandedFields;
+            const toSend = this.prepareMessage(message.Trade.message);
+            toSend[message.Trade.otherUsername] = this.model_.round.tradingWith;
+            toSend[message.Trade.offeredCash] = cashOffered;
+            toSend[message.Trade.demandedCash] = cashRequired;
+            toSend[message.Trade.offeredFields] = offeredFields;
+            toSend[message.Trade.demandedFields] = demandedFields;
+            this.sender_(toSend);
+            this.viewChanges_.clearTradePanel();
+            this.viewChanges_.disableAllButtons();
+        }
+
+        private responseTrade(): void {
+            const toSend = this.prepareMessage(message.TradeAnswer.message);
+            toSend[message.TradeAnswer.decision] = true; // TODO get decision from view
+            this.sender_(toSend);
+            this.viewChanges_.closeTradeDecisionPanel();
+            this.viewChanges_.disableAllButtons();
         }
     }
 

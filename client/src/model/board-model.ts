@@ -21,10 +21,14 @@ namespace model {
             players.forEach(player => this.pawns[player.username] = this.board_.startField());
         }
 
-        movePawn(username: string, rollResult: number): void {
+        movePawnBy(username: string, rollResult: number): void {
             const currentField = this.pawns[username];
             const targetField = this.board_.fieldInDistanceOf(currentField, rollResult);
             this.pawns[username] = targetField;
+        }
+
+        movePawnOn(username: string, targetField: number): void {
+            this.pawns[username] = this.field(targetField);
         }
 
         buyField(username: string): void {
@@ -106,7 +110,11 @@ namespace model {
             return this.canBeUnmortgaged(this.field(fieldId), username);
         }
 
-        private canBeUnmortgaged(field: Field, owner: string) {
+        changeOwner(fieldsIds: Array<number>, newOwner: string) {
+            fieldsIds.forEach(id => this.field(id).markAsBought(newOwner));
+        }
+
+        private canBeUnmortgaged(field: Field, owner: string): boolean {
             return field.isMortgaged
                 && this.matchingOwner(field, owner);
         }
