@@ -361,6 +361,8 @@ class GameManager:
             self.broadcast_cash_info(player)
         elif card['action'] == 'getOut':
             player.get_out_cards_no += 1
+        elif card['action'] == 'gotoJail':
+            self.goto_jail(player)
 
     @staticmethod
     def goto_jail(player):
@@ -375,6 +377,7 @@ class GameManager:
                 player.error('LackOfGetOutCards')
         elif method == 'pay':
             player.cash -= 50
+            self.broadcast_cash_info(player)
         else:
             player.error('ImproperGetOutMethod')
 
