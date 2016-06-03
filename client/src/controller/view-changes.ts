@@ -22,7 +22,8 @@ namespace controller {
                              view.ViewElement.SELL_HOUSE,
                              view.ViewElement.ROLL_BTN,
                              view.ViewElement.MORTGAGE_BTN,
-                             view.ViewElement.UNMORTGAGE_BTN];
+                             view.ViewElement.UNMORTGAGE_BTN,
+                             view.ViewElement.BANKRUPTCY_BTN];
             for (const button of buttons)
                 this.enable(button, true);
         }
@@ -111,6 +112,24 @@ namespace controller {
         showJailExitOptions(canPay: boolean, canUseCard: boolean) {
             this.enable(view.ViewElement.JAIL_PAY_BTN, canPay);
             this.enable(view.ViewElement.JAIL_USE_CARD_BTN, canUseCard);
+        }
+
+        enableButtonsForCashBelowZero(): void {
+            this.disableAllButtons();
+            const toEnable = [view.ViewElement.SELL_HOUSE,
+                              view.ViewElement.MORTGAGE_BTN,
+                              view.ViewElement.MAKE_BID_BTN,
+                              view.ViewElement.BANKRUPTCY_BTN];
+
+            toEnable.forEach(button => this.enable(button, true));
+        }
+
+        enableButtonsForCashAboveZero(): void {
+            this.disableAllButtons();
+            this.enableButtonsOnRoundStart();
+            const toDisable = [view.ViewElement.ROLL_BTN];
+
+            toDisable.forEach(button => this.enable(button, false));
         }
     }
 

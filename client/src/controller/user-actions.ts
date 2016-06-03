@@ -203,6 +203,11 @@ namespace controller {
             toSend[message.GetOut.method] = method;
             this.sender_(toSend);
         }
+
+        declareBankruptcy(): void {
+            this.viewChanges_.disableAllButtons();
+            this.sender_(this.prepareMessage(message.DeclareBankruptcy.message));
+        }
     }
 
 }

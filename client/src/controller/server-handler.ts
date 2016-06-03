@@ -38,6 +38,8 @@ namespace controller {
             this.handlers.setValue(message.Trade.message, this.tradeRequest);
             this.handlers.setValue(message.TradeAnswer.message, this.tradeAnswer);
             this.handlers.setValue(message.ChanceCard.message, this.chanceCard);
+            this.handlers.setValue(message.DeclareBankruptcy.message, this.activeUserBankrupted);
+            this.handlers.setValue(message.GameOver.message, this.gameOver);
         }
 
         handle(msgFromServer: any): void {
@@ -137,8 +139,20 @@ namespace controller {
         private setCash(object: any): void {
             const target: string = object[message.SetCash.target];
             const cash: number = object[message.SetCash.amount];
+
+            const iAmNoLongerBelowZero = this.model.users.isMyTurn()
+                && cash >= 0
+                && this.model.users.activeCash() < 0;
+
             this.model.users.setCash(target, cash);
             this.updatePlayerList(this.model.users.getAll());
+
+            if (!this.model.users.isMyTurn())
+                return;
+            if (this.model.users.getMe().cash < 0)
+                this.viewChanges_.enableButtonsForCashBelowZero();
+            if (iAmNoLongerBelowZero)
+                this.viewChanges_.enableButtonsForCashAboveZero();
         }
 
         private userBought(object: any): void {
@@ -253,6 +267,16 @@ namespace controller {
             this.model.board.movePawnOn(username, fieldId);
             const field: model.Field = this.model.board.getField(username);
             this.viewChanges_.movePawn(username, field.id, this.doOnPawnMoveEnd.bind(this, field));
+        }
+
+        private activeUserBankrupted(object: any) {
+            // TODO
+            console.log("Active user bankrupted handler");
+        }
+
+        private gameOver(object: any) {
+            // TODO
+            console.log("Game over handler");
         }
     }
 

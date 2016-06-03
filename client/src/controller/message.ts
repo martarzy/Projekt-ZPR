@@ -137,4 +137,12 @@
         static get message(): string { return "getOut"; }
         static get method(): string { return "method"; }
     }
+
+    export class DeclareBankruptcy {
+        static get message(): string { return "declareBankruptcy"; }
+    }
+
+    export class GameOver {
+        static get message(): string { return "gameOver"; }
+    }
 }

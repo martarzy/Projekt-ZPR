@@ -40,4 +40,7 @@ window.onload = () => {
         .onclick = (event: MouseEvent) => actions.exitJailPaying();
     (<HTMLInputElement>document.getElementById("jail-use-card-button"))
         .onclick = (event: MouseEvent) => actions.exitJailUsingChanceCard();  
+
+    (<HTMLInputElement>document.getElementById("bankruptcy-button"))
+        .onclick = (event: MouseEvent) => actions.declareBankruptcy(); 
 };

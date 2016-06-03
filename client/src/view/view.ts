@@ -6,7 +6,7 @@ namespace view {
         ROLL_BTN, READY_BTN, END_TURN_BTN, BUY_FIELD_BTN,
         BUY_HOUSE, SELL_HOUSE, MORTGAGE_BTN, UNMORTGAGE_BTN,
         ACCEPT_OFFER_BTN, DECLINE_OFFER_BTN, MAKE_BID_BTN,
-        JAIL_PAY_BTN, JAIL_USE_CARD_BTN
+        JAIL_PAY_BTN, JAIL_USE_CARD_BTN, BANKRUPTCY_BTN
     }
 
     export class View {
@@ -34,6 +34,7 @@ namespace view {
             this.buttonsIds[ViewElement.MAKE_BID_BTN] = "make-bid-button";
             this.buttonsIds[ViewElement.JAIL_PAY_BTN] = "jail-pay-button";
             this.buttonsIds[ViewElement.JAIL_USE_CARD_BTN] = "jail-use-card-button";
+            this.buttonsIds[ViewElement.BANKRUPTCY_BTN] = "bankruptcy-button";
         }
 
         public enableButton(id: ViewElement | number) {
