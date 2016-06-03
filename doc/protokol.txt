@@ -189,4 +189,10 @@ Serwer informuje o wylosowanej karcie szansy:
     "message": "chance"
     "action": "getOut"
 }
+
+5. GO TO JAIL
+{
+    "message": "chance"
+    "action": "gotoJail"
+}
 -------------------------------------------------
