@@ -11,7 +11,7 @@ class GotoCard(ChanceCard):
     def __init__(self, field_no):
         ChanceCard.__init__(self)
         self.message['action'] = 'goto'
-        self.message['field_no'] = field_no
+        self.message['field'] = field_no
 
 
 class MoveCard(ChanceCard):
