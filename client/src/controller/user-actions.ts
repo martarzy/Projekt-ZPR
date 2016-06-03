@@ -181,7 +181,6 @@ namespace controller {
             const me = this.model_.users.get(this.model_.users.myUsername());
             if (me.cash < 50)
                 return;
-            me.paidForJailExit = true;
             this.exitJailWithMethod("pay");
         }
 
@@ -190,7 +189,6 @@ namespace controller {
             if (me.jailExitCards === 0)
                 return;
             --me.jailExitCards;
-            me.paidForJailExit = true;
             this.exitJailWithMethod("useCard");
         }
 
