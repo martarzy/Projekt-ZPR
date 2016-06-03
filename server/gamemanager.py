@@ -147,6 +147,9 @@ class GameManager:
                 elif msg['message'] == 'getOut':
                     self.get_out_of_jail(player, msg['method'])
 
+                elif msg['message'] == 'declareBankruptcy':
+                    self.bankrupt(player)
+
             else:
                 player.error('notAllowedMessage')
 
@@ -163,7 +166,7 @@ class GameManager:
         if self.fields[player.field_no].group_name == 'Chance':
             self.chance(player)
         elif self.fields[player.field_no].group_name == 'Go to jail':
-            self.goto_jail(player)
+            player.goto_jail()
 
     @staticmethod
     def generate_roll():
@@ -200,10 +203,13 @@ class GameManager:
         self.next_turn()
 
     def next_turn(self):
-        self.turn = (self.turn + 1) % len(self.players)
-        self.players[self.turn].init_state(self.trade is not None)
-        msg = {'message': 'newTurn', 'player': self.players[self.turn].name}
-        self.broadcast(msg)
+        while True:
+            self.turn = (self.turn + 1) % len(self.players)
+            if not self.players[self.turn].bankrupt:
+                self.players[self.turn].init_state(self.trade is not None)
+                msg = {'message': 'newTurn', 'player': self.players[self.turn].name}
+                self.broadcast(msg)
+                break
 
     def buy_field(self, player):
         field = self.fields[player.field_no]
@@ -367,6 +373,12 @@ class GameManager:
             player.in_jail = False
         else:
             player.error('ImproperGetOutMethod')
+
+    def bankrupt(self, player):
+        player.bankrupt = True
+        self.broadcast({'message': 'declareBankruptcy'})
+        if len([player for player in self.players if not player.bankrupt]) == 1:
+            self.broadcast({'message': 'gameOver'})
 
     def broadcast_field_buy(self, player):
         self.broadcast({'message': 'userBought', 'username': player.name})

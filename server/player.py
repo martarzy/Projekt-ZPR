@@ -8,6 +8,7 @@ class Player:
         self.last_roll = 0
         self.get_out_cards_no = 0
         self.in_jail = False
+        self.bankrupt = False
         self.state = None
 
     def error(self, error_code):
