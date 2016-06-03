@@ -7,23 +7,22 @@ namespace controller {
             this.disableAllButtons();
         }
 
-        showJoinModal(decision: boolean): void {
-            decision ? this.view_.showSignInWindow():
-                       this.view_.hideSignInWindow();
+        closeJoinModal(): void {
+            this.view_.hideSignInWindow();
         }
 
-        enable(button: view.ViewElement, visible: boolean) {
+        enable(button: view.Button, visible: boolean) {
             visible ? this.view_.enableButton(button) :
                       this.view_.disableButton(button);
         }
 
         enableButtonsOnRoundStart(): void {
-            const buttons = [view.ViewElement.BUY_HOUSE,
-                             view.ViewElement.SELL_HOUSE,
-                             view.ViewElement.ROLL_BTN,
-                             view.ViewElement.MORTGAGE_BTN,
-                             view.ViewElement.UNMORTGAGE_BTN,
-                             view.ViewElement.BANKRUPTCY_BTN];
+            const buttons = [view.Button.BUY_HOUSE,
+                             view.Button.SELL_HOUSE,
+                             view.Button.ROLL,
+                             view.Button.MORTGAGE,
+                             view.Button.UNMORTGAGE,
+                             view.Button.BANKRUPTCY];
             for (const button of buttons)
                 this.enable(button, true);
         }
@@ -33,7 +32,7 @@ namespace controller {
         }
 
         disableAllButtons() {
-            for (const elem in view.ViewElement) {
+            for (const elem in view.Button) {
                 const toNumber = parseInt(elem);
                 if (!isNaN(toNumber))
                     this.view_.disableButton(toNumber);
@@ -49,8 +48,8 @@ namespace controller {
         }
 
         movePawn(player: string, targetField: number, onPawnMoveEnd: () => void) {
-            this.enable(view.ViewElement.END_TURN_BTN, false);
-            this.enable(view.ViewElement.BUY_FIELD_BTN, false);
+            this.enable(view.Button.END_TURN, false);
+            this.enable(view.Button.BUY_FIELD, false);
             this.view_.movePawn(player, targetField, onPawnMoveEnd);
         }
 
@@ -110,16 +109,16 @@ namespace controller {
         }
 
         showJailExitOptions(canPay: boolean, canUseCard: boolean) {
-            this.enable(view.ViewElement.JAIL_PAY_BTN, canPay);
-            this.enable(view.ViewElement.JAIL_USE_CARD_BTN, canUseCard);
+            this.enable(view.Button.JAIL_PAY, canPay);
+            this.enable(view.Button.JAIL_USE_CARD, canUseCard);
         }
 
         enableButtonsForCashBelowZero(): void {
             this.disableAllButtons();
-            const toEnable = [view.ViewElement.SELL_HOUSE,
-                              view.ViewElement.MORTGAGE_BTN,
-                              view.ViewElement.MAKE_BID_BTN,
-                              view.ViewElement.BANKRUPTCY_BTN];
+            const toEnable = [view.Button.SELL_HOUSE,
+                              view.Button.MORTGAGE,
+                              view.Button.OFFER_TRADE,
+                              view.Button.BANKRUPTCY];
 
             toEnable.forEach(button => this.enable(button, true));
         }
@@ -127,10 +126,12 @@ namespace controller {
         enableButtonsForCashAboveZero(): void {
             this.disableAllButtons();
             this.enableButtonsOnRoundStart();
-            const toDisable = [view.ViewElement.ROLL_BTN];
+            const toDisable = [view.Button.ROLL];
 
             toDisable.forEach(button => this.enable(button, false));
         }
+
+
     }
 
 }

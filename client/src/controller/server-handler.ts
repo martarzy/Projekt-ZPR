@@ -55,7 +55,7 @@ namespace controller {
                 return;
             }
             this.viewChanges_.disableAllButtons();
-            this.viewChanges_.showJoinModal(false);
+            this.viewChanges_.closeJoinModal();
         }
 
         private synchUsers(object: any): void {
@@ -63,7 +63,7 @@ namespace controller {
             this.model.users.removeAll();
             for (let i = 0; i < usernames.length; ++i)
                 this.model.users.addNew(usernames[i], this.colorManager_.getColor(i));
-            this.viewChanges_.enable(view.ViewElement.READY_BTN, usernames.length >= 2);
+            this.viewChanges_.enable(view.Button.READY, usernames.length >= 2);
             this.updatePlayerList(this.model.users.getAll());
         }
 
@@ -102,8 +102,8 @@ namespace controller {
             if (!this.model.users.isMyTurn())
                 return;
             if (this.model.users.activeCash() >= 0)
-                this.viewChanges_.enable(view.ViewElement.END_TURN_BTN, true);
-            this.viewChanges_.enable(view.ViewElement.BUY_FIELD_BTN, field.isBuyable()
+                this.viewChanges_.enable(view.Button.END_TURN, true);
+            this.viewChanges_.enable(view.Button.BUY_FIELD, field.isBuyable()
                                                                      && field.cost <= this.model.users.activeCash());
         }
 
@@ -212,8 +212,8 @@ namespace controller {
             const offeredCash: number = object[message.Trade.offeredCash]; 
             const demandedCash: number = object[message.Trade.demandedCash];
             this.viewChanges_.showTradeOffer(offeredCash, offeredFields, demandedCash, demandedFields);
-            this.viewChanges_.enable(view.ViewElement.ACCEPT_OFFER_BTN, true);
-            this.viewChanges_.enable(view.ViewElement.DECLINE_OFFER_BTN, true);
+            this.viewChanges_.enable(view.Button.ACCEPT_TRADE, true);
+            this.viewChanges_.enable(view.Button.DECLINE_TRADE, true);
         }
 
         private tradeAnswer(object: any) {
@@ -226,7 +226,7 @@ namespace controller {
                 return;
             this.viewChanges_.enableButtonsOnRoundStart();
             if (this.model.round.playerMoved)
-                this.viewChanges_.enable(view.ViewElement.ROLL_BTN, false);
+                this.viewChanges_.enable(view.Button.ROLL, false);
             decision ? this.viewChanges_.tradeSuccessful() :
                 this.viewChanges_.tradeUnsuccessful();
         }

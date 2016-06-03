@@ -2,11 +2,11 @@
 
 namespace view {
 
-    export enum ViewElement {
-        ROLL_BTN, READY_BTN, END_TURN_BTN, BUY_FIELD_BTN,
-        BUY_HOUSE, SELL_HOUSE, MORTGAGE_BTN, UNMORTGAGE_BTN,
-        ACCEPT_OFFER_BTN, DECLINE_OFFER_BTN, MAKE_BID_BTN,
-        JAIL_PAY_BTN, JAIL_USE_CARD_BTN, BANKRUPTCY_BTN
+    export enum Button {
+        ROLL, READY, END_TURN, BUY_FIELD,
+        BUY_HOUSE, SELL_HOUSE, MORTGAGE, UNMORTGAGE,
+        ACCEPT_TRADE, DECLINE_TRADE, OFFER_TRADE,
+        JAIL_PAY, JAIL_USE_CARD, BANKRUPTCY
     }
 
     export class View {
@@ -21,27 +21,27 @@ namespace view {
         private buttonsIds: { [elem: number]: string } = {};
 
         private initButtonsIds(): void {
-            this.buttonsIds[ViewElement.ROLL_BTN] = "roll-button";
-            this.buttonsIds[ViewElement.READY_BTN] = "ready-button";
-            this.buttonsIds[ViewElement.BUY_FIELD_BTN] = "buy-button";
-            this.buttonsIds[ViewElement.END_TURN_BTN] = "end-turn-button";
-            this.buttonsIds[ViewElement.BUY_HOUSE] = "build-button";
-            this.buttonsIds[ViewElement.SELL_HOUSE] = "sell-button";
-            this.buttonsIds[ViewElement.MORTGAGE_BTN] = "mortgage-button";
-            this.buttonsIds[ViewElement.UNMORTGAGE_BTN] = "unmortgage-button";
-            this.buttonsIds[ViewElement.ACCEPT_OFFER_BTN] = "accept-offer-button";
-            this.buttonsIds[ViewElement.DECLINE_OFFER_BTN] = "decline-offer-button";
-            this.buttonsIds[ViewElement.MAKE_BID_BTN] = "make-bid-button";
-            this.buttonsIds[ViewElement.JAIL_PAY_BTN] = "jail-pay-button";
-            this.buttonsIds[ViewElement.JAIL_USE_CARD_BTN] = "jail-use-card-button";
-            this.buttonsIds[ViewElement.BANKRUPTCY_BTN] = "bankruptcy-button";
+            this.buttonsIds[Button.ROLL] = "roll-button";
+            this.buttonsIds[Button.READY] = "ready-button";
+            this.buttonsIds[Button.BUY_FIELD] = "buy-button";
+            this.buttonsIds[Button.END_TURN] = "end-turn-button";
+            this.buttonsIds[Button.BUY_HOUSE] = "build-button";
+            this.buttonsIds[Button.SELL_HOUSE] = "sell-button";
+            this.buttonsIds[Button.MORTGAGE] = "mortgage-button";
+            this.buttonsIds[Button.UNMORTGAGE] = "unmortgage-button";
+            this.buttonsIds[Button.ACCEPT_TRADE] = "accept-offer-button";
+            this.buttonsIds[Button.DECLINE_TRADE] = "decline-offer-button";
+            this.buttonsIds[Button.OFFER_TRADE] = "make-bid-button";
+            this.buttonsIds[Button.JAIL_PAY] = "jail-pay-button";
+            this.buttonsIds[Button.JAIL_USE_CARD] = "jail-use-card-button";
+            this.buttonsIds[Button.BANKRUPTCY] = "bankruptcy-button";
         }
 
-        public enableButton(id: ViewElement | number) {
+        public enableButton(id: Button | number) {
             $("#" + this.buttonsIds[id]).removeAttr("disabled");
         }
 
-        public disableButton(id: ViewElement | number) {
+        public disableButton(id: Button | number) {
             $("#" + this.buttonsIds[id]).attr("disabled", 1);
         }
 
