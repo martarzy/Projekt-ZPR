@@ -9,6 +9,7 @@
         offeredFields: Array<number>;
         demandedFields: Array<number>;
         playerMoved: boolean;
+        movementCommands: number;
 
         constructor() {
             this.reset();
@@ -20,6 +21,7 @@
             this.tradingWith = "";
             this.offeredFields = [];
             this.demandedFields = [];
+            this.movementCommands = 0;
         }
     }
 }

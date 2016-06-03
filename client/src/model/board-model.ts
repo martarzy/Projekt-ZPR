@@ -13,6 +13,11 @@ namespace model {
             return this.pawns[username].id === Board.JAIL_FIELD_NUMBER;
         }
 
+        enoughCashToBuyField(username: string, cash: number) {
+            const field = this.pawns[username];
+            return field.isBuyable() && field.cost <= cash;
+        }
+
         getField(username: string): Field {
             return this.pawns[username];
         }
