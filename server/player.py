@@ -13,6 +13,10 @@ class Player:
     def error(self, error_code):
         self.handler.send_message({'message': 'invalidOperation', 'error': error_code})
 
+    def goto_jail(self):
+        self.field_no = 10
+        self.in_jail = True
+
     def init_state(self, trade_pending=False):
         if trade_pending:
             self.state = self.trade_acceptance_state
