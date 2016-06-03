@@ -210,26 +210,26 @@ namespace controller {
         }
 
         private chanceCard(object: any) {
-            this.activateIfMyTurn(() => {
-                const furtherDispatchInfo: string = object[message.ChanceCard.action];
-                const myUsername = this.model.users.myUsername();
-                switch (furtherDispatchInfo) {
-                    case "goto":
-                        const field: model.Field = this.model.board.getField(object[message.ChanceCard.field]);
-                        this.model.board.movePawnOn(myUsername, field.id);
-                        this.viewChanges_.movePawn(myUsername, field.id, this.doOnPawnMoveEnd.bind(this, field));
-                        break;
-                    case "move":
-                        this.performMovement(myUsername, object[message.ChanceCard.move]);
-                        break;
-                    case "getOut":
-                        ++this.model.users.get(myUsername).jailExitCards;
-                        break;
-                    case "cash":
-                        // Currently hadled by server. It sends setCash message.
-                        break;
-                }
-            });
+            const furtherDispatchInfo: string = object[message.ChanceCard.action];
+            const activeUsername = this.model.users.activeUsername();
+            switch (furtherDispatchInfo) {
+                case "goto":
+                    const field: model.Field = this.model.board.getField(object[message.ChanceCard.field]);
+                    this.model.board.movePawnOn(activeUsername, field.id);
+                    this.viewChanges_.movePawn(activeUsername, field.id, this.doOnPawnMoveEnd.bind(this, field));
+                    break;
+                case "move":
+                    this.performMovement(activeUsername, object[message.ChanceCard.move]);
+                    break;
+                case "getOut":
+                    if (!this.model.users.isMyTurn())
+                        return;
+                    ++this.model.users.get(activeUsername).jailExitCards;
+                    break;
+                case "cash":
+                    // Currently hadled by server. It sends setCash message.
+                    break;
+            }
         }
     }
 
