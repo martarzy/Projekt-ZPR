@@ -16,17 +16,9 @@
    version="1.1"
    inkscape:version="0.91 r13725"
    sodipodi:docname="go.svg">
-  <defs
-     id="defs5068">
-          <style
-       type="text/css"
-       id="style7">@font-face {
-  font-family: 'Aldrich';
-  font-style: normal;
-  font-weight: normal;
-  src: local('Aldrich'), local('aldrich'), url('https://fonts.gstatic.com/s/aldrich/v6/j-NnyokbAnhXANS2iZ6Jew.woff2') format('woff2');
-}
-</style></defs>
+  <defs id="defs5068">
+</style>
+  </defs>
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -35,7 +27,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.98994949"
-     inkscape:cx="163.5963"
+     inkscape:cx="-52.071269"
      inkscape:cy="359.45605"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -57,7 +49,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -66,19 +58,19 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,-343.70079)">
-    <text
-       xml:space="preserve"
+    <g
+       transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,0,0)"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#aa0000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="-501.73019"
-       y="842.42804"
-       id="text5717"
-       sodipodi:linespacing="125%"
-       transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,0,0)"><tspan
-         sodipodi:role="line"
-         id="tspan5719"
-         x="-501.73019"
-         y="842.42804"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:375px;font-family:Aldrich;-inkscape-font-specification:Aldrich;fill:#aa0000">GO</tspan></text>
+       id="text5717">
+      <path
+         d="m -468.03879,617.39142 q 0,-7.69043 2.92969,-14.46533 2.92969,-6.95801 8.05664,-11.90186 5.12695,-5.12695 11.90186,-8.05664 6.958,-3.11279 14.64843,-3.11279 l 142.45606,0 q 7.69043,0 14.46533,3.11279 6.95801,2.92969 12.08496,8.05664 5.12695,4.94385 8.05664,11.90186 2.92969,6.7749 2.92969,14.46533 l 0,33.87451 -37.53662,0 0,-33.87451 -142.45606,0 0,187.5 142.45606,0 0,-63.7207 -71.22803,0 0,-37.53663 108.76465,0 0,101.25733 q 0,7.69043 -2.92969,14.64844 -2.92969,6.7749 -8.05664,11.90185 -5.12695,5.12695 -12.08496,8.05664 -6.7749,2.92969 -14.46533,2.92969 l -142.45606,0 q -7.69043,0 -14.64843,-2.92969 -6.77491,-2.92969 -11.90186,-8.05664 -5.12695,-5.12695 -8.05664,-11.90185 -2.92969,-6.95801 -2.92969,-14.64844 l 0,-187.5 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:375px;font-family:Aldrich;-inkscape-font-specification:Aldrich;fill:#aa0000"
+         id="path4143" />
+      <path
+         d="m 41.909943,804.89142 q 0,7.69043 -2.929688,14.64844 -2.929687,6.7749 -8.05664,11.90185 -5.126954,5.12695 -12.084961,8.05664 -6.774903,2.92969 -14.4653325,2.92969 l -149.9633815,0 q -7.69043,0 -14.64843,-2.92969 -6.77491,-2.92969 -11.90186,-8.05664 -5.12695,-5.12695 -8.05664,-11.90185 -2.92969,-6.95801 -2.92969,-14.64844 l 0,-187.5 q 0,-7.69043 2.92969,-14.46533 2.92969,-6.95801 8.05664,-11.90186 5.12695,-5.12695 11.90186,-8.05664 6.958,-3.11279 14.64843,-3.11279 l 149.9633815,0 q 7.6904295,0 14.4653325,3.11279 6.958007,2.92969 12.084961,8.05664 5.126953,4.94385 8.05664,11.90186 2.929688,6.7749 2.929688,14.46533 l 0,187.5 z m -187.500003,-187.5 0,187.5 149.9633815,0 0,-187.5 -149.9633815,0 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:375px;font-family:Aldrich;-inkscape-font-specification:Aldrich;fill:#aa0000"
+         id="path4145" />
+    </g>
     <flowRoot
        xml:space="preserve"
        id="flowRoot5721"
@@ -89,7 +81,7 @@
            height="290"
            x="180"
            y="18.661438" /></flowRegion><flowPara
-         id="flowPara5727"></flowPara></flowRoot>    <path
+         id="flowPara5727" /></flowRoot>    <path
        style="fill:#aa0000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 131.42857,945.21937 0,20 424.53825,-0.0867 20,-20 81.53317,0.25254 -38.92856,41.26266 39.16316,40.71439 -80.72404,-0.4604 -21.30637,-20.0905 -424.27561,-1.592 0,20 -79.999999,-40.00006 z"
        id="path5733"

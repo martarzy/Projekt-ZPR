@@ -16,17 +16,8 @@
    version="1.1"
    inkscape:version="0.91 r13725"
    sodipodi:docname="chance.svg">
-  <defs
-     id="defs5068">
-          <style
-       type="text/css"
-       id="style7">@font-face {
-  font-family: 'Aldrich';
-  font-style: normal;
-  font-weight: normal;
-  src: local('Aldrich'), local('aldrich'), url('https://fonts.gstatic.com/s/aldrich/v6/j-NnyokbAnhXANS2iZ6Jew.woff2') format('woff2');
-}
-</style></defs>
+  <defs id="defs5068">
+  </defs>
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -35,7 +26,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.98994949"
-     inkscape:cx="295.44666"
+     inkscape:cx="376.86571"
      inkscape:cy="326.24624"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -59,7 +50,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -68,19 +59,16 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,-343.70079)">
-    <flowRoot
-       xml:space="preserve"
-       id="flowRoot5935"
+    <g
+       transform="matrix(1.4411372,0,0,1.4411372,-110.80914,162.51334)"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:562.5px;line-height:125%;font-family:aldrich;-inkscape-font-specification:aldrich;letter-spacing:0px;word-spacing:0px;fill:#aa0000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       transform="matrix(1.4411372,0,0,1.4411372,-110.80914,162.51334)"><flowRegion
-         id="flowRegion5937"><rect
-           id="rect5939"
-           width="440"
-           height="630"
-           x="160"
-           y="48.661438"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:562.5px;font-family:aldrich;-inkscape-font-specification:aldrich;fill:#aa0000" /></flowRegion><flowPara
-         id="flowPara5941">?</flowPara></flowRoot>    <flowRoot
+       id="flowRoot5935">
+      <path
+         d="m 273.15918,382.96845 q 0,-11.53564 2.19727,-20.59937 2.47192,-9.06372 7.14111,-16.20483 4.66919,-7.14111 12.08496,-12.90893 7.69043,-6.04249 17.85278,-10.98633 l 72.50977,-34.88159 0,-58.5022 -134.85718,0 0,50.81177 -56.30493,0 0,-50.81177 q 0,-11.53565 4.39453,-21.698 4.39453,-10.43701 12.08496,-17.85278 7.69043,-7.69043 17.85278,-12.08496 10.43702,-4.66919 21.97266,-4.66919 l 134.85718,0 q 11.53564,0 21.698,4.66919 10.43701,4.39453 18.12744,12.08496 7.69043,7.41577 12.08496,17.85278 4.39453,10.16235 4.39453,21.698 l 0,48.33984 q 0,11.53565 -2.19727,20.59937 -2.19726,9.06372 -6.86645,16.47949 -4.66919,7.14111 -12.35962,12.90893 -7.41577,5.76783 -17.85278,10.98633 l -72.78443,34.60694 0,47.51587 -56.03027,0 0,-37.35352 0,0 z m -11.26099,101.34888 82.12281,0 0,82.1228 -82.12281,0 0,-82.1228 z"
+         style=""
+         id="path4144" />
+    </g>
+    <flowRoot
        xml:space="preserve"
        id="flowRoot5943"
        style="fill:black;stroke:none;stroke-opacity:1;stroke-width:1px;stroke-linejoin:miter;stroke-linecap:butt;fill-opacity:1;font-family:sans-serif;font-style:normal;font-weight:normal;font-size:40px;line-height:125%;letter-spacing:0px;word-spacing:0px"><flowRegion
@@ -90,5 +78,5 @@
            height="50"
            x="0"
            y="-1.338562" /></flowRegion><flowPara
-         id="flowPara5949"></flowPara></flowRoot>  </g>
+         id="flowPara5949" /></flowRoot>  </g>
 </svg>

@@ -16,17 +16,9 @@
    version="1.1"
    inkscape:version="0.91 r13725"
    sodipodi:docname="luxury_tax.svg">
-  <defs
-     id="defs4">
-          <style
-       type="text/css"
-       id="style7">@font-face {
-  font-family: 'Aldrich';
-  font-style: normal;
-  font-weight: normal;
-  src: local('Aldrich'), local('aldrich'), url('https://fonts.gstatic.com/s/aldrich/v6/j-NnyokbAnhXANS2iZ6Jew.woff2') format('woff2');
-}
-</style></defs>
+  <defs id="defs4">
+</style>
+  </defs>
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -35,7 +27,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.7"
-     inkscape:cx="209.57441"
+     inkscape:cx="-95.42559"
      inkscape:cy="424.91984"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -136,17 +128,41 @@
        id="path4144"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccccccccccc" />
-    <text
-       xml:space="preserve"
+    <g
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="218.8131"
-       y="621.62177"
-       id="text5230"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan5232"
-         x="218.8131"
-         y="621.62177"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:45px;font-family:aldrich;-inkscape-font-specification:aldrich;fill:#aa0000">MONOPOLY</tspan></text>
+       id="text5230">
+      <path
+         d="m 239.11583,621.62177 -11.75537,-23.09327 0,23.09327 -4.5044,0 0,-31.50879 4.92188,0 11.99707,23.73046 12.01904,-23.73046 4.8999,0 0,31.50879 -4.48242,0 0,-23.09327 -11.75537,23.09327 -1.34033,0 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:45px;font-family:aldrich;-inkscape-font-specification:aldrich;fill:#aa0000"
+         id="path4146" />
+      <path
+         d="m 291.78429,617.11737 q 0,0.92285 -0.35157,1.75781 -0.35156,0.81299 -0.96679,1.42823 -0.61524,0.61523 -1.4502,0.96679 -0.81299,0.35157 -1.73584,0.35157 l -17.9956,0 q -0.92286,0 -1.75782,-0.35157 -0.81298,-0.35156 -1.42822,-0.96679 -0.61523,-0.61524 -0.9668,-1.42823 -0.35156,-0.83496 -0.35156,-1.75781 l 0,-22.5 q 0,-0.92285 0.35156,-1.73584 0.35157,-0.83496 0.9668,-1.42822 0.61524,-0.61524 1.42822,-0.9668 0.83496,-0.37353 1.75782,-0.37353 l 17.9956,0 q 0.92285,0 1.73584,0.37353 0.83496,0.35156 1.4502,0.9668 0.61523,0.59326 0.96679,1.42822 0.35157,0.81299 0.35157,1.73584 l 0,22.5 z m -22.5,-22.5 0,22.5 17.9956,0 0,-22.5 -17.9956,0 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:45px;font-family:aldrich;-inkscape-font-specification:aldrich;fill:#aa0000"
+         id="path4148" />
+      <path
+         d="m 304.35265,621.62177 -4.5044,0 0,-31.50879 4.5044,0 18.94043,24.43359 0,-24.43359 4.50439,0 0,31.50879 -4.50439,0 -18.94043,-24.4336 0,24.4336 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:45px;font-family:aldrich;-inkscape-font-specification:aldrich;fill:#aa0000"
+         id="path4150" />
+      <path
+         d="m 362.8878,617.11737 q 0,0.92285 -0.35156,1.75781 -0.35156,0.81299 -0.9668,1.42823 -0.61523,0.61523 -1.45019,0.96679 -0.81299,0.35157 -1.73584,0.35157 l -17.99561,0 q -0.92285,0 -1.75781,-0.35157 -0.81299,-0.35156 -1.42822,-0.96679 -0.61524,-0.61524 -0.9668,-1.42823 -0.35156,-0.83496 -0.35156,-1.75781 l 0,-22.5 q 0,-0.92285 0.35156,-1.73584 0.35156,-0.83496 0.9668,-1.42822 0.61523,-0.61524 1.42822,-0.9668 0.83496,-0.37353 1.75781,-0.37353 l 17.99561,0 q 0.92285,0 1.73584,0.37353 0.83496,0.35156 1.45019,0.9668 0.61524,0.59326 0.9668,1.42822 0.35156,0.81299 0.35156,1.73584 l 0,22.5 z m -22.5,-22.5 0,22.5 17.99561,0 0,-22.5 -17.99561,0 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:45px;font-family:aldrich;-inkscape-font-specification:aldrich;fill:#aa0000"
+         id="path4152" />
+      <path
+         d="m 370.95177,621.62177 0,-31.50879 17.24853,0 q 7.64649,0 7.64649,7.66845 l 0,4.48242 q 0,7.66846 -7.64649,7.66846 l -12.74414,0 0,11.68946 -4.50439,0 z m 4.50439,-16.19385 12.50244,0 q 1.80176,0 2.59278,-0.79102 0.79101,-0.79101 0.79101,-2.59277 l 0,-4.04297 q 0,-1.80176 -0.79101,-2.59277 -0.79102,-0.79102 -2.59278,-0.79102 l -12.50244,0 0,10.81055 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:45px;font-family:aldrich;-inkscape-font-specification:aldrich;fill:#aa0000"
+         id="path4154" />
+      <path
+         d="m 429.15733,617.11737 q 0,0.92285 -0.35156,1.75781 -0.35156,0.81299 -0.9668,1.42823 -0.61523,0.61523 -1.45019,0.96679 -0.81299,0.35157 -1.73584,0.35157 l -17.99561,0 q -0.92285,0 -1.75781,-0.35157 -0.81299,-0.35156 -1.42822,-0.96679 -0.61524,-0.61524 -0.9668,-1.42823 -0.35156,-0.83496 -0.35156,-1.75781 l 0,-22.5 q 0,-0.92285 0.35156,-1.73584 0.35156,-0.83496 0.9668,-1.42822 0.61523,-0.61524 1.42822,-0.9668 0.83496,-0.37353 1.75781,-0.37353 l 17.99561,0 q 0.92285,0 1.73584,0.37353 0.83496,0.35156 1.45019,0.9668 0.61524,0.59326 0.9668,1.42822 0.35156,0.81299 0.35156,1.73584 l 0,22.5 z m -22.5,-22.5 0,22.5 17.99561,0 0,-22.5 -17.99561,0 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:45px;font-family:aldrich;-inkscape-font-specification:aldrich;fill:#aa0000"
+         id="path4156" />
+      <path
+         d="m 441.72569,590.11298 0,27.00439 16.19385,0 0,4.5044 -20.69824,0 0,-31.50879 4.50439,0 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:45px;font-family:aldrich;-inkscape-font-specification:aldrich;fill:#aa0000"
+         id="path4158" />
+      <path
+         d="m 460.09483,590.11298 9.1626,14.72168 9.18457,-14.72168 5.22949,0 -12.15088,19.00634 0,12.50245 -4.50439,0 0,-12.50245 -12.15088,-19.00634 5.22949,0 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:45px;font-family:aldrich;-inkscape-font-specification:aldrich;fill:#aa0000"
+         id="path4160" />
+    </g>
   </g>
 </svg>

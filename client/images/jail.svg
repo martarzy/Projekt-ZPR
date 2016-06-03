@@ -16,17 +16,9 @@
    version="1.1"
    inkscape:version="0.91 r13725"
    sodipodi:docname="jail.svg">
-  <defs
-     id="defs4">
-          <style
-       type="text/css"
-       id="style7">@font-face {
-  font-family: 'Aldrich';
-  font-style: normal;
-  font-weight: normal;
-  src: local('Aldrich'), local('aldrich'), url('https://fonts.gstatic.com/s/aldrich/v6/j-NnyokbAnhXANS2iZ6Jew.woff2') format('woff2');
-}
-</style></defs>
+  <defs id="defs4">
+</style>
+  </defs>
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -35,7 +27,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.7"
-     inkscape:cx="505.63916"
+     inkscape:cx="200.63916"
      inkscape:cy="419.76674"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -75,7 +67,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -94,19 +86,31 @@
          sodipodi:role="line"
          id="tspan5220"
          x="260"
-         y="697.36218"></tspan></text>
-    <flowRoot
-       xml:space="preserve"
-       id="flowRoot5257"
+         y="697.36218" /></text>
+    <g
+       transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,-237.58562,509.84792)"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:150px;line-height:125%;font-family:aldrich;-inkscape-font-specification:aldrich;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,-237.58562,509.84792)"><flowRegion
-         id="flowRegion5259"><rect
-           id="rect5261"
-           width="1194.2856"
-           height="517.14282"
-           x="82.85714"
-           y="177.23285"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:150px;font-family:aldrich;-inkscape-font-specification:aldrich" /></flowRegion><flowPara
-         id="flowPara5263"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:150px;font-family:aldrich;-inkscape-font-specification:aldrich;fill:#aa0000">  jail:</flowPara></flowRoot>  </g>
+       id="flowRoot5257">
+      <path
+         d="m 185.83594,332.37199 0,-95.06836 14.42871,0 0,95.06836 q 0,3.00293 -1.17188,5.63965 -1.09863,2.63672 -3.07617,4.54101 -1.9043,1.97754 -4.54101,3.07618 -2.63672,1.17187 -5.63965,1.17187 l -11.2793,0 0,-14.42871 11.2793,0 z m -0.73242,-125.09766 15.89355,0 0,15.01465 -15.89355,0 0,-15.01465 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:150px;font-family:aldrich;-inkscape-font-specification:aldrich;fill:#aa0000"
+         id="path4142" />
+      <path
+         d="m 224.94727,281.24894 q 0,-3.00293 1.09863,-5.5664 1.17187,-2.63672 3.07617,-4.61426 1.97754,-1.97754 4.61426,-3.07617 2.63672,-1.17188 5.5664,-1.17188 l 37.20704,0 0,-15.08789 -47.09473,0 0,-14.42871 47.09473,0 q 3.00293,0 5.63964,1.17188 2.63672,1.09863 4.54102,3.07617 1.97754,1.90429 3.07617,4.54101 1.17188,2.63672 1.17188,5.63965 l 0,63.57422 -14.42871,0 0,-13.18359 q -0.21973,2.70996 -1.46485,5.12695 -1.24512,2.41699 -3.22265,4.24805 -1.9043,1.75781 -4.39454,2.7832 -2.49023,1.02539 -5.27343,1.02539 l -22.85157,0 q -2.92968,0 -5.5664,-1.09863 -2.63672,-1.17188 -4.61426,-3.07617 -1.9043,-1.97754 -3.07617,-4.61426 -1.09863,-2.63672 -1.09863,-5.63965 l 0,-19.62891 z m 14.35546,19.62891 37.20704,0 0,-19.62891 -37.20704,0 0,19.62891 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:150px;font-family:aldrich;-inkscape-font-specification:aldrich;fill:#aa0000"
+         id="path4144" />
+      <path
+         d="m 330.0498,237.30363 0,78.00293 -14.42871,0 0,-78.00293 14.42871,0 z m -15.16113,-30.0293 15.89356,0 0,15.01465 -15.89356,0 0,-15.01465 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:150px;font-family:aldrich;-inkscape-font-specification:aldrich;fill:#aa0000"
+         id="path4146" />
+      <path
+         d="m 369.08789,207.27433 0,108.03223 -14.35547,0 0,-108.03223 14.35547,0 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:150px;font-family:aldrich;-inkscape-font-specification:aldrich;fill:#aa0000"
+         id="path4148" />
+      <path
+         d="m 393.11133,293.40715 21.89941,0 0,21.89941 -21.89941,0 0,-21.89941 z m 0,-56.10352 21.89941,0 0,21.89942 -21.89941,0 0,-21.89942 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:150px;font-family:aldrich;-inkscape-font-specification:aldrich;fill:#aa0000"
+         id="path4150" />
+    </g>
+  </g>
 </svg>

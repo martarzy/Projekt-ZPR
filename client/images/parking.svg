@@ -16,17 +16,9 @@
    version="1.1"
    inkscape:version="0.91 r13725"
    sodipodi:docname="parking.svg">
-  <defs
-     id="defs5068">
-          <style
-       type="text/css"
-       id="style7">@font-face {
-  font-family: 'Aldrich';
-  font-style: normal;
-  font-weight: normal;
-  src: local('Aldrich'), local('aldrich'), url('https://fonts.gstatic.com/s/aldrich/v6/j-NnyokbAnhXANS2iZ6Jew.woff2') format('woff2');
-}
-</style></defs>
+  <defs id="defs5068">
+</style>
+  </defs>
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -35,7 +27,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.98994949"
-     inkscape:cx="295.44666"
+     inkscape:cx="79.779091"
      inkscape:cy="326.24624"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -59,7 +51,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -78,130 +70,163 @@
        style="opacity:1;fill:#ffcc00;fill-opacity:1;stroke:none;stroke-width:10;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 341.34397,943.43555 -143.50382,-143.50382 281.3807,-281.3807 143.50382,143.50382 -6.47447,6.47447 -137.81524,-137.81524 -63.08338,63.08338 138.01256,137.61792 -6.10228,6.10228 -137.71209,-138.10673 -63.08339,63.08338 c 0,0 111.56344,111.73087 137.739,138.07983 l -5.65046,5.65046 -137.7603,-137.7603 -60.48799,60.07765 137.96547,137.96547 -5.48229,5.48229 -138.16615,-137.77151 -65.88283,66.29315 137.96098,137.56636 -5.35784,5.35784 z"
        id="rect5754-6" />
-    <flowRoot
-       xml:space="preserve"
-       id="flowRoot5842"
+    <g
+       transform="matrix(-0.57401529,0.57401529,-0.57401529,-0.57401529,513.05113,850.58898)"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Aldrich;-inkscape-font-specification:Aldrich;letter-spacing:0px;word-spacing:0px;fill:#ffcc00;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       transform="matrix(-0.57401529,0.57401529,-0.57401529,-0.57401529,513.05113,850.58898)"><flowRegion
-         id="flowRegion5844"><rect
-           id="rect5846"
-           width="60"
-           height="60"
-           x="140"
-           y="-542.98242"
-           transform="scale(1,-1)"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Aldrich;-inkscape-font-specification:Aldrich;fill:#ffcc00" /></flowRegion><flowPara
-         id="flowPara5848">10</flowPara></flowRoot>    <flowRoot
-       xml:space="preserve"
-       id="flowRoot5850"
+       id="flowRoot5842">
+      <path
+         d="m 150,491.79438 0,28.00781 -4.00391,0 0,-24.0039 -4.80468,0 0,-4.00391 8.80859,0 z"
+         style=""
+         id="path4198" />
+      <path
+         d="m 179.58984,515.79829 q 0,0.82031 -0.3125,1.5625 -0.3125,0.72265 -0.85937,1.26953 -0.54688,0.54687 -1.28906,0.85937 -0.72266,0.3125 -1.54297,0.3125 l -14.00391,0 q -0.82031,0 -1.5625,-0.3125 -0.72266,-0.3125 -1.26953,-0.85937 -0.54688,-0.54688 -0.85938,-1.26953 -0.3125,-0.74219 -0.3125,-1.5625 l 0,-20 q 0,-0.82032 0.3125,-1.54297 0.3125,-0.74219 0.85938,-1.26953 0.54687,-0.54688 1.26953,-0.85938 0.74219,-0.33203 1.5625,-0.33203 l 14.00391,0 q 0.82031,0 1.54297,0.33203 0.74218,0.3125 1.28906,0.85938 0.54687,0.52734 0.85937,1.26953 0.3125,0.72265 0.3125,1.54297 l 0,20 z m -18.00781,-20 0,20 14.00391,0 0,-20 -14.00391,0 z"
+         style=""
+         id="path4200" />
+    </g>
+    <g
+       transform="matrix(-0.57401529,0.57401529,-0.57401529,-0.57401529,651.01819,712.57704)"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Aldrich;-inkscape-font-specification:Aldrich;letter-spacing:0px;word-spacing:0px;fill:#ffcc00;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       transform="matrix(-0.57401529,0.57401529,-0.57401529,-0.57401529,651.01819,712.57704)"><flowRegion
-         id="flowRegion5852"><rect
-           id="rect5854"
-           width="60"
-           height="60"
-           x="260"
-           y="-542.98242"
-           transform="scale(1,-1)"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Aldrich;-inkscape-font-specification:Aldrich;fill:#ffcc00" /></flowRegion><flowPara
-         id="flowPara5856">11</flowPara></flowRoot>    <flowRoot
-       xml:space="preserve"
-       id="flowRoot5858"
+       id="flowRoot5850">
+      <path
+         d="m 270,491.79438 0,28.00781 -4.00391,0 0,-24.0039 -4.80468,0 0,-4.00391 8.80859,0 z"
+         style=""
+         id="path4203" />
+      <path
+         d="m 283.98437,491.79438 0,28.00781 -4.0039,0 0,-24.0039 -4.80469,0 0,-4.00391 8.80859,0 z"
+         style=""
+         id="path4205" />
+    </g>
+    <g
+       transform="matrix(-0.57401529,0.57401529,-0.57401529,-0.57401529,787.47978,575.51009)"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Aldrich;-inkscape-font-specification:Aldrich;letter-spacing:0px;word-spacing:0px;fill:#ffcc00;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       transform="matrix(-0.57401529,0.57401529,-0.57401529,-0.57401529,787.47978,575.51009)"><flowRegion
-         id="flowRegion5860"><rect
-           id="rect5862"
-           width="60"
-           height="60"
-           x="380"
-           y="-542.98242"
-           transform="scale(1,-1)"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Aldrich;-inkscape-font-specification:Aldrich;fill:#ffcc00" /></flowRegion><flowPara
-         id="flowPara5864">12</flowPara></flowRoot>    <flowRoot
-       xml:space="preserve"
-       id="flowRoot5866"
+       id="flowRoot5858">
+      <path
+         d="m 390,491.79438 0,28.00781 -4.00391,0 0,-24.0039 -4.80468,0 0,-4.00391 8.80859,0 z"
+         style=""
+         id="path4208" />
+      <path
+         d="m 401.19141,495.79829 0,3.61328 -4.00391,0 0,-3.61328 q 0,-0.82032 0.3125,-1.54297 0.3125,-0.74219 0.85937,-1.26953 0.54688,-0.54688 1.26954,-0.85938 0.74218,-0.33203 1.5625,-0.33203 l 12.67578,0 q 0.82031,0 1.54297,0.33203 0.74218,0.3125 1.26953,0.85938 0.54687,0.52734 0.85937,1.26953 0.33203,0.72265 0.33203,1.54297 l 0,5.11718 q 0,0.82032 -0.15625,1.46485 -0.15625,0.64453 -0.50781,1.17187 -0.33203,0.50781 -0.85937,0.91797 -0.52735,0.41016 -1.28907,0.78125 l -13.86718,6.50391 0,4.04297 13.18359,0 0,-3.59375 4.00391,0 0,7.59765 -21.19141,0 0,-7.36328 q 0,-0.82031 0.15625,-1.46484 0.17578,-0.64453 0.50781,-1.15235 0.33203,-0.50781 0.85938,-0.91797 0.54687,-0.42968 1.26953,-0.78125 l 13.88672,-6.52343 0,-5.80078 -12.67578,0 z"
+         style=""
+         id="path4210" />
+    </g>
+    <g
+       transform="matrix(-0.57401529,0.57401529,-0.57401529,-0.57401529,926.84832,435.15183)"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Aldrich;-inkscape-font-specification:Aldrich;letter-spacing:0px;word-spacing:0px;fill:#ffcc00;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       transform="matrix(-0.57401529,0.57401529,-0.57401529,-0.57401529,926.84832,435.15183)"><flowRegion
-         id="flowRegion5868"><rect
-           id="rect5870"
-           width="60"
-           height="60"
-           x="500"
-           y="-542.98242"
-           transform="scale(1,-1)"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Aldrich;-inkscape-font-specification:Aldrich;fill:#ffcc00" /></flowRegion><flowPara
-         id="flowPara5872">13</flowPara></flowRoot>    <flowRoot
-       xml:space="preserve"
-       id="flowRoot5874"
+       id="flowRoot5866">
+      <path
+         d="m 510,491.79438 0,28.00781 -4.00391,0 0,-24.0039 -4.80468,0 0,-4.00391 8.80859,0 z"
+         style=""
+         id="path4213" />
+      <path
+         d="m 515.97656,511.32563 3.92578,0 0,1.48437 q 0,1.58204 0.70313,2.32422 0.70312,0.74219 2.30469,0.74219 l 8.0664,0 q 1.60156,0 2.30469,-0.74219 0.70312,-0.74218 0.70312,-2.32422 l 0,-2.16796 q 0,-1.60157 -0.70312,-2.32422 -0.70313,-0.72266 -2.30469,-0.72266 l -8.28125,0 0,-3.90625 8.16406,0 q 1.46485,-0.0586 2.08985,-0.78125 0.64453,-0.74219 0.64453,-2.26562 l 0,-1.83594 q 0,-1.60156 -0.72266,-2.34375 -0.70312,-0.74219 -2.28515,-0.74219 l -7.28516,0 q -1.58203,0 -2.28516,0.74219 -0.70312,0.74219 -0.70312,2.34375 l 0,1.48437 -3.92578,0 0,-1.67968 q 0,-6.81641 6.79687,-6.81641 l 7.51953,0 q 3.45704,0 5.11719,1.67969 1.67969,1.67968 1.67969,5.13672 l 0,0.50781 q 0,2.36328 -0.83984,3.90625 -0.82032,1.52344 -2.40235,2.26562 1.77735,0.52735 2.71485,2.10938 0.9375,1.58203 0.9375,4.19922 l 0,1.40625 q 0,6.79687 -6.79688,6.79687 l -8.32031,0 q -6.81641,0 -6.81641,-6.79687 l 0,-1.67969 z"
+         style=""
+         id="path4215" />
+    </g>
+    <g
+       transform="matrix(0.57401529,-0.57401529,0.57401529,0.57401529,-25.602668,690.55464)"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Aldrich;-inkscape-font-specification:Aldrich;letter-spacing:0px;word-spacing:0px;fill:#ffcc00;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       transform="matrix(0.57401529,-0.57401529,0.57401529,0.57401529,-25.602668,690.55464)"><flowRegion
-         id="flowRegion5876"><rect
-           id="rect5878"
-           width="60"
-           height="60"
-           x="140"
-           y="468.66144"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Aldrich;-inkscape-font-specification:Aldrich;fill:#ffcc00" /></flowRegion><flowPara
-         id="flowPara5880">14</flowPara></flowRoot>    <text
-       xml:space="preserve"
+       id="flowRoot5874">
+      <path
+         d="m 150,477.47407 0,28.00781 -4.00391,0 0,-24.00391 -4.80468,0 0,-4.0039 8.80859,0 z"
+         style=""
+         id="path4218" />
+      <path
+         d="m 154.78516,495.83344 13.80859,-18.35937 4.70703,0 0,18.35937 3.76953,0 0,3.84766 -3.76953,0 0,5.80078 -4.00391,0 0,-5.80078 -14.51171,0 0,-3.84766 z m 14.51171,0 0,-13.51562 -10.15625,13.51562 10.15625,0 z"
+         style=""
+         id="path4220" />
+    </g>
+    <g
+       transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,0,0)"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:32.47120667px;line-height:125%;font-family:Aldrich;-inkscape-font-specification:Aldrich;letter-spacing:0px;word-spacing:0px;fill:#ffcc00;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="-287.21906"
-       y="881.24261"
-       id="text5882"
-       sodipodi:linespacing="125%"
-       transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,0,0)"><tspan
-         sodipodi:role="line"
-         id="tspan5884"
-         x="-287.21906"
-         y="881.24261">15</tspan></text>
-    <flowRoot
-       xml:space="preserve"
-       id="flowRoot5886"
+       id="text5882">
+      <path
+         d="m -279.10125,858.50643 0,22.73618 -3.2503,0 0,-19.48589 -3.90035,0 0,-3.25029 7.15065,0 z"
+         style=""
+         id="path4223" />
+      <path
+         d="m -257.0944,875.72505 q -0.0476,2.77464 -1.39525,4.15403 -1.34768,1.36353 -4.12232,1.36353 l -6.1042,0 q -5.53343,0 -5.53343,-5.51756 l 0,-1.36354 3.18687,0 0,1.20499 q 0,1.28426 0.57079,1.88675 0.57078,0.60249 1.8709,0.60249 l 5.89809,0 q 1.30011,0 1.8709,-0.60249 0.57078,-0.60249 0.57078,-1.88675 l 0,-3.06004 q 0,-1.28426 -0.57078,-1.87089 -0.57079,-0.6025 -1.8709,-0.6025 l -10.87659,0 0,-11.52664 15.9185,0 0,3.25029 -12.66821,0 0,5.10534 7.73728,0 q 2.7905,0 4.15403,1.36353 1.36354,1.34768 1.36354,4.15403 l 0,3.34543 z"
+         style=""
+         id="path4225" />
+    </g>
+    <g
+       transform="matrix(0.57401529,-0.57401529,0.57401529,0.57401529,-24.782646,689.73462)"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Aldrich;-inkscape-font-specification:Aldrich;letter-spacing:0px;word-spacing:0px;fill:#ffcc00;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       transform="matrix(0.57401529,-0.57401529,0.57401529,0.57401529,-24.782646,689.73462)"><flowRegion
-         id="flowRegion5888"><rect
-           id="rect5890"
-           width="60"
-           height="60"
-           x="380"
-           y="468.66144"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Aldrich;-inkscape-font-specification:Aldrich;fill:#ffcc00" /></flowRegion><flowPara
-         id="flowPara5892">16</flowPara></flowRoot>    <flowRoot
-       xml:space="preserve"
-       id="flowRoot5894"
+       id="flowRoot5886">
+      <path
+         d="m 390,477.47407 0,28.00781 -4.00391,0 0,-24.00391 -4.80468,0 0,-4.0039 8.80859,0 z"
+         style=""
+         id="path4228" />
+      <path
+         d="m 397.57812,481.47797 q 0,-0.82031 0.3125,-1.54297 0.3125,-0.74218 0.85938,-1.26953 0.54687,-0.54687 1.26953,-0.85937 0.74219,-0.33203 1.5625,-0.33203 l 12.79297,0 q 0.82031,0 1.54297,0.33203 0.74219,0.3125 1.28906,0.85937 0.54688,0.52735 0.85938,1.26953 0.3125,0.72266 0.3125,1.54297 l 0,3.61328 -4.00391,0 0,-3.61328 -12.79297,0 0,8.00782 12.79297,0 q 0.82031,0 1.54297,0.3125 0.74219,0.3125 1.28906,0.85937 0.54688,0.54688 0.85938,1.28906 0.3125,0.72266 0.3125,1.54297 l 0,7.98828 q 0,0.82032 -0.3125,1.5625 -0.3125,0.72266 -0.85938,1.26953 -0.54687,0.54688 -1.28906,0.85938 -0.72266,0.3125 -1.54297,0.3125 l -12.79297,0 q -0.82031,0 -1.5625,-0.3125 -0.72266,-0.3125 -1.26953,-0.85938 -0.54688,-0.54687 -0.85938,-1.26953 -0.3125,-0.74218 -0.3125,-1.5625 l 0,-20 z m 4.00391,12.01172 0,7.98828 12.79297,0 0,-7.98828 -12.79297,0 z"
+         style=""
+         id="path4230" />
+    </g>
+    <g
+       transform="matrix(0.57401529,-0.57401529,0.57401529,0.57401529,-24.782651,691.37466)"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Aldrich;-inkscape-font-specification:Aldrich;letter-spacing:0px;word-spacing:0px;fill:#ffcc00;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       transform="matrix(0.57401529,-0.57401529,0.57401529,0.57401529,-24.782651,691.37466)"><flowRegion
-         id="flowRegion5896"><rect
-           id="rect5898"
-           width="60"
-           height="60"
-           x="500"
-           y="468.66144"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Aldrich;-inkscape-font-specification:Aldrich;fill:#ffcc00" /></flowRegion><flowPara
-         id="flowPara5900">17</flowPara></flowRoot>    <text
-       xml:space="preserve"
+       id="flowRoot5894">
+      <path
+         d="m 510,477.47407 0,28.00781 -4.00391,0 0,-24.00391 -4.80468,0 0,-4.0039 8.80859,0 z"
+         style=""
+         id="path4233" />
+      <path
+         d="m 518.67187,505.48188 12.5586,-24.00391 -15.64453,0 0,-4.0039 21.60156,0 0,1.21093 -13.88672,26.79688 -4.62891,0 z"
+         style=""
+         id="path4235" />
+    </g>
+    <g
+       transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,0,0)"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Aldrich;-inkscape-font-specification:Aldrich;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="-327.34155"
-       y="475.34869"
-       id="text5904"
-       sodipodi:linespacing="125%"
-       transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,0,0)"><tspan
-         sodipodi:role="line"
-         id="tspan5906"
-         x="-327.34155"
-         y="475.34869"
-         style="font-size:70px">FREE</tspan></text>
-    <flowRoot
-       xml:space="preserve"
-       id="flowRoot5908"
+       id="text5904">
+      <path
+         d="m -321.05249,426.33502 35.71777,0 0,7.00684 -28.71093,0 0,14.01367 24.50683,0 0,7.00684 -24.50683,0 0,20.98632 -7.00684,0 0,-49.01367 z"
+         style="font-size:70px"
+         id="path4174" />
+      <path
+         d="m -236.79956,443.83502 q 0,10.25391 -8.75,11.68946 l 9.22852,19.82421 -7.75879,0 -9.0918,-19.58496 -15.34668,0 0,19.58496 -7.00684,0 0,-49.01367 26.83106,0 q 11.89453,0 11.89453,11.92871 l 0,5.57129 z m -31.71875,4.92188 19.44824,0 q 2.80274,0 4.0332,-1.23047 1.23047,-1.23047 1.23047,-4.0332 l 0,-4.8877 q 0,-2.80273 -1.23047,-4.0332 -1.23046,-1.23047 -4.0332,-1.23047 l -19.44824,0 0,15.41504 z"
+         style="font-size:70px"
+         id="path4176" />
+      <path
+         d="m -225.07593,426.33502 35.71778,0 0,7.00684 -28.71094,0 0,14.01367 24.50683,0 0,7.00684 -24.50683,0 0,13.97949 28.71094,0 0,7.00683 -35.71778,0 0,-49.01367 z"
+         style="font-size:70px"
+         id="path4178" />
+      <path
+         d="m -178.86499,426.33502 35.71777,0 0,7.00684 -28.71093,0 0,14.01367 24.50683,0 0,7.00684 -24.50683,0 0,13.97949 28.71093,0 0,7.00683 -35.71777,0 0,-49.01367 z"
+         style="font-size:70px"
+         id="path4180" />
+    </g>
+    <g
+       transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,-134.95651,719.66844)"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       transform="matrix(0.70710678,-0.70710678,0.70710678,0.70710678,-134.95651,719.66844)"><flowRegion
-         id="flowRegion5910"><rect
-           id="rect5912"
-           width="340"
-           height="80"
-           x="220"
-           y="528.66144" /></flowRegion><flowPara
-         id="flowPara5914"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:70px;font-family:aldrich;-inkscape-font-specification:aldrich">PARKING</flowPara></flowRoot>  </g>
+       id="flowRoot5908">
+      <path
+         d="m 226.28906,593.09671 0,-49.01367 26.83106,0 q 11.89453,0 11.89453,11.92871 l 0,6.97265 q 0,11.92871 -11.89453,11.92871 l -19.82422,0 0,18.1836 -7.00684,0 z m 7.00684,-25.19043 19.44824,0 q 2.80273,0 4.0332,-1.23047 1.23047,-1.23047 1.23047,-4.0332 l 0,-6.28907 q 0,-2.80273 -1.23047,-4.0332 -1.23047,-1.23047 -4.0332,-1.23047 l -19.44824,0 0,16.81641 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:70px;font-family:aldrich;-inkscape-font-specification:aldrich"
+         id="path4183" />
+      <path
+         d="m 292.3584,544.08304 18.90137,49.01367 -7.00684,0 -4.34082,-11.2793 -22.11426,0 -4.34082,11.2793 -7.00683,0 18.90136,-49.01367 7.00684,0 z m -11.89453,30.72753 16.74804,0 -8.33984,-21.60156 -8.4082,21.60156 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:70px;font-family:aldrich;-inkscape-font-specification:aldrich"
+         id="path4185" />
+      <path
+         d="m 358.53027,561.58304 q 0,10.2539 -8.75,11.68945 l 9.22852,19.82422 -7.75879,0 -9.0918,-19.58496 -15.34668,0 0,19.58496 -7.00683,0 0,-49.01367 26.83105,0 q 11.89453,0 11.89453,11.92871 l 0,5.57129 z m -31.71875,4.92187 19.44825,0 q 2.80273,0 4.0332,-1.23047 1.23047,-1.23047 1.23047,-4.0332 l 0,-4.8877 q 0,-2.80273 -1.23047,-4.0332 -1.23047,-1.23047 -4.0332,-1.23047 l -19.44825,0 0,15.41504 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:70px;font-family:aldrich;-inkscape-font-specification:aldrich"
+         id="path4187" />
+      <path
+         d="m 377.26074,544.08304 0,21.15722 23.37891,-21.15722 9.87793,0 -26.52344,24.02832 27.58301,24.98535 -9.87793,0 -24.43848,-22.0459 0,22.0459 -7.00683,0 0,-49.01367 7.00683,0 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:70px;font-family:aldrich;-inkscape-font-specification:aldrich"
+         id="path4189" />
+      <path
+         d="m 424.97559,544.08304 0,49.01367 -7.00684,0 0,-49.01367 7.00684,0 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:70px;font-family:aldrich;-inkscape-font-specification:aldrich"
+         id="path4191" />
+      <path
+         d="m 444.52637,593.09671 -7.00684,0 0,-49.01367 7.00684,0 29.46289,38.00781 0,-38.00781 7.00683,0 0,49.01367 -7.00683,0 -29.46289,-38.00782 0,38.00782 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:70px;font-family:aldrich;-inkscape-font-specification:aldrich"
+         id="path4193" />
+      <path
+         d="m 493.57422,551.08987 q 0,-1.43555 0.54687,-2.70019 0.54688,-1.29883 1.50391,-2.22168 0.95703,-0.95703 2.22168,-1.50391 1.29883,-0.58105 2.73437,-0.58105 l 26.5918,0 q 1.43555,0 2.7002,0.58105 1.29882,0.54688 2.25586,1.50391 0.95703,0.92285 1.5039,2.22168 0.54688,1.26464 0.54688,2.70019 l 0,6.32324 -7.00684,0 0,-6.32324 -26.5918,0 0,35 26.5918,0 0,-11.89453 -13.2959,0 0,-7.00684 20.30274,0 0,18.90137 q 0,1.43555 -0.54688,2.73438 -0.54687,1.26464 -1.5039,2.22168 -0.95704,0.95703 -2.25586,1.5039 -1.26465,0.54688 -2.7002,0.54688 l -26.5918,0 q -1.43554,0 -2.73437,-0.54688 -1.26465,-0.54687 -2.22168,-1.5039 -0.95703,-0.95704 -1.50391,-2.22168 -0.54687,-1.29883 -0.54687,-2.73438 l 0,-35 z"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:70px;font-family:aldrich;-inkscape-font-specification:aldrich"
+         id="path4195" />
+    </g>
+  </g>
 </svg>

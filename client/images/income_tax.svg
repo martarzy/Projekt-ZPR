@@ -16,17 +16,8 @@
    version="1.1"
    inkscape:version="0.91 r13725"
    sodipodi:docname="income_tax.svg">
-  <defs
-     id="defs4">
-          <style
-       type="text/css"
-       id="style7">@font-face {
-  font-family: 'Aldrich';
-  font-style: normal;
-  font-weight: normal;
-  src: local('Aldrich'), local('aldrich'), url('https://fonts.gstatic.com/s/aldrich/v6/j-NnyokbAnhXANS2iZ6Jew.woff2') format('woff2');
-}
-</style></defs>
+  <defs id="defs4">
+  </defs>
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -35,7 +26,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.35"
-     inkscape:cx="465.49361"
+     inkscape:cx="-144.50639"
      inkscape:cy="566.61736"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -59,7 +50,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -411,16 +402,13 @@
        x="76.868011"
        y="485.79361"
        ry="5" />
-    <text
-       xml:space="preserve"
+    <g
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:180px;line-height:125%;font-family:aldrich;-inkscape-font-specification:aldrich;letter-spacing:0px;word-spacing:0px;fill:#ffcc00;fill-opacity:1;stroke:#000000;stroke-width:1.0629921;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       x="240.76501"
-       y="660.27008"
-       id="text4735-4-6"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan4737-8-58"
-         x="240.76501"
-         y="660.27008">$</tspan></text>
+       id="text4735-4-6">
+      <path
+         d="m 253.33337,626.08063 17.49024,0 0,16.17187 24.87305,0 0,-35.94726 -22.5,0 q -3.69141,0 -7.03125,-1.40625 -3.25196,-1.49414 -5.7129,-3.86719 -2.46093,-2.46094 -3.86718,-5.71289 -1.40625,-3.33985 -1.40625,-7.03125 l 0,-36.03516 q 0,-3.6914 1.40625,-6.94336 1.40625,-3.33984 3.86718,-5.71289 2.46094,-2.46094 5.7129,-3.86719 3.33984,-1.49414 7.03125,-1.49414 l 22.5,0 0,-17.92968 16.17187,0 0,17.92968 22.5,0 q 3.69141,0 6.94336,1.49414 3.33984,1.40625 5.80078,3.86719 2.46094,2.37305 3.86719,5.71289 1.40625,3.25196 1.40625,6.94336 l 0,16.25977 -17.49024,0 0,-16.25977 -23.02734,0 0,36.03516 22.5,0 q 3.69141,0 6.94336,1.40625 3.33984,1.40625 5.80078,3.86719 2.46094,2.46093 3.86719,5.80078 1.40625,3.25195 1.40625,6.94336 l 0,35.94726 q 0,3.69141 -1.40625,7.03125 -1.40625,3.25196 -3.86719,5.71289 -2.46094,2.46094 -5.80078,3.86719 -3.25195,1.40625 -6.94336,1.40625 l -22.5,0 0,18.01758 -16.17187,0 0,-18.01758 -24.34571,0 q -3.6914,0 -7.03125,-1.40625 -3.25195,-1.40625 -5.71289,-3.86719 -2.37305,-2.46093 -3.86719,-5.71289 -1.40625,-3.33984 -1.40625,-7.03125 l 0,-16.17187 z m 19.24805,-37.79297 23.11524,0 0,-36.03516 -23.11524,0 0,36.03516 z m 39.28711,18.01758 0,35.94726 23.02734,0 0,-35.94726 -23.02734,0 z"
+         style=""
+         id="path4197" />
+    </g>
   </g>
 </svg>

@@ -16,17 +16,8 @@
    version="1.1"
    inkscape:version="0.91 r13725"
    sodipodi:docname="water_works.svg">
-  <defs
-     id="defs4">
-          <style
-       type="text/css"
-       id="style7">@font-face {
-  font-family: 'Aldrich';
-  font-style: normal;
-  font-weight: normal;
-  src: local('Aldrich'), local('aldrich'), url('https://fonts.gstatic.com/s/aldrich/v6/j-NnyokbAnhXANS2iZ6Jew.woff2') format('woff2');
-}
-</style></defs>
+  <defs id="defs4">
+  </defs>
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
