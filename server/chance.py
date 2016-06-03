@@ -52,6 +52,8 @@ class ChanceStack:
 
         self.cards.append(MoveCard(2))
         self.cards.append(MoveCard(4))
+        self.cards.append(MoveCard(-2))
+        self.cards.append(MoveCard(-4))
 
         self.cards.append(CashCard(50, 'birthday'))
         self.cards.append(CashCard(100, 'investment'))

@@ -155,18 +155,8 @@ class GameManager:
 
     def roll_dice(self, player):
         player.last_roll = self.generate_roll()
-        msg = dict(message='playerMove', player=player.name, move=player.last_roll)
-        self.broadcast(msg)
-        player.field_no += player.last_roll
-        if player.field_no >= 40:
-            player.cash += 400
-            player.field_no -= 40
-            self.broadcast_cash_info(player)
-        self.stay_fee(player)
-        if self.fields[player.field_no].group_name == 'Chance':
-            self.chance(player)
-        elif self.fields[player.field_no].group_name == 'Go to jail':
-            player.goto_jail()
+        self.broadcast({'message': 'playerMove', 'player': player.name, 'move': player.last_roll})
+        self.move(player, player.last_roll)
 
     @staticmethod
     def generate_roll():
@@ -214,8 +204,7 @@ class GameManager:
     def buy_field(self, player):
         field = self.fields[player.field_no]
         if field.buyable and field.owner is None and player.cash >= field.price:
-            player.cash -= field.price
-            self.broadcast_cash_info(player)
+            self.add_cash(player, -field.price)
             field.owner = player
             self.broadcast_field_buy(player)
         else:
@@ -224,8 +213,7 @@ class GameManager:
     def buy_house(self, player, field_no):
         field = self.fields[field_no]
         if field.owner is player and field.buildable and field.houses_no < 5 and player.cash >= field.price and self.uniform_building(field, +1) and self.own_all_in_group(player, field) and field.mortgaged is False:
-            player.cash -= field.house_price
-            self.broadcast_cash_info(player)
+            self.add_cash(player, -field.house_price)
             field.houses_no += 1
             self.broadcast_house_buy_info(player, field_no)
         else:
@@ -234,8 +222,7 @@ class GameManager:
     def sell_house(self, player, field_no):
         field = self.fields[field_no]
         if field.owner is player and field.buildable and field.houses_no > 0 and self.uniform_building(field, -1) and self.own_all_in_group(player, field):
-            player.cash += field.house_price / 2
-            self.broadcast_cash_info(player)
+            self.add_cash(player, field.house_price / 2)
             field.houses_no -= 1
             self.broadcast_house_sell_info(player, field_no)
         else:
@@ -273,24 +260,19 @@ class GameManager:
             else:
                 fee = field.visit_cost[field.houses_no]
 
-            player.cash -= fee
-            self.broadcast_cash_info(player)
-            field.owner.cash += fee
-            self.broadcast_cash_info(field.owner)
+            self.add_cash(player, -fee)
+            self.add_cash(field.owner, fee)
 
         elif field.group_name == 'Income Tax':
-            player.cash -= 200
-            self.broadcast_cash_info(player)
+            self.add_cash(player, -200)
 
         elif field.group_name == 'Luxury Tax':
-            player.cash -= 100
-            self.broadcast_cash_info(player)
+            self.add_cash(player, -100)
 
     def mortgage(self, player, field_no):
         field = self.fields[field_no]
         if field.owner is player and field.mortgaged is False and field.houses_no == 0:
-            player.cash += field.price / 2
-            self.broadcast_cash_info(player)
+            self.add_cash(player, field.price / 2)
             field.mortgaged = True
             self.broadcast_mortgage(field_no)
 
@@ -298,8 +280,7 @@ class GameManager:
         field = self.fields[field_no]
         unmortgage_price = 1.1 * (field.price / 2)
         if field.owner is player and field.mortgaged is True and player.cash >= unmortgage_price:
-            player.cash -= unmortgage_price
-            self.broadcast_cash_info(player)
+            self.add_cash(player, -unmortgage_price)
             field.mortgaged = False
             self.broadcast_unmortgage(field_no)
 
@@ -339,19 +320,12 @@ class GameManager:
         card = self.chance_stack.get_card()
         self.broadcast(card)
         if card['action'] == 'goto':
-            old_field_no = player.field_no
-            player.field_no = card['field']
-            if player.field_no < old_field_no:
-                player.cash += 400
-                self.broadcast_cash_info(player)
-            self.stay_fee(player)
+            move = card['field'] - player.field_no
+            if move < 0:
+                move += 40
+            self.move(player, move)
         elif card['action'] == 'move':
-            player.field_no += card['move']
-            if player.field_no >= 40:
-                player.cash += 400
-                player.field_no -= 40
-                self.broadcast_cash_info(player)
-            self.stay_fee(player)
+            self.move(player, card['move'])
         elif card['action'] == 'cash':
             player.cash += card['cash']
             self.broadcast_cash_info(player)
@@ -361,15 +335,12 @@ class GameManager:
             player.goto_jail()
 
     def get_out_of_jail(self, player, method):
-        if method == 'useCard':
-            if player.get_out_cards_no > 0:
-                player.get_out_cards_no -= 1
-                player.in_jail = False
-            else:
-                player.error('LackOfGetOutCards')
+        if method == 'useCard' and player.get_out_cards_no > 0:
+            player.get_out_cards_no -= 1
+            self.chance_stack.return_get_out_card()
+            player.in_jail = False
         elif method == 'pay' and player.cash >= 50:
-            player.cash -= 50
-            self.broadcast_cash_info(player)
+            self.add_cash(player, -50)
             player.in_jail = False
         else:
             player.error('ImproperGetOutMethod')
@@ -379,6 +350,24 @@ class GameManager:
         self.broadcast({'message': 'declareBankruptcy'})
         if len([player for player in self.players if not player.bankrupt]) == 1:
             self.broadcast({'message': 'gameOver'})
+
+    def add_cash(self, player, cash):
+        player.cash += cash
+        self.broadcast_cash_info(player)
+
+    def move(self, player, move):
+        player.field_no += move
+        if player.field_no >= 40:
+            self.add_cash(player, 400)
+            player.field_no -= 40
+        elif player.field_no < 0:
+            player.field_no += 40
+
+        self.stay_fee(player)
+        if self.fields[player.field_no].group_name == 'Chance':
+            self.chance(player)
+        elif self.fields[player.field_no].group_name == 'Go to jail':
+            player.goto_jail()
 
     def broadcast_field_buy(self, player):
         self.broadcast({'message': 'userBought', 'username': player.name})
