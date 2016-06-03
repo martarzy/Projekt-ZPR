@@ -91,7 +91,7 @@ namespace controller {
             if (!this.model.users.isMyTurn()
                 || !this.model.users.getMe().inJail)
                 return;
-            this.viewChanges_.disableAllButtons();
+            this.viewChanges_.enableButtonsForCashBelowZero();
             const me = this.model.users.getMe();
             const canPay = me.cash >= 50;
             const canUseCard = me.jailExitCards > 0;
@@ -101,7 +101,9 @@ namespace controller {
         private doOnPawnMoveEnd(field: model.Field): void {
             if (!this.model.users.isMyTurn())
                 return;
-            this.viewChanges_.enable(view.ViewElement.END_TURN_BTN, true);
+            console.log("On pawn move");
+            if (this.model.users.activeCash() >= 0)
+                this.viewChanges_.enable(view.ViewElement.END_TURN_BTN, true);
             this.viewChanges_.enable(view.ViewElement.BUY_FIELD_BTN, field.isBuyable()
                                                                      && field.cost <= this.model.users.activeCash());
         }
@@ -147,8 +149,10 @@ namespace controller {
             this.model.users.setCash(target, cash);
             this.updatePlayerList(this.model.users.getAll());
 
-            if (!this.model.users.isMyTurn())
+            if (!this.model.users.isMyTurn()
+                || target !== this.model.users.myUsername())
                 return;
+            this.updateModelIfInJail(this.model.users.myUsername());
             if (this.model.users.getMe().cash < 0)
                 this.viewChanges_.enableButtonsForCashBelowZero();
             if (iAmNoLongerBelowZero)
