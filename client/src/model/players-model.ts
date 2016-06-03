@@ -15,6 +15,10 @@ namespace model {
             this.players_ = [];
         }
 
+        get(username: string): Player {
+            return this.players_.filter(p => p.username === username)[0];
+        }
+
         getAll(): Array<Player> {
             return this.players_.slice();
         }

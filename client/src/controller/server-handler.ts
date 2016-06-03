@@ -184,8 +184,8 @@ namespace controller {
         private tradeAnswer(object: any) {
             const decision: boolean = object[message.TradeAnswer.decision];
             if (decision) {
-                this.model.board.changeOwner(this.model.round.offeredFields, this.model.round.tradingWith);
-                this.model.board.changeOwner(this.model.round.demandedFields, this.model.users.myUsername());
+                this.changeAndRecolorFieldsOwner(this.model.round.offeredFields, this.model.round.tradingWith);
+                this.changeAndRecolorFieldsOwner(this.model.round.demandedFields, this.model.users.myUsername());
             }
             if (!this.model.users.isMyTurn())
                 return;
@@ -194,6 +194,15 @@ namespace controller {
                 this.viewChanges_.enable(view.ViewElement.ROLL_BTN, false);
             decision ? this.viewChanges_.tradeSuccessful() :
                 this.viewChanges_.tradeUnsuccessful();
+        }
+
+        private changeAndRecolorFieldsOwner(ids: Array<number>, username: string): void {
+            this.model.board.changeOwner(ids, username);
+            this.recolorFields(ids, username);
+        }
+
+        private recolorFields(ids: Array<number>, username: string): void {
+            ids.forEach(f => this.viewChanges_.colorField(f, this.model.users.get(username).color));
         }
     }
 
