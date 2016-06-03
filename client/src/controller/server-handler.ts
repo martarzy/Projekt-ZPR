@@ -101,7 +101,6 @@ namespace controller {
         private doOnPawnMoveEnd(field: model.Field): void {
             if (!this.model.users.isMyTurn())
                 return;
-            console.log("On pawn move");
             if (this.model.users.activeCash() >= 0)
                 this.viewChanges_.enable(view.ViewElement.END_TURN_BTN, true);
             this.viewChanges_.enable(view.ViewElement.BUY_FIELD_BTN, field.isBuyable()
