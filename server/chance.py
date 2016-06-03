@@ -35,6 +35,12 @@ class GetOutCard(ChanceCard):
         self.message['action'] = 'getOut'
 
 
+class GotoJailCard(ChanceCard):
+    def __init__(self):
+        ChanceCard.__init__(self)
+        self.message['action'] = 'gotoJail'
+
+
 class ChanceStack:
     def __init__(self):
         self.cards = deque()
@@ -56,6 +62,7 @@ class ChanceStack:
 
         for _ in range(4):
             self.cards.append(GetOutCard())
+            self.cards.append(GotoJailCard())
 
         shuffle(self.cards)
 

@@ -11,6 +11,7 @@ class Player:
         self.field_no = 0
         self.last_roll = 0
         self.get_out_cards_no = 0
+        self.in_jail = False
 
     def error(self, error_code):
         self.handler.send_message({'message': 'invalidOperation', 'error': error_code})
@@ -154,6 +155,9 @@ class GameManager:
         elif msg['message'] == 'tradeAcceptance':
             self.trade_acceptance(msg['accepted'])
 
+        elif msg['message'] == 'getOut':
+            self.get_out_of_jail(player, msg['method'])
+
         else:
             player.error('Improper message')
 
@@ -169,6 +173,8 @@ class GameManager:
         self.stay_fee(player)
         if self.fields[player.field_no].group_name == 'Chance':
             self.chance(player)
+        elif self.fields[player.field_no].group_name == 'Go to jail':
+            self.goto_jail(player)
 
     @staticmethod
     def generate_roll():
@@ -355,6 +361,25 @@ class GameManager:
             self.broadcast_cash_info(player)
         elif card['action'] == 'getOut':
             player.get_out_cards_no += 1
+        elif card['action'] == 'gotoJail':
+            self.goto_jail(player)
+
+    @staticmethod
+    def goto_jail(player):
+        player.field_no = 10
+        player.in_jail = True
+
+    def get_out_of_jail(self, player, method):
+        if method == 'useCard':
+            if player.get_out_cards > 0:
+                player.get_out_cards -= 1
+            else:
+                player.error('LackOfGetOutCards')
+        elif method == 'pay':
+            player.cash -= 50
+            self.broadcast_cash_info(player)
+        else:
+            player.error('ImproperGetOutMethod')
 
     def broadcast_field_buy(self, player):
         self.broadcast({'message': 'userBought', 'username': player.name})
