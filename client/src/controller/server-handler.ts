@@ -183,6 +183,10 @@ namespace controller {
 
         private tradeAnswer(object: any) {
             const decision: boolean = object[message.TradeAnswer.decision];
+            if (decision) {
+                this.model.board.changeOwner(this.model.round.offeredFields, this.model.round.tradingWith);
+                this.model.board.changeOwner(this.model.round.demandedFields, this.model.users.myUsername());
+            }
             if (!this.model.users.isMyTurn())
                 return;
             this.viewChanges_.enableButtonsOnRoundStart();
@@ -190,11 +194,6 @@ namespace controller {
                 this.viewChanges_.enable(view.ViewElement.ROLL_BTN, false);
             decision ? this.viewChanges_.tradeSuccessful() :
                 this.viewChanges_.tradeUnsuccessful();
-            if (!decision)
-                return;
-            this.model.board.changeOwner(this.model.round.offeredFields, this.model.round.tradingWith);
-            this.model.board.changeOwner(this.model.round.demandedFields, this.model.users.myUsername());
-            this.model.round.reset();
         }
     }
 
