@@ -87,7 +87,8 @@ namespace controller {
         }
 
         private updateModelIfInJail(username: string) {
-            if (!this.model.board.userInJail(username))
+            if (!this.model.board.userInJail(username)
+                || !this.model.users.isMyTurn())
                 return;
             this.viewChanges_.disableAllButtons();
             const me = this.model.users.getMe();
@@ -155,31 +156,31 @@ namespace controller {
             const field: number = object[message.UserBoughtHouse.field];
             this.model.board.buyHouseOn(field);
             this.viewChanges_.drawHousesOnField(field, this.model.board.houseAmountOn(field));
-            this.activateIfMyTurn(this.userActions_.activateBuildMode);
+            this.enableModeIfMyTurn(this.userActions_.activateBuildMode);
         }
 
         private userSoldHouse(object: any): void {
             const field: number = object[message.UserSoldHouse.field];
             this.model.board.sellHouseOn(field);
             this.viewChanges_.drawHousesOnField(field, this.model.board.houseAmountOn(field));
-            this.activateIfMyTurn(this.userActions_.activateSellMode);
+            this.enableModeIfMyTurn(this.userActions_.activateSellMode);
         }
 
         private userMortgagedField(object: any): void {
             const field: number = object[message.UserMortgaged.field];
             this.model.board.mortgageField(field);
             this.viewChanges_.mortgageField(field);
-            this.activateIfMyTurn(this.userActions_.activateMortgageMode);
+            this.enableModeIfMyTurn(this.userActions_.activateMortgageMode);
         }
 
         private userUnmortgagedField(object: any): void {
             const field: number = object[message.UserUnmortgaged.field];
             this.model.board.unmortgageField(field);
             this.viewChanges_.unmortgageField(field);
-            this.activateIfMyTurn(this.userActions_.activateUnmortgageMode);
+            this.enableModeIfMyTurn(this.userActions_.activateUnmortgageMode);
         }
 
-        private activateIfMyTurn(modeActivateCallback: () => void) {
+        private enableModeIfMyTurn(modeActivateCallback: () => void) {
             if (this.model.users.isMyTurn())
                 modeActivateCallback.call(this.userActions_);
         }
