@@ -49,46 +49,46 @@
         ];
 
         private static FieldDescription: any[] = [
-            { image: "images/go.svg", big: true },                      // nr 0 - pole startowe
-            { color: "blueviolet", name: "TODO", cash: "60$" },        // nr 1 - fioletowe
-            { image: "images/chance.svg" },                             // nr 2 - szansa
-            { color: "blueviolet", name: "TODO", cash: "60$" },        // nr 3 - fioletowe
-            { image: "images/income_tax.svg" },                         // nr 4 - podatek
-            { image: "images/railroad.svg" , cash: "200$"},                           // nr 5 - dworzec
-            { color: "lightblue", name: "TODO", cash: "100$"},          // nr 6 - niebieske
-            { image: "images/chance.svg" },                             // nr 7 - szansa
-            { color: "lightblue", name: "TODO", cash: "100$" },         // nr 8 - niebieske
-            { color: "lightblue", name: "TODO", cash: "120$" },         // nr 9 - niebieske
-            { image: "images/jail.svg", big:true },                     // nr 10 - wiezienie
-            { color: "darkred", name: "TODO", cash: "140$"},            // nr 11 - bordowe
-            { image: "images/electric_company.svg", cash: "150"},                   // nr 12 - elektorwnia
-            { color: "darkred", name: "TODO", cash: "140$"},            // nr 13 - bordowe
-            { color: "darkred", name: "TODO", cash: "160$"},            // nr 14 - bordowe
-            { image: "images/railroad.svg", cash: "200$"},                           // nr 15 - dworzec
-            { color: "orange", name: "TODO", cash: "160$" },            // nr 16 - pomaranczowe
-            { image: "images/chance.svg" },                             // nr 17 - sznasa
-            { color: "orange", name: "TODO", cash: "160$" },            // nr 18 - pomaranczowe
-            { color: "orange", name: "TODO", cash: "180$" },            // nr 19 - pomaranczowe
-            { image: "images/parking.svg", big:true },                  // nr 20 - parking
-            { color: "red", name: "TODO", cash: "220$" },               // nr 21 - czerwone
-            { image: "images/chance.svg" },                             // nr 22 - szansa
-            { color: "red", name: "TODO", cash: "220$" },               // nr 23 - czerwone
-            { color: "red", name: "TODO", cash: "240$" },               // nr 24 - czerwone
-            { image: "images/railroad.svg", cash: "200$" },                           // nr 25 - dworzec
-            { color: "yellow", name: "TODO", cash: "260$" },            // nr 26 - zolte
-            { color: "yellow", name: "TODO", cash: "260$" },            // nr 27 - zolte
-            { image: "images/water_works.svg", cash: "150" },                        // nr 28 - wodociagi
-            { color: "yellow", name: "TODO", cash: "280$" },            // nr 29 - zolte
-            { image: "images/goto_jail.svg", big:true },                // nr 30 - idz do wiezienia
-            { color: "green", name: "TODO", cash: "300$" },             // nr 31 - zielone
-            { color: "green", name: "TODO", cash: "300$" },             // nr 32 - zielone
-            { image: "images/chance.svg" },                             // nr 33 - szansa
-            { color: "green", name: "TODO", cash: "320$" },             // nr 34 - zielone
-            { image: "images/railroad.svg", cash: "200$" },                           // nr 35 - dworzec
-            { image: "images/chance.svg" },                             // nr 36 - szansa
-            { color: "darkblue", name: "TODO", cash: "350$" },          // nr 37 - granatowe
-            { image: "images/luxury_tax.svg" },                         // nr 38 - podatek od luksusu
-            { color: "darkblue", name: "TODO", cash: "350$" },          // nr 39 - granatowe
+            { image: "images/go.svg", big: true },                                    // nr 0 - pole startowe
+            { color: "blueviolet", name: "Tczew", cash: "60$" },                      // nr 1 - fioletowe
+            { image: "images/chance.svg" },                                           // nr 2 - szansa
+            { color: "blueviolet", name: "Malbork", cash: "60$" },                    // nr 3 - fioletowe
+            { image: "images/income_tax.svg" },                                       // nr 4 - podatek
+            { image: "images/railroad.svg" , name: "Centralny", cash: "200$"},        // nr 5 - dworzec
+            { color: "lightblue", name: "Ostrołęka", cash: "100$"},                   // nr 6 - niebieske
+            { image: "images/chance.svg" },                                           // nr 7 - szansa
+            { color: "lightblue", name: "Łomża", cash: "100$" },                      // nr 8 - niebieske
+            { color: "lightblue", name: "Białystok", cash: "120$" },                  // nr 9 - niebieske
+            { image: "images/jail.svg", big:true },                                   // nr 10 - wiezienie
+            { color: "darkred", name: "Grudziądz", cash: "140$"},                     // nr 11 - bordowe
+            { image: "images/electric_company.svg", name: "Elektrownia", cash: "150"},// nr 12 - elektorwnia
+            { color: "darkred", name: "Elbląg", cash: "140$"},                        // nr 13 - bordowe
+            { color: "darkred", name: "Olsztyn", cash: "160$"},                       // nr 14 - bordowe
+            { image: "images/railroad.svg", name: "Zachodni", cash: "200$"},          // nr 15 - dworzec
+            { color: "orange", name: "Konin", cash: "160$" },                         // nr 16 - pomaranczowe
+            { image: "images/chance.svg" },                                           // nr 17 - sznasa
+            { color: "orange", name: "Toruń", cash: "160$" },                         // nr 18 - pomaranczowe
+            { color: "orange", name: "Bydgoszcz", cash: "180$" },                     // nr 19 - pomaranczowe
+            { image: "images/parking.svg", big:true },                                // nr 20 - parking
+            { color: "red", name: "Rybnik", cash: "220$" },                           // nr 21 - czerwone
+            { image: "images/chance.svg" },                                           // nr 22 - szansa
+            { color: "red", name: "Gliwice", cash: "220$" },                          // nr 23 - czerwone
+            { color: "red", name: "Katowice", cash: "240$" },                         // nr 24 - czerwone
+            { image: "images/railroad.svg", name: "Gdański", cash: "200$" },          // nr 25 - dworzec
+            { color: "yellow", name: "Wieliczka", cash: "260$" },                     // nr 26 - zolte
+            { color: "yellow", name: "Zakopane", cash: "260$" },                      // nr 27 - zolte
+            { image: "images/water_works.svg", name: "Wodociągi", cash: "150" },      // nr 28 - wodociagi
+            { color: "yellow", name: "Kraków", cash: "280$" },                        // nr 29 - zolte
+            { image: "images/goto_jail.svg", big:true },                              // nr 30 - idz do wiezienia
+            { color: "green", name: "Sopot", cash: "300$" },                          // nr 31 - zielone
+            { color: "green", name: "Gdynia", cash: "300$" },                         // nr 32 - zielone
+            { image: "images/chance.svg" },                                           // nr 33 - szansa
+            { color: "green", name: "Gdańsk", cash: "320$" },                         // nr 34 - zielone
+            { image: "images/railroad.svg", name: "Wschodni", cash: "200$" },         // nr 35 - dworzec
+            { image: "images/chance.svg" },                                           // nr 36 - szansa
+            { color: "darkblue", name: "Łódź", cash: "350$" },                        // nr 37 - granatowe
+            { image: "images/luxury_tax.svg" },                                       // nr 38 - podatek od luksusu
+            { color: "darkblue", name: "Warszawa", cash: "350$" },                    // nr 39 - granatowe
         ];
 
         private fieldId: number;
