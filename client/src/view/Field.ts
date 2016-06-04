@@ -161,14 +161,20 @@
                     .attr("height", 60);
                 
                 // Jesli dworzec 
-				if(this.fieldId == 5 || this.fieldId == 15 || this.fieldId == 25 || this.fieldId == 35)
-					g.append("text")
-						.attr("text-anchor", "middle")
-						.attr("x", 0)
-						.attr("y", 35)
-						.text(Field.FieldDescription[this.fieldId].cash)
-						.attr("fill", "black");
-				
+                if (this.fieldId == 5 || this.fieldId == 15 || this.fieldId == 25 || this.fieldId == 35) {
+                    g.append("text")
+                        .attr("text-anchor", "middle")
+                        .attr("x", 0)
+                        .attr("y", 35)
+                        .text(Field.FieldDescription[this.fieldId].cash)
+                        .attr("fill", "black");
+                    g.append("text")
+                        .attr("text-anchor", "middle")
+                        .attr("x", 0)
+                        .attr("y", -25)
+                        .text(Field.FieldDescription[this.fieldId].name)
+                        .attr("fill", "black");
+                }
 
             g.attr("transform", "translate(" + x + " " + y + "), rotate(" + rotation + ")");
         }
