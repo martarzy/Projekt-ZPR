@@ -30,17 +30,17 @@ namespace controller {
 
         rollDice(): void {
             this.sender_(this.prepareMessage(message.RollDice.message));
-            this.viewChanges_.enable(view.Button.ROLL, false);
+            this.viewChanges_.disable(view.Button.ROLL);
         }
 
         playerIsReady(): void {
             this.sender_(this.prepareMessage(message.Ready.message));
-            this.viewChanges_.enable(view.Button.READY, false);
+            this.viewChanges_.disable(view.Button.READY);
         }
 
         playerBuysField(): void {
             this.sender_(this.prepareMessage(message.BuyField.message));
-            this.viewChanges_.enable(view.Button.BUY_FIELD, false);
+            this.viewChanges_.disable(view.Button.BUY_FIELD);
         }
 
         playerEndsTurn(): void {
@@ -140,7 +140,7 @@ namespace controller {
             const others = this.model_.users.getEnemies();
             const myFields = this.model_.board.fieldsToMortgage(this.model_.users.myUsername());
             this.viewChanges_.showTradePanel(others, myFields);
-            this.viewChanges_.enable(view.Button.OFFER_TRADE, true);
+            this.viewChanges_.enable(view.Button.OFFER_TRADE);
         }
 
         private userToTradeSelected(): void {
@@ -197,9 +197,8 @@ namespace controller {
         }
 
         private exitJailWithMethod(method: string): void {
-            console.log("On exit jail");
-            this.viewChanges_.enable(view.Button.END_TURN, true);
-            this.viewChanges_.showJailExitOptions(false, false);
+            this.viewChanges_.enable(view.Button.END_TURN);
+            this.viewChanges_.disableJailExitOptions();
             let toSend = this.prepareMessage(message.GetOut.message);
             toSend[message.GetOut.method] = method;
             this.sender_(toSend);

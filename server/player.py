@@ -3,7 +3,7 @@ class Player:
         self.name = name
         self.handler = handler  # Handler is a class which must have write_message() function
         self.ready = False
-        self.cash = 100
+        self.cash = 1000
         self.field_no = 0
         self.last_roll = 0
         self.get_out_cards_no = 0

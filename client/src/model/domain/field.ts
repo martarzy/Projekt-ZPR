@@ -20,7 +20,7 @@ namespace model {
             return this.group_;
         }
 
-        get cost(): number {
+        get fieldCost(): number {
             return this.fieldCost_;
         }
 

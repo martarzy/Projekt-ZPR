@@ -11,9 +11,32 @@ namespace controller {
             this.view_.hideSignInWindow();
         }
 
-        enable(button: view.Button, visible: boolean) {
-            visible ? this.view_.enableButton(button) :
-                      this.view_.disableButton(button);
+        enable(button: view.Button) {
+            this.view_.enableButton(button);
+        }
+
+        disable(button: view.Button) {
+            this.view_.disableButton(button);
+        }
+
+        enableTradeDecisions(): void {
+            this.enable(view.Button.ACCEPT_TRADE);
+            this.enable(view.Button.DECLINE_TRADE);
+        }
+
+        enableReadyIf(condition: boolean): void {
+            if (condition)
+                this.enable(view.Button.READY);
+        }
+
+        enableEndOfTurnIf(condition: boolean): void {
+            if (condition)
+                this.enable(view.Button.END_TURN);
+        }
+
+        enableBuyFieldIf(condition: boolean): void {
+            if (condition)
+                this.enable(view.Button.BUY_FIELD);
         }
 
         enableButtonsOnRoundStart(): void {
@@ -24,10 +47,10 @@ namespace controller {
                              view.Button.UNMORTGAGE,
                              view.Button.BANKRUPTCY];
             for (const button of buttons)
-                this.enable(button, true);
+                this.enable(button);
         }
 
-        errorMessage(msg: string) {
+        displayErrorMessage(msg: string) {
             this.view_.showError(msg);
         }
 
@@ -39,7 +62,7 @@ namespace controller {
             }
         }
 
-        updatePlayerList(players: Array<view.PlayerDTO>) {
+        updatePlayersList(players: Array<view.PlayerDTO>) {
             this.view_.updateUserList(players);
         }
 
@@ -47,9 +70,12 @@ namespace controller {
             this.view_.initPawnsDictionary(players);
         }
 
+        disableButtonsWhilePawnIsMoving(): void {
+            this.disable(view.Button.BUY_FIELD);
+            this.disable(view.Button.END_TURN);
+        }
+
         movePawn(player: string, targetField: number, onPawnMoveEnd: () => void) {
-            this.enable(view.Button.END_TURN, false);
-            this.enable(view.Button.BUY_FIELD, false);
             this.view_.movePawn(player, targetField, onPawnMoveEnd);
         }
 
@@ -109,28 +135,41 @@ namespace controller {
         }
 
         showJailExitOptions(canPay: boolean, canUseCard: boolean) {
-            this.enable(view.Button.JAIL_PAY, canPay);
-            this.enable(view.Button.JAIL_USE_CARD, canUseCard);
+            if(canPay)
+                this.enable(view.Button.JAIL_PAY);
+            if (canUseCard)
+                this.enable(view.Button.JAIL_USE_CARD);
         }
 
-        enableButtonsForCashBelowZero(): void {
-            this.disableAllButtons();
+        disableJailExitOptions(): void {
+            this.disable(view.Button.JAIL_PAY);
+            this.disable(view.Button.JAIL_USE_CARD);
+        }
+
+
+        enableButtonsProvidingCash(): void {
+            this.disableAllButtonsButBankruptcy();
             const toEnable = [view.Button.SELL_HOUSE,
                               view.Button.MORTGAGE,
-                              view.Button.OFFER_TRADE,
-                              view.Button.BANKRUPTCY];
+                              view.Button.OFFER_TRADE];
 
-            toEnable.forEach(button => this.enable(button, true));
+            toEnable.forEach(button => this.enable(button));
         }
 
-        enableButtonsForCashAboveZero(): void {
-            this.disableAllButtons();
+        enableButtonsForAcceptableCash(playerAlreadyMoved: boolean): void {
+            this.disableAllButtonsButBankruptcy();
             this.enableButtonsOnRoundStart();
+            if (playerAlreadyMoved)
+                this.enable(view.Button.END_TURN);
             const toDisable = [view.Button.ROLL];
 
-            toDisable.forEach(button => this.enable(button, false));
+            toDisable.forEach(button => this.disable(button));
         }
 
+        private disableAllButtonsButBankruptcy(): void {
+            this.disableAllButtons();
+            this.enable(view.Button.BANKRUPTCY);
+        }
 
     }
 
