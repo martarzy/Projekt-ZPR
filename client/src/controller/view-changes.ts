@@ -68,6 +68,7 @@ namespace controller {
 
         startGame(players: Array<view.PlayerDTO>) {
             this.view_.initPawnsDictionary(players);
+            this.view_.initUserList(players);
         }
 
         disableButtonsWhilePawnIsMoving(): void {

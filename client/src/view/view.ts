@@ -34,7 +34,6 @@ namespace view {
         private initTabs() {
             $('.nav-tabs a').click(function(e) {
                 e.preventDefault();
-                console.log(this);
                 $(this).tab('show');
             })
         }
@@ -65,6 +64,14 @@ namespace view {
 
         public showError(msg: string) {
             document.getElementById("message").innerHTML = msg;
+        }
+
+        public initUserList(list: Array<view.PlayerDTO>) {
+            for (let i = 0; i < list.length; i++) {
+                $(".player-name")[i].innerHTML = list[i].username;
+                $(".player-money")[i].innerHTML = (list[i].cash).toString();
+                $(".player-row")[i].style.backgroundColor = list[i].color;
+            }
         }
 
         public updateUserList(list: Array<view.PlayerDTO>) {
