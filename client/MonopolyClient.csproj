@@ -25,6 +25,12 @@
     <Content Include="css\right-column.css" />
     <Content Include="images\board.jpg" />
     <Content Include="images\chance.svg" />
+    <Content Include="images\dice1.svg" />
+    <Content Include="images\dice2.svg" />
+    <Content Include="images\dice3.svg" />
+    <Content Include="images\dice4.svg" />
+    <Content Include="images\dice5.svg" />
+    <Content Include="images\dice6.svg" />
     <Content Include="images\electric_company.svg" />
     <Content Include="images\go.svg" />
     <Content Include="images\goto_jail.svg" />
@@ -57,6 +63,7 @@
     <TypeScriptCompile Include="src\model\board-model.ts" />
     <TypeScriptCompile Include="src\model\players-model.ts" />
     <TypeScriptCompile Include="src\model\utils.ts" />
+    <TypeScriptCompile Include="src\view\Dices.ts" />
     <TypeScriptCompile Include="test\model.test.ts" />
     <TypeScriptCompile Include="test\qunit.d.ts" />
     <TypeScriptCompile Include="src\controller\controller.ts" />

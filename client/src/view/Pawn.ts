@@ -5,12 +5,13 @@
 
         constructor(startField: Field, color: string) {
             this.field = startField;
-            this.element = d3.select("svg").append("circle");
+            this.element = d3.select("#board-svg").append("circle");
             this.element
                 .attr("r", 10)
                 .attr("cx", this.field.getCoordX() + "px")
                 .attr("cy", this.field.getCoordY() + "px")
-                .style("fill", color);
+                .style("fill", color)
+                .attr("border", "1px solid black");
         }
 
         public move(target: Field, sequencenumber: number) {

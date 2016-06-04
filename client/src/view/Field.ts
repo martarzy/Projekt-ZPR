@@ -130,7 +130,7 @@
         }
 
         public createSpecialImageField(url: string, x: number, y: number, rotation: number) {
-            var g = d3.select("svg")
+            var g = d3.select("#board-svg")
                 .append("g");
 
             g.attr("game-id", this.fieldId);
@@ -175,7 +175,7 @@
 
         public createImageField(url: string, x: number, y: number, rotation: number, big: boolean)
         {
-            var g = d3.select("svg")
+            var g = d3.select("#board-svg")
                 .append("g");
 
             g.attr("game-id", this.fieldId);
@@ -216,7 +216,7 @@
         }
 
         public createPlaceField(name: string, price: string, color: string, x: number, y: number, rotation: number) {
-            var g = d3.select("svg")
+            var g = d3.select("#board-svg")
                 .append("g");
 
             g.attr("game-id", this.fieldId);
@@ -316,7 +316,7 @@
 
         drawHighlightField(x: number, y: number) {
             var fieldRotation = Math.floor(this.fieldId / 10) * 90;
-            var g = d3.select("svg").append("g");
+            var g = d3.select("#board-svg").append("g");
 
             g.append("rect")
                 .attr("x", -35)

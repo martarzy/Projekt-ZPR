@@ -12,13 +12,7 @@ namespace view {
     export class View {
         private board: Board;
 
-        constructor() {
-            this.board = new Board();
-            this.showSignInWindow();
-            this.initButtonsIds();
-        }
-
-        private buttonsIds: { [elem: number]: string } = {};
+        private buttonsIds: { [elem: number]: string } = { };
 
         private initButtonsIds(): void {
             this.buttonsIds[Button.ROLL] = "roll-button";
@@ -35,6 +29,22 @@ namespace view {
             this.buttonsIds[Button.JAIL_PAY] = "jail-pay-button";
             this.buttonsIds[Button.JAIL_USE_CARD] = "jail-use-card-button";
             this.buttonsIds[Button.BANKRUPTCY] = "bankruptcy-button";
+        }
+
+        private initTabs() {
+            $('.nav-tabs a').click(function(e) {
+                e.preventDefault();
+                console.log(this);
+                $(this).tab('show');
+            })
+        }
+
+        constructor()
+        {
+            this.board = new Board();
+            this.showSignInWindow();
+            this.initButtonsIds();
+            this.initTabs();
         }
 
         public enableButton(id: Button | number) {
@@ -58,29 +68,13 @@ namespace view {
         }
 
         public updateUserList(list: Array<view.PlayerDTO>) {
-            var other_players_list = $(".other-players-box").children().toArray();
-
             for (let i = 0; i < list.length; i++) {
                 if (list[i].active) {
-                    $(".current-player-name").text(list[i].username);
-                    $(".current-player-money").text(list[i].cash);
-                    $(".current-player-color").css("background-color", list[i].color);
-                } else {
-                    // Pobierz element z other_players z usunieciem
-                    let other_player = other_players_list.shift();
-                    let children = other_player.children;
-                    $(children[0]).text(list[i].username);
-                    $(children[1]).text(list[i].cash);
-                    $(children[2]).css("background-color", list[i].color);
+                    $(".player-name")[i].style.fontWeight = "bold";
                 }
-            }
-            // Trzeba czyscic pozostale pola!
-            while(other_players_list.length)
-            {
-				let other_player = other_players_list.shift();
-				let children = other_player.children;
-				$(children[0]).text(" ");
-                $(children[1]).text(" ");
+                else {
+                    $(".player-name")[i].style.fontWeight = "normal";
+                }
             }
         }
 
