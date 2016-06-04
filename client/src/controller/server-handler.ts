@@ -48,12 +48,20 @@ namespace controller {
                 .call(this, msgFromServer);
         }
 
+        private doIfMyTurn(job: () => void) {
+            if (this.isMyTurn())
+                job.call(this);
+        }
+
+        private isMyTurn(): boolean {
+            return this.model.users.isMyTurn();
+        }
+
         private nameAccepted(object: any): void {
             const nameWasAccepted: boolean = object[message.NameAccepted.decision];
-            if (nameWasAccepted) {
-                this.viewChanges_.disableAllButtons();
+            if (nameWasAccepted)
                 this.viewChanges_.closeJoinModal();   
-            } else
+            else
                 this.viewChanges_.displayErrorMessage(object[message.NameAccepted.reason]);
         }
 
@@ -71,15 +79,11 @@ namespace controller {
         }
 
         private updatePlayerList(players: Array<model.Player>) {
-            const dtoData = this.playersToPlayersDTO(this.model.users.getAll());
-            this.viewChanges_.updatePlayerList(dtoData);
+            const dtoData = this.model.users.getAll().map(player => this.toPlayerDTO(player));
+            this.viewChanges_.updatePlayersList(dtoData);
         }
 
-        private playersToPlayersDTO(players: Array<model.Player>): Array<view.PlayerDTO> {
-            return players.map(player => this.playerToPlayerDTO(player));
-        }
-
-        private playerToPlayerDTO(player: model.Player): view.PlayerDTO {
+        private toPlayerDTO(player: model.Player): view.PlayerDTO {
             let dto = new view.PlayerDTO();
             dto.username = player.username;
             dto.cash = player.cash;
@@ -91,8 +95,30 @@ namespace controller {
         private gameStarts(object: any): void {
             const players = this.model.users.getAll();
             this.model.board.placePawnsOnBoard(players);
-            const dtoData = this.playersToPlayersDTO(players);
-            this.viewChanges_.startGame(dtoData);
+            this.viewChanges_.startGame(players.map(player => this.toPlayerDTO(player)));
+        }
+
+        private newTurn(object: any): void {
+            const newActive: string = object[message.NewTurn.activePlayer];
+            this.model.users.setActive(newActive);
+            this.model.round.reset();
+            this.updatePlayerList(this.model.users.getAll());
+            this.doIfMyTurn(this.newTurnActiveOnly);
+        }
+
+        private newTurnActiveOnly(): void {
+            this.viewChanges_.enableButtonsOnRoundStart();
+            this.updateStateIfInJail(this.model.users.myUsername());
+        }
+
+        private updateStateIfInJail(username: string) {
+            if (!this.imInJail())
+                return;
+            this.viewChanges_.enableButtonsProvidingCash();
+            const me = this.model.users.getMe();
+            const canPay = me.cash >= 50;
+            const canUseCard = me.jailExitCards > 0;
+            this.viewChanges_.showJailExitOptions(canPay, canUseCard);
         }
 
         private someoneMoved(object: any): void {
@@ -102,34 +128,24 @@ namespace controller {
         }
 
         private performMovement(username: string, rollResult: number) {
-            this.model.board.movePawnBy(username, rollResult);
-            if (this.isMyTurn())
-                this.model.round.playerMoved = true;
-            const field = this.model.board.getField(username);
             ++this.model.round.movementCommands;
+            this.model.board.movePawnBy(username, rollResult);
+            this.doIfMyTurn(() => this.model.round.playerMoved = true);
+            const field = this.model.board.getField(username);
+            this.viewChanges_.disableButtonsWhilePawnIsMoving();
             this.viewChanges_.movePawn(username, field.id, this.doOnPawnMoveEnd.bind(this, field));
-        }
-
-        private isMyTurn(): boolean {
-            return this.model.users.isMyTurn();
         }
 
         private doOnPawnMoveEnd(field: model.Field): void {
             --this.model.round.movementCommands;
-            if (!this.isMyTurn() || this.model.round.movementCommands !== 0)
+            if (this.model.round.movementCommands !== 0)
                 return;
-            this.viewChanges_.enableEndOfTurnIf(this.model.users.activeCash() >= 0);
-            this.viewChanges_.enableBuyFieldIf(this.fieldMayBeBought(field));
+            this.doIfMyTurn(() => this.doOnPawnMoveEndIfIAmActive(field));
         }
 
-        private updateModelIfInJail(username: string) {
-            if ( !(this.isMyTurn() && this.imInJail()) )
-                return;
-            this.viewChanges_.enableButtonsProvidingCash();
-            const me = this.model.users.getMe();
-            const canPay = me.cash >= 50;
-            const canUseCard = me.jailExitCards > 0;
-            this.viewChanges_.showJailExitOptions(canPay, canUseCard);
+        private doOnPawnMoveEndIfIAmActive(field: model.Field) {
+            this.viewChanges_.enableBuyFieldIf(this.fieldMayBeBought(field));
+            this.viewChanges_.enableEndOfTurnIf(this.model.users.activeCash() >= 0);
         }
 
         private imInJail(): boolean {
@@ -138,18 +154,7 @@ namespace controller {
 
         private fieldMayBeBought(field: model.Field): boolean {
             return field.isBuyable()
-                && field.cost <= this.model.users.activeCash();
-        }
-
-        private newTurn(object: any): void {
-            const newActive: string = object[message.NewTurn.activePlayer];
-            this.model.users.setActive(newActive);
-            this.model.round.reset();
-            if (this.isMyTurn()) {
-                this.viewChanges_.enableButtonsOnRoundStart();
-                this.updateModelIfInJail(this.model.users.myUsername());
-            }                
-            this.updatePlayerList(this.model.users.getAll());
+                && field.fieldCost <= this.model.users.activeCash();
         }
 
         private setCash(object: any): void {
@@ -167,12 +172,12 @@ namespace controller {
                 return;
             // When player had to sell something because he didn't have 
             // other possibilities to exit jail.
-            this.updateModelIfInJail(this.model.users.myUsername());
+            this.updateStateIfInJail(this.model.users.myUsername());
             // Player must have positive cash on his account before end of turn.
             if (cash < 0)
                 this.viewChanges_.enableButtonsProvidingCash();
             else if (cashChangedSign)
-                this.viewChanges_.enableButtonsForAcceptableCash();
+                this.viewChanges_.enableButtonsForAcceptableCash(this.model.round.playerMoved);
             if (this.model.round.movementCommands === 0)
                 this.viewChanges_.enableBuyFieldIf(this.model.board.enoughCashToBuyField(player, cash));
         }
@@ -180,6 +185,7 @@ namespace controller {
         private userBought(object: any): void {
             const currentPlayer = this.model.users.activeUsername();
             this.model.board.buyField(currentPlayer);
+            this.viewChanges_.disable(view.Button.BUY_FIELD);
             this.viewChanges_.colorField( this.model.board.getField(currentPlayer).id,
                                        this.model.users.activeColor() );
         }
@@ -285,9 +291,10 @@ namespace controller {
         }
 
         private moveTo(username: string, fieldId: number) {
+            ++this.model.round.movementCommands;
             this.model.board.movePawnOn(username, fieldId);
             const field: model.Field = this.model.board.getField(username);
-            ++this.model.round.movementCommands;
+            this.viewChanges_.disableButtonsWhilePawnIsMoving();
             this.viewChanges_.movePawn(username, field.id, this.doOnPawnMoveEnd.bind(this, field));
         }
 

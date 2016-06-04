@@ -17,7 +17,7 @@ test("buyable field test", function () {
     let field = new model.Field(0, "Red", 500, 100);
     deepEqual(field.id, 0);
     deepEqual(field.group, "Red");
-    deepEqual(field.cost, 500);
+    deepEqual(field.fieldCost, 500);
     deepEqual(field.isBuyable(), true);
     deepEqual(field.ownerUsername(), "");
     field.markAsBought("Tester");

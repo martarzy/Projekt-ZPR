@@ -15,7 +15,7 @@ namespace model {
 
         enoughCashToBuyField(username: string, cash: number) {
             const field = this.pawns[username];
-            return field.isBuyable() && field.cost <= cash;
+            return field.isBuyable() && field.fieldCost <= cash;
         }
 
         getField(username: string): Field {

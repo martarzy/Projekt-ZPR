@@ -9,7 +9,10 @@
         offeredFields: Array<number>;
         demandedFields: Array<number>;
         playerMoved: boolean;
-        movementCommands: number;
+        /* It seems that new turn message may be obtained before 
+           the end of movement on one of the clients. If this slower client
+           is active, this value is set to negative value and can't buy fields. */
+        movementCommands = 0;
 
         constructor() {
             this.reset();
@@ -21,7 +24,6 @@
             this.tradingWith = "";
             this.offeredFields = [];
             this.demandedFields = [];
-            this.movementCommands = 0;
         }
     }
 }

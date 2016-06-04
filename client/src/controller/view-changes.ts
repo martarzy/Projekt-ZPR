@@ -62,7 +62,7 @@ namespace controller {
             }
         }
 
-        updatePlayerList(players: Array<view.PlayerDTO>) {
+        updatePlayersList(players: Array<view.PlayerDTO>) {
             this.view_.updateUserList(players);
         }
 
@@ -70,9 +70,12 @@ namespace controller {
             this.view_.initPawnsDictionary(players);
         }
 
-        movePawn(player: string, targetField: number, onPawnMoveEnd: () => void) {
-            this.disable(view.Button.END_TURN);
+        disableButtonsWhilePawnIsMoving(): void {
             this.disable(view.Button.BUY_FIELD);
+            this.disable(view.Button.END_TURN);
+        }
+
+        movePawn(player: string, targetField: number, onPawnMoveEnd: () => void) {
             this.view_.movePawn(player, targetField, onPawnMoveEnd);
         }
 
@@ -153,9 +156,11 @@ namespace controller {
             toEnable.forEach(button => this.enable(button));
         }
 
-        enableButtonsForAcceptableCash(): void {
+        enableButtonsForAcceptableCash(playerAlreadyMoved: boolean): void {
             this.disableAllButtonsButBankruptcy();
             this.enableButtonsOnRoundStart();
+            if (playerAlreadyMoved)
+                this.enable(view.Button.END_TURN);
             const toDisable = [view.Button.ROLL];
 
             toDisable.forEach(button => this.disable(button));
