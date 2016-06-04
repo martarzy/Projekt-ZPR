@@ -144,6 +144,9 @@ namespace controller {
         }
 
         private doOnPawnMoveEndIfIAmActive(field: model.Field) {
+            // this condition checks if the active player hasn't changed
+            if (!this.model.round.playerMoved)
+                return;
             this.viewChanges_.enableBuyFieldIf(this.fieldMayBeBought(field));
             this.viewChanges_.enableEndOfTurnIf(this.model.users.activeCash() >= 0);
         }
