@@ -101,6 +101,7 @@ namespace controller {
         private newTurn(object: any): void {
             const newActive: string = object[message.NewTurn.activePlayer];
             this.model.users.setActive(newActive);
+            this.userActions_.updateVisibilityOfDynamicButtons();
             this.model.round.reset();
             this.updatePlayerList(this.model.users.getAll());
             this.doIfMyTurn(this.newTurnActiveOnly);
