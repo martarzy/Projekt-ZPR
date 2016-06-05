@@ -6,34 +6,62 @@ namespace view {
         private pawns: { [playerName: string]: Pawn; } = {};
         // pola
         private fields: Field[] = [];
+        private cardLocked: boolean = false;
 
         constructor() {
             for (let i = 0; i < 40; i++) {
                 this.fields[i] = new Field(i);
+                this.addEventToInfoWindow(i);
             }
-            this.createFieldInfoWindow("red", "Kraków");
-            this.addEventToInfoWindow(16);
         }
 
-        // Opakowane zdarzenie mouseover na wybranym polu
+        // Opakowane zdarzenie click na wybranym polu
         public addEventToInfoWindow(fieldNumber: number) {
             var fieldRect = d3.select("#hotel-field-" + fieldNumber);
-            var infoWindow = document.querySelector("#field-info-window");
+            var fieldDesc = Field.FieldDescription[fieldNumber];
+            var infoWindow = d3.select("#field-info-window");
 
-            fieldRect.on("mouseover", function () {
-                infoWindow.setAttribute("visibility", "visible");
-            }).on("mouseout", function () {
-                infoWindow.setAttribute("visibility", "hidden");
+            fieldRect.on("click", () => {
+                this.removeFieldInfoWindow();
+                this.createFieldInfoWindow(fieldDesc.color, fieldDesc.name, fieldDesc.rent,
+                        fieldDesc.oneHouse, fieldDesc.twoHouses, fieldDesc.threeHouses, fieldDesc.fourHouses,
+                        fieldDesc.hotel, fieldDesc.buildHouse);
+                this.cardLocked = true;
+            });
+
+            fieldRect.on("mouseover", () => {
+                if (this.cardLocked)
+                    return;
+                this.removeFieldInfoWindow();
+                this.createFieldInfoWindow(fieldDesc.color, fieldDesc.name, fieldDesc.rent,
+                    fieldDesc.oneHouse, fieldDesc.twoHouses, fieldDesc.threeHouses, fieldDesc.fourHouses,
+                    fieldDesc.hotel, fieldDesc.buildHouse);
+            });
+
+            fieldRect.on("mouseout", () => {
+                if (this.cardLocked)
+                    return;
+                this.removeFieldInfoWindow();
+            });
+
+            d3.select("#close-button-rect").on("click", () => {
+                this.cardLocked = false;
+                this.removeFieldInfoWindow();
             });
         }
 
+        public removeFieldInfoWindow() {
+            var g = d3.select("#field-info-window");
+            g.remove();
+        }
+
         // Tworzenie okienka z danymi pola
-        public createFieldInfoWindow(color: string, info: string) {
+        public createFieldInfoWindow(color: string, town: string, rent: string, oneHouse: string, twoHouses: string,
+                                     threeHouses: string, fourHouses: string, hotel: string, buildHouse: string) {
             var g = d3.select("#board-svg")
                 .append("g");
 
             g.attr("id","field-info-window");
-            g.attr("visibility", "hidden");
 
             g.append("rect")
                 .attr("x", 270)
@@ -44,7 +72,23 @@ namespace view {
                 .attr("height", 50)
                 .attr("fill", color)
                 .attr("stroke", "black")
-                .attr("id", "field-window-info-color");
+                .attr("id", "field-info-window-color");
+            // przycisk do zamykania okna
+            /*g.append('text')
+                .text('X')
+                .attr("x", 540)
+                .attr("y", 220)
+                .attr("font-size", "20px")
+                .attr("fill", "black")
+                .attr("id", "close-button-X");*/
+            g.append("rect")
+                .attr("x", 540)
+                .attr("y", 220)
+                .attr("width", 20)
+                .attr("height", 20)
+                .attr("id", "close-button-rect")
+                .attr("fill", "white")
+                .attr("opacity", 0.7);
 
             // glowny prostokat
             g.append("rect")
@@ -56,26 +100,25 @@ namespace view {
                 .attr("height", 400)
                 .attr("fill", "whitesmoke")
                 .attr("stroke", "black")
-                .attr("id", "field-window-info-main");
+                .attr("id", "field-info-window-main");
 
             // tytul pola
             g.append("text")
                 .attr("text-anchor", "middle")
                 .attr("x", 420)
                 .attr("y", 300)
-                .text("Kraków")
+                .text(town)
                 .attr("fill", "black")
                 .attr("font-size", "xx-large")
                 .attr("font-weight", "bold");;
 
             // koszt budowy domu/hotelu
-
             // czynsz 
             g.append("text")
                 .attr("text-anchor", "middle")
                 .attr("x", 420)
                 .attr("y", 340)
-                .text("Czynsz ")                        // dopisac cene
+                .text("Czynsz   " + rent)                        
                 .attr("fill", "black")
                 .attr("font-size", "large")
                 .attr("font-weight", "bold");
@@ -92,7 +135,7 @@ namespace view {
                 .attr("text-anchor", "end")
                 .attr("x", 550)
                 .attr("y", 380)
-                .text(20)                        // dopisac cene
+                .text(oneHouse)                        
                 .attr("fill", "black")
                 .attr("font-size", "medium");
             // dwa domy
@@ -108,7 +151,7 @@ namespace view {
                 .attr("text-anchor", "end")
                 .attr("x", 550)
                 .attr("y", 410)
-                .text(200)                        // dopisac cene
+                .text(twoHouses)                     
                 .attr("fill", "black")
                 .attr("font-size", "medium");
             // trzy domy
@@ -124,7 +167,7 @@ namespace view {
                 .attr("text-anchor", "end")
                 .attr("x", 550)
                 .attr("y", 440)
-                .text(300)                        // dopisac cene
+                .text(threeHouses)                      
                 .attr("fill", "black")
                 .attr("font-size", "medium");
             // cztery domy
@@ -140,7 +183,7 @@ namespace view {
                 .attr("text-anchor", "end")
                 .attr("x", 550)
                 .attr("y", 470)
-                .text(200)                        // dopisac cene
+                .text(fourHouses)                        
                 .attr("fill", "black")
                 .attr("font-size", "medium");
             // hotel
@@ -156,13 +199,29 @@ namespace view {
                 .attr("text-anchor", "end")
                 .attr("x", 550)
                 .attr("y", 500)
-                .text(1000)                        // dopisac cene
+                .text(hotel)                        
+                .attr("fill", "black")
+                .attr("font-size", "medium");
+            // napis - koszt budowy domu
+            g.append("text")
+                .attr("text-anchor", "start")
+                .attr("x", 290)
+                .attr("y", 530)
+                .text("Koszt budowy domu ")
+                .attr("fill", "black")
+                .attr("font-size", "medium");
+            // cena - koszt budowy domu
+            g.append("text")
+                .attr("text-anchor", "end")
+                .attr("x", 550)
+                .attr("y", 530)
+                .text(buildHouse)
                 .attr("fill", "black")
                 .attr("font-size", "medium");
             // "guzik" do kupowania
             g.append("rect")
                 .attr("x", 300)
-                .attr("y", 530)
+                .attr("y", 540)
                 .attr("rx", 5)
                 .attr("ry", 5)
                 .attr("width", 100)
@@ -174,14 +233,14 @@ namespace view {
             g.append("text")
                 .attr("text-anchor", "middle")
                 .attr("x", 350)
-                .attr("y", 555)
+                .attr("y", 565)
                 .text("Buduj")
                 .attr("fill", "black")
                 .attr("font-size", "medium");
             // "guzik" do sprzedawania
             g.append("rect")
                     .attr("x", 440)
-                    .attr("y", 530)
+                    .attr("y", 540)
                     .attr("rx", 5)
                     .attr("ry", 5)
                     .attr("width", 100)
@@ -193,7 +252,7 @@ namespace view {
             g.append("text")
                 .attr("text-anchor", "middle")
                 .attr("x", 490)
-                .attr("y", 555)
+                .attr("y", 565)
                 .text("Sprzedaj")
                 .attr("fill", "black")
                 .attr("font-size", "medium");
