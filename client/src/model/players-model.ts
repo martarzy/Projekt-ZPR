@@ -4,7 +4,7 @@ namespace model {
 
     export class PlayersModel {
         private myUsername_: string;
-        private activeUsername_: string;
+        private activeUsername_ = "";
         private players_: Array<Player> = [];
 
         addNew(username: string, color: string): void {

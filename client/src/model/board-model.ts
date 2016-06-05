@@ -30,6 +30,10 @@ namespace model {
             players.forEach(player => this.pawns[player.username] = this.board_.startField());
         }
 
+        ownsField(username: string, fieldId: number): boolean {
+            return this.field(fieldId).ownerUsername() === username;
+        }
+
         movePawnBy(username: string, rollResult: number): void {
             const currentField = this.pawns[username];
             const targetField = this.board_.fieldInDistanceOf(currentField, rollResult);

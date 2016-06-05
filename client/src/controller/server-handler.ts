@@ -101,6 +101,7 @@ namespace controller {
         private newTurn(object: any): void {
             const newActive: string = object[message.NewTurn.activePlayer];
             this.model.users.setActive(newActive);
+            this.userActions_.updateVisibilityOfDynamicButtons();
             this.model.round.reset();
             this.updatePlayerList(this.model.users.getAll());
             this.doIfMyTurn(this.newTurnActiveOnly);
@@ -171,6 +172,8 @@ namespace controller {
             this.model.users.setCash(player, cash);
             this.updatePlayerList(this.model.users.getAll());
 
+            this.userActions_.updateVisibilityOfDynamicButtons();
+
             if ( !(this.isMyTurn() && player === this.model.users.myUsername()) )
                 return;
             // When player had to sell something because he didn't have 
@@ -188,6 +191,7 @@ namespace controller {
         private userBought(object: any): void {
             const currentPlayer = this.model.users.activeUsername();
             this.model.board.buyField(currentPlayer);
+            this.userActions_.updateVisibilityOfDynamicButtons();
             this.viewChanges_.disable(view.Button.BUY_FIELD);
             this.viewChanges_.colorField( this.model.board.getField(currentPlayer).id,
                                        this.model.users.activeColor() );
@@ -201,34 +205,29 @@ namespace controller {
         private userBoughtHouse(object: any): void {
             const field: number = object[message.UserBoughtHouse.field];
             this.model.board.buyHouseOn(field);
+            this.userActions_.updateVisibilityOfDynamicButtons();
             this.viewChanges_.drawHousesOnField(field, this.model.board.houseAmountOn(field));
-            this.enableModeIfMyTurn(this.userActions_.activateBuildMode);
         }
 
         private userSoldHouse(object: any): void {
             const field: number = object[message.UserSoldHouse.field];
             this.model.board.sellHouseOn(field);
+            this.userActions_.updateVisibilityOfDynamicButtons();
             this.viewChanges_.drawHousesOnField(field, this.model.board.houseAmountOn(field));
-            this.enableModeIfMyTurn(this.userActions_.activateSellMode);
         }
 
         private userMortgagedField(object: any): void {
             const field: number = object[message.UserMortgaged.field];
             this.model.board.mortgageField(field);
+            this.userActions_.updateVisibilityOfDynamicButtons();
             this.viewChanges_.mortgageField(field);
-            this.enableModeIfMyTurn(this.userActions_.activateMortgageMode);
         }
 
         private userUnmortgagedField(object: any): void {
             const field: number = object[message.UserUnmortgaged.field];
             this.model.board.unmortgageField(field);
+            this.userActions_.updateVisibilityOfDynamicButtons();
             this.viewChanges_.unmortgageField(field);
-            this.enableModeIfMyTurn(this.userActions_.activateUnmortgageMode);
-        }
-
-        private enableModeIfMyTurn(modeActivateCallback: () => void) {
-            if (this.isMyTurn())
-                modeActivateCallback.call(this.userActions_);
         }
 
         private tradeRequest(object: any) {
@@ -291,6 +290,7 @@ namespace controller {
                     this.moveTo(activeUsername, model.Board.JAIL_FIELD_NUMBER);
                     break;
             }
+            this.userActions_.updateVisibilityOfDynamicButtons();
         }
 
         private moveTo(username: string, fieldId: number) {

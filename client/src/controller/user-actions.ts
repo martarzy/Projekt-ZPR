@@ -6,6 +6,7 @@ namespace controller {
     export class UserActions {
 
         private onClickHandlers_: { [mode: number]: (id: number) => boolean } = {};
+        private recentlyOpenedField = 0;
 
         constructor(private sender_: (arg: any) => void,
                     private model_: model.Model,
@@ -54,34 +55,6 @@ namespace controller {
             return toSend;
         }
 
-        activateBuildMode(): void {
-            const buildable = this.model_.board.buildableFields(this.model_.users.myUsername());
-            this.activateMode(model.ActionMode.BUILD, buildable);
-        }
-
-        activateSellMode(): void {
-            const sellable = this.model_.board.fieldsWithSellableHouses(this.model_.users.myUsername());
-            this.activateMode(model.ActionMode.SELL, sellable);
-        }
-
-        activateMortgageMode(): void {
-            const toMortgage = this.model_.board.fieldsToMortgage(this.model_.users.myUsername());
-            this.activateMode(model.ActionMode.MORTGAGE, toMortgage);
-        }
-
-        activateUnmortgageMode(): void {
-            const toUnmortgage = this.model_.board.fieldsToUnmortgage(this.model_.users.myUsername());
-            this.activateMode(model.ActionMode.UNMORTGAGE, toUnmortgage);
-        }
-
-        private activateMode(mode: model.ActionMode, toHighlight: Array<model.Field>): void {
-            if (!this.model_.users.isMyTurn())
-                return;
-            this.setRoundMode(mode);
-            this.viewChanges_.unhighlightAllFields();
-            this.highlightOnly(toHighlight);
-        }
-
         private highlightOnly(fields: Array<model.Field>): void {
             this.viewChanges_.unhighlightAllFields();
             this.viewChanges_.highlightFields(fields.map(f => f.id));
@@ -92,6 +65,11 @@ namespace controller {
         }
 
         fieldClicked(fieldId: number): void {
+            this.recentlyOpenedField = fieldId;
+            this.updateVisibilityOfDynamicButtons();
+        }
+
+        fieldAction(fieldId: number): void {
             if (!this.model_.users.isMyTurn()
                 || this.model_.round.mode === model.ActionMode.NONE)
                 return;
@@ -103,31 +81,47 @@ namespace controller {
             this.setRoundMode(model.ActionMode.NONE);
         }
 
+        private userCanBuyHouseOn(fieldId: number): boolean {
+            return this.model_.board.houseMayBeBoughtOn(fieldId, this.model_.users.myUsername())
+                && this.model_.users.activeCash() >= this.model_.board.priceOfHouseOn(fieldId);
+        }
+
         private buyHouse(fieldId: number): boolean {
-            const blockIf = () => !this.model_.board.houseMayBeBoughtOn(fieldId, this.model_.users.myUsername())
-                || this.model_.users.activeCash() < this.model_.board.priceOfHouseOn(fieldId);
-            return this.sendMessageWithCheck(fieldId, blockIf, message.BuyHouse);
+            const passCondition = this.userCanBuyHouseOn.bind(this, fieldId);
+            return this.sendMessageWithCheck(fieldId, passCondition, message.BuyHouse);
+        }
+
+        private userCanSellHouseOn(fieldId: number): boolean {
+            return this.model_.board.houseMayBeSoldOn(fieldId, this.model_.users.myUsername());
         }
 
         private sellHouse(fieldId: number): boolean {
-            const blockIf = () => !this.model_.board.houseMayBeSoldOn(fieldId, this.model_.users.myUsername());
-            return this.sendMessageWithCheck(fieldId, blockIf, message.SellHouse);
+            const passCondition = this.userCanSellHouseOn.bind(this, fieldId);
+            return this.sendMessageWithCheck(fieldId, passCondition, message.SellHouse);
+        }
+
+        private userCanMortgageField(fieldId: number): boolean {
+            return this.model_.board.fieldMayBeMortgaged(fieldId, this.model_.users.myUsername());
         }
 
         private mortgageField(fieldId: number): boolean {
-            const blockIf = () => !this.model_.board.fieldMayBeMortgaged(fieldId, this.model_.users.myUsername());
-            return this.sendMessageWithCheck(fieldId, blockIf, message.Mortgage);
+            const passCondition = this.userCanMortgageField.bind(this, fieldId);
+            return this.sendMessageWithCheck(fieldId, passCondition, message.Mortgage);
+        }
+
+        private userCanUnmortgageField(fieldId: number): boolean {
+            return this.model_.board.fieldMayBeUnmortgaged(fieldId, this.model_.users.myUsername());
         }
 
         private unmortgageField(fieldId: number): boolean {
-            const blockIf = () => !this.model_.board.fieldMayBeUnmortgaged(fieldId, this.model_.users.myUsername());
-            return this.sendMessageWithCheck(fieldId, blockIf, message.UnmortgageField);
+            const passCondition = this.userCanUnmortgageField.bind(this, fieldId);
+            return this.sendMessageWithCheck(fieldId, passCondition, message.UnmortgageField);
         }
 
         private sendMessageWithCheck(fieldId: number,
-                                     failureCondition: () => boolean,
+                                     passCondition: () => boolean,
                                      msgData: { message: string, field: string }): boolean {
-            if (failureCondition())
+            if (!passCondition())
                 return false;
             let toSend = this.prepareMessage(msgData.message);
             toSend[msgData.field] = fieldId;
@@ -149,6 +143,47 @@ namespace controller {
             const enemiesFields = this.model_.board.fieldsToMortgage(selected);
             this.model_.round.tradingWith = selected;
             this.viewChanges_.showEnemiesFields(enemiesFields);
+        }
+
+        iOwnField(id: number) {
+            return this.model_.board.ownsField(this.model_.users.myUsername(), id);
+        }
+
+        updateVisibilityOfDynamicButtons() {
+            if (!this.model_.users.isMyTurn()
+                || !this.iOwnField(this.recentlyOpenedField)) {
+                this.disableAllDynamicButtons();
+                return;
+            }
+
+            const field = this.recentlyOpenedField;
+
+            if (this.userCanBuyHouseOn(field))
+                this.viewChanges_.enableDynamic("build-button", this.buyHouse.bind(this, field));
+            else
+                this.viewChanges_.disableDynamic("build-button");
+
+            if (this.userCanSellHouseOn(field))
+                this.viewChanges_.enableDynamic("sell-button", this.sellHouse.bind(this, field));
+            else
+                this.viewChanges_.disableDynamic("sell-button");
+
+            if (this.userCanMortgageField(field))
+                this.viewChanges_.enableDynamic("mortgage-button", this.mortgageField.bind(this, field));
+            else
+                this.viewChanges_.disableDynamic("mortgage-button");
+
+            if (this.userCanUnmortgageField(field))
+                this.viewChanges_.enableDynamic("unmortgage-button", this.unmortgageField.bind(this, field)); 
+            else
+                this.viewChanges_.disableDynamic("unmortgage-button");
+        }
+
+        disableAllDynamicButtons() {
+            this.viewChanges_.disableDynamic("build-button");
+            this.viewChanges_.disableDynamic("sell-button");
+            this.viewChanges_.disableDynamic("mortgage-button");
+            this.viewChanges_.disableDynamic("unmortgage-button");
         }
 
         offerTrade(): void {

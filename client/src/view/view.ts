@@ -4,7 +4,6 @@ namespace view {
 
     export enum Button {
         ROLL, READY, END_TURN, BUY_FIELD,
-        BUY_HOUSE, SELL_HOUSE, MORTGAGE, UNMORTGAGE,
         ACCEPT_TRADE, DECLINE_TRADE, OFFER_TRADE,
         JAIL_PAY, JAIL_USE_CARD, BANKRUPTCY
     }
@@ -19,10 +18,6 @@ namespace view {
             this.buttonsIds[Button.READY] = "ready-button";
             this.buttonsIds[Button.BUY_FIELD] = "buy-button";
             this.buttonsIds[Button.END_TURN] = "end-turn-button";
-            this.buttonsIds[Button.BUY_HOUSE] = "build-button";
-            this.buttonsIds[Button.SELL_HOUSE] = "sell-button";
-            this.buttonsIds[Button.MORTGAGE] = "mortgage-button";
-            this.buttonsIds[Button.UNMORTGAGE] = "unmortgage-button";
             this.buttonsIds[Button.ACCEPT_TRADE] = "accept-offer-button";
             this.buttonsIds[Button.DECLINE_TRADE] = "decline-offer-button";
             this.buttonsIds[Button.OFFER_TRADE] = "make-bid-button";
@@ -60,6 +55,18 @@ namespace view {
 
         public hideSignInWindow() {
             $("#myModal").modal('hide');
+        }
+
+        public enableInfoWindowButton(id: string, listener: () => any) {
+            var info_button = d3.select("#" + id);
+            info_button.select("text").attr("fill", "black");
+            info_button.on("click", listener);
+        }
+
+        public disableInfoWindowButton(id: string) {
+            var info_button = d3.select("#" + id);
+            info_button.select("text").attr("fill", "gray");
+            info_button.on("click", null);
         }
 
         public showError(msg: string) {
@@ -131,6 +138,34 @@ namespace view {
 
         public buyBackField(fieldNumber: number) {
             this.board.getField(fieldNumber).buyBackField(fieldNumber);
+        }
+
+        // Wybieranie z dropdown menu
+        public selectValueFromDropdownMenu() {
+            $(".dropdown-menu li").click(function (e) {
+                $(this).parents(".btn-group").find('.btn').html(
+                    $(this).text() + " <span class=\"caret\"></span>"
+                );
+                e.preventDefault();
+            });
+        }
+
+        public selectPlayerToTrade(list: Array<view.PlayerDTO>) {
+            // pobierz wszystkich graczy
+            for (var i = 0; i < list.length; i++)
+                $("#players-menu").append('<li><a href="#">' + list[i].username + '</a></li>');
+            // wybierz odpowiedniego gracza i wyswietl na przycisku
+            this.selectValueFromDropdownMenu();
+        }
+
+        public getOfferedMoney(): any {
+            var offeredMoney = $('#offered-money').val();
+            return offeredMoney;
+        }
+
+        public getRequestedMoney(): any {
+            var requestedMoney = $('#requested-money').val();
+            return requestedMoney;
         }
 	}
 }

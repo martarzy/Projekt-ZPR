@@ -34,13 +34,4 @@ window.onload = () => {
         .onclick = (event: MouseEvent) => actions.responseTrade(true);
     (<HTMLInputElement>document.getElementById("decline-offer-button"))
         .onclick = (event: MouseEvent) => actions.responseTrade(false);
-
-    (<HTMLInputElement>document.getElementById("build-button"))
-        .onclick = (event: MouseEvent) => actions.activateBuildMode();
-    (<HTMLInputElement>document.getElementById("sell-button"))
-        .onclick = (event: MouseEvent) => actions.activateSellMode();
-    (<HTMLInputElement>document.getElementById("mortgage-button"))
-        .onclick = (event: MouseEvent) => actions.activateMortgageMode();
-    (<HTMLInputElement>document.getElementById("unmortgage-button"))
-        .onclick = (event: MouseEvent) => actions.activateUnmortgageMode();
 };

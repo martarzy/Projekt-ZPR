@@ -61,6 +61,7 @@ namespace view {
 
             g.attr("id","field-info-window");
 
+            // kolorowy pasek 
             g.append("rect")
                 .attr("x", 270)
                 .attr("y", 205)
@@ -71,6 +72,7 @@ namespace view {
                 .attr("fill", color)
                 .attr("stroke", "black")
                 .attr("id", "field-info-window-color");
+
             // przycisk do zamykania okna
             var exit_button = g.append("g").attr("id", "field-info-close-button");
             exit_button.append("rect")
@@ -232,8 +234,10 @@ namespace view {
                 .text(buildHouse)
                 .attr("fill", "black")
                 .attr("font-size", "medium");
+
             // "guzik" do kupowania
-            g.append("rect")
+            var buyButton = g.append("g").attr("id", "build-button");
+            buyButton.append("rect")
                 .attr("x", 300)
                 .attr("y", 540)
                 .attr("rx", 5)
@@ -242,17 +246,19 @@ namespace view {
                 .attr("height", 40)
                 .attr("fill", "white")
                 .attr("stroke", "black")
-                .attr("id", "buy-house-button");
+
             // tekst "Buduj"
-            g.append("text")
+            buyButton.append("text")
                 .attr("text-anchor", "middle")
                 .attr("x", 350)
                 .attr("y", 565)
                 .text("Buduj")
                 .attr("fill", "black")
                 .attr("font-size", "medium");
+
             // "guzik" do sprzedawania
-            g.append("rect")
+            var sellButton = g.append("g").attr("id", "sell-button");
+            sellButton.append("rect")
                     .attr("x", 440)
                     .attr("y", 540)
                     .attr("rx", 5)
@@ -261,17 +267,18 @@ namespace view {
                     .attr("height", 40)
                     .attr("fill", "white")
                     .attr("stroke", "black")
-                    .attr("id", "sell-button");
             // tekst "Sprzedaj"
-            g.append("text")
+            sellButton.append("text")
                 .attr("text-anchor", "middle")
                 .attr("x", 490)
                 .attr("y", 565)
                 .text("Sprzedaj")
                 .attr("fill", "black")
                 .attr("font-size", "medium");
+
             // "guzik" do zastawiania
-            g.append("rect")
+            var mortgageButton = g.append("g").attr("id", "mortgage-button");
+            mortgageButton.append("rect")
                 .attr("x", 300)
                 .attr("y", 595)
                 .attr("rx", 5)
@@ -280,17 +287,18 @@ namespace view {
                 .attr("height", 40)
                 .attr("fill", "white")
                 .attr("stroke", "black")
-                .attr("id", "mortgage-button");
             // tekst "Zastaw"
-            g.append("text")
+            mortgageButton.append("text")
                 .attr("text-anchor", "middle")
                 .attr("x", 350)
                 .attr("y", 620)
                 .text("Zastaw")
                 .attr("fill", "black")
                 .attr("font-size", "medium");
+
             // "guzik" do wykupowania
-            g.append("rect")
+            var unmortgageButton = g.append("g").attr("id", "unmortgage-button");
+            unmortgageButton.append("rect")
                 .attr("x", 440)
                 .attr("y", 595)
                 .attr("rx", 5)
@@ -299,9 +307,8 @@ namespace view {
                 .attr("height", 40)
                 .attr("fill", "white")
                 .attr("stroke", "black")
-                .attr("id", "unmortgage-button");
             // tekst "Wykup"
-            g.append("text")
+            unmortgageButton.append("text")
                 .attr("text-anchor", "middle")
                 .attr("x", 490)
                 .attr("y", 620)

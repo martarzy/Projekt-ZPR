@@ -40,12 +40,8 @@ namespace controller {
         }
 
         enableButtonsOnRoundStart(): void {
-            const buttons = [view.Button.BUY_HOUSE,
-                             view.Button.SELL_HOUSE,
-                             view.Button.ROLL,
-                             view.Button.MORTGAGE,
-                             view.Button.UNMORTGAGE,
-                             view.Button.BANKRUPTCY];
+            const buttons = [ view.Button.ROLL,
+                              view.Button.BANKRUPTCY];
             for (const button of buttons)
                 this.enable(button);
         }
@@ -128,6 +124,14 @@ namespace controller {
             // TODO
         }
 
+        enableDynamic(id: string, callback: () => void) {
+            this.view_.enableInfoWindowButton(id, callback);
+        }
+
+        disableDynamic(id: string) {
+            this.view_.disableInfoWindowButton(id);
+        }
+
         showTradeOffer(offeredCash: number,
                        offeredFields: Array<number>,
                        demandedCash: number,
@@ -150,9 +154,7 @@ namespace controller {
 
         enableButtonsProvidingCash(): void {
             this.disableAllButtonsButBankruptcy();
-            const toEnable = [view.Button.SELL_HOUSE,
-                              view.Button.MORTGAGE,
-                              view.Button.OFFER_TRADE];
+            const toEnable = [view.Button.OFFER_TRADE];
 
             toEnable.forEach(button => this.enable(button));
         }
