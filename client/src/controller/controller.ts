@@ -6,45 +6,60 @@
 
 namespace controller {
 
+    /**
+     * Creates components required to start the game.
+     * Provides communication between client and server
+     * via websockets.
+     */
     export class Controller {
-        private server: SocketServer;
-        private model: model.Model;
-        private view: view.View;
-        private serverHandler: ServerHandler;
-        private userActions: UserActions;
+        private model_ = new model.Model();
+        private view_ = new view.View();
 
+        private server_: SocketServer;
+        private serverHandler_: ServerHandler;
+        private userActions_: UserActions;
+
+        /**
+         * Connects with the websockets with uri given as a parameter.
+         * Creates model, view and handlers of user's actions and server responses.
+         * Assigns onClick callback to the board fields.
+         * @param serverUri uri string providing connection to server
+         */
         constructor(serverUri: string) {
-            this.model = new model.Model();
-            this.view = new view.View();
-
-            const viewChanges = new ViewChanges(this.view);
-            this.userActions = new UserActions(this.sendMessage.bind(this), this.model, viewChanges);
-            this.serverHandler = new ServerHandler(this.model, viewChanges, this.userActions);
-
-            this.view.assignFieldClickedCallback(this.userActions.fieldClicked.bind(this.userActions));
             this.createSocketConnection(serverUri);
-        }
 
-        get actionsMap(): UserActions {
-            return this.userActions;
+            const viewChanges = new ViewChanges(this.view_);
+            this.userActions_ = new UserActions(this.sendMessage.bind(this), this.model_, viewChanges);
+            this.serverHandler_ = new ServerHandler(this.model_, viewChanges, this.userActions_);
+
+            this.view_.assignFieldClickedCallback(this.userActions_.fieldClicked.bind(this.userActions_));
         }
 
         private createSocketConnection(uri: string): void {
-            this.server = new SocketServer(uri, this.delegateMessageToHandler.bind(this));
+            this.server_ = new SocketServer(uri, this.delegateMessageToHandler.bind(this));
+        }
+        
+        /**
+         * Exposes handlers of available user actions to allow bind
+         * them with view buttons.
+         */
+        get userActions(): UserActions {
+            return this.userActions_;
         }
 
-        sendMessage(toSend: any): void {
-            console.log("Client sent: " + JSON.stringify(toSend));
-            this.server.sendMessage(this.prepareToSend(toSend));
-        }
-
-        private prepareToSend(object: any): string {
-            return JSON.stringify(object);
+        /**
+         * Sends message to server via the SocketServer object.
+         * @param objectToSend
+         */
+        sendMessage(objectToSend: any): void {
+            const toSend = JSON.stringify(objectToSend);
+            console.log("Client sent: " + toSend);
+            this.server_.sendMessage(toSend);
         }
 
         private delegateMessageToHandler(message: any): void {
             console.log("Server sent: " + message);
-            this.serverHandler.handle(JSON.parse(message));
+            this.serverHandler_.handle(JSON.parse(message));
         }
     }
 

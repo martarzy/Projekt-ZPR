@@ -150,20 +150,20 @@ namespace view {
             });
         }
 
-        public selectPlayerToTrade(list: Array<view.PlayerDTO>) {
+        public selectPlayerToTrade(list: Array<string>) {
             // pobierz wszystkich graczy
             for (var i = 0; i < list.length; i++)
-                $("#players-menu").append('<li><a href="#">' + list[i].username + '</a></li>');
+                $("#players-menu").append('<li><a href="#">' + list[i] + '</a></li>');
             // wybierz odpowiedniego gracza i wyswietl na przycisku
             this.selectValueFromDropdownMenu();
         }
 
-        public selectOfferedFieldToTrade() {
+        public selectOfferedFieldToTrade(ids: Array<number>) {
             //TODO
             this.selectValueFromDropdownMenu();
         }
 
-        public selectRequestedFieldToTrade() {
+        public selectRequestedFieldToTrade(ids: Array<number>) {
             //TODO
             this.selectValueFromDropdownMenu();
         }
