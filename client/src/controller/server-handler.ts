@@ -129,6 +129,10 @@ namespace controller {
         }
 
         private performMovement(username: string, rollResult: number) {
+            if (this.model.round.movementCommands > 0) {
+                setTimeout(this.performMovement.bind(this, username, rollResult), 100);
+                return;
+            }
             ++this.model.round.movementCommands;
             this.model.board.movePawnBy(username, rollResult);
             this.doIfMyTurn(() => this.model.round.playerMoved = true);
@@ -294,6 +298,10 @@ namespace controller {
         }
 
         private moveTo(username: string, fieldId: number) {
+            if (this.model.round.movementCommands > 0) {
+                setTimeout(this.moveTo.bind(this, username, fieldId), 100);
+                return;
+            }
             ++this.model.round.movementCommands;
             this.model.board.movePawnOn(username, fieldId);
             const field: model.Field = this.model.board.getField(username);

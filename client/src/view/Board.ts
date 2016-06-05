@@ -335,7 +335,7 @@ namespace view {
             {
                 this.pawns[pawnName].move(this.fields[i], sequencenumber++);
             }
-            this.pawns[pawnName].move(this.fields[fieldNumber], sequencenumber);
+            this.pawns[pawnName].move(this.fields[fieldNumber], sequencenumber++);
             setTimeout(onMovingEnd, sequencenumber*200);
         }
 
