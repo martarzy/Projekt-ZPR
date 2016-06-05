@@ -20,6 +20,7 @@ namespace view {
             var fieldRect = d3.select("#hotel-field-" + fieldNumber);
             var fieldDesc = Field.FieldDescription[fieldNumber];
             var infoWindow = d3.select("#field-info-window");
+            var closeButton = d3.select("#close-button-rect");
 
             fieldRect.on("click", () => {
                 this.removeFieldInfoWindow();
@@ -30,6 +31,7 @@ namespace view {
             });
 
             fieldRect.on("mouseover", () => {
+                d3.select("#board-svg").attr("cursor", "pointer");
                 if (this.cardLocked)
                     return;
                 this.removeFieldInfoWindow();
@@ -39,13 +41,9 @@ namespace view {
             });
 
             fieldRect.on("mouseout", () => {
+                d3.select("#board-svg").attr("cursor", "default");
                 if (this.cardLocked)
                     return;
-                this.removeFieldInfoWindow();
-            });
-
-            d3.select("#close-button-rect").on("click", () => {
-                this.cardLocked = false;
                 this.removeFieldInfoWindow();
             });
         }
@@ -74,21 +72,37 @@ namespace view {
                 .attr("stroke", "black")
                 .attr("id", "field-info-window-color");
             // przycisk do zamykania okna
-            /*g.append('text')
-                .text('X')
-                .attr("x", 540)
-                .attr("y", 220)
-                .attr("font-size", "20px")
-                .attr("fill", "black")
-                .attr("id", "close-button-X");*/
-            g.append("rect")
+            var exit_button = g.append("g").attr("id", "field-info-close-button");
+            exit_button.append("rect")
                 .attr("x", 540)
                 .attr("y", 220)
                 .attr("width", 20)
                 .attr("height", 20)
                 .attr("id", "close-button-rect")
                 .attr("fill", "white")
-                .attr("opacity", 0.7);
+                .attr("rx", 3)
+                .attr("ry", 3)
+
+            exit_button.append('text')
+                .text('X')
+                .attr("x", 550)
+                .attr("y", 236)
+                .attr("text-anchor", "middle")
+                .attr("font-size", "16px")
+                .attr("fill", "black");
+
+            exit_button.on("click", () => {
+                this.cardLocked = false;
+                this.removeFieldInfoWindow();
+                d3.select("#board-svg").attr("cursor", "default");
+            });
+            exit_button.on("mouseover", () => {
+                d3.select("#board-svg").attr("cursor", "pointer");
+            });
+            exit_button.on("mouseout", () => {
+                d3.select("#board-svg").attr("cursor", "default");
+            });
+
 
             // glowny prostokat
             g.append("rect")
