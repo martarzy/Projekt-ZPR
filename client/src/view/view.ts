@@ -132,5 +132,33 @@ namespace view {
         public buyBackField(fieldNumber: number) {
             this.board.getField(fieldNumber).buyBackField(fieldNumber);
         }
+
+        // Wybieranie z dropdown menu
+        public selectValueFromDropdownMenu() {
+            $(".dropdown-menu li").click(function (e) {
+                $(this).parents(".btn-group").find('.btn').html(
+                    $(this).text() + " <span class=\"caret\"></span>"
+                );
+                e.preventDefault();
+            });
+        }
+
+        public selectPlayerToTrade(list: Array<view.PlayerDTO>) {
+            // pobierz wszystkich graczy
+            for (var i = 0; i < list.length; i++)
+                $("#players-menu").append('<li><a href="#">' + list[i].username + '</a></li>');
+            // wybierz odpowiedniego gracza i wyswietl na przycisku
+            this.selectValueFromDropdownMenu();
+        }
+
+        public getOfferedMoney(): any {
+            var offeredMoney = $('#offered-money').val();
+            return offeredMoney;
+        }
+
+        public getRequestedMoney(): any {
+            var requestedMoney = $('#requested-money').val();
+            return requestedMoney;
+        }
 	}
 }
