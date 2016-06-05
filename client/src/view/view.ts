@@ -185,6 +185,11 @@ namespace view {
             return $("#requested-field-button").val();
         }
 
+        // setter - wybrany gracz
+        public setSelectedPlayer(playerName: string) {
+            $("#player-to-trade-button").text(playerName);
+        }
+
         // setter - oferowana kwota
         public setOfferedMoney(offeredMoney: string) {
             $("#offered-money").val(offeredMoney);
@@ -192,13 +197,17 @@ namespace view {
 
         // setter - zadana kwota
         public setRequestedMoney(requestedMoney: string) {
-            $("#requested-money").val(requestedMoney);
+            $("#requested-money").text(requestedMoney);
         }
 
         // setter - oferowane pole
         public setOfferedField(offeredFieldName: string) {
-            $("#offered-field-button").val(offeredFieldName);
-            // disabled <a> ???
+            $("#offered-field-button").text(offeredFieldName);
+        }
+
+        // setter - zadane pole
+        public setRequestedField(requestedFieldName: string) {
+            $("#requested-field-button").text(requestedFieldName);
         }
 
 

@@ -81,11 +81,11 @@ namespace controller {
         }
 
         highlightFields(fieldIds: Array<number>): void {
-            this.view_.highlightFields(fieldIds);
+            //this.view_.highlightFields(fieldIds);
         }
 
         unhighlightAllFields(): void {
-            this.view_.unhighlightAllFields();
+            //this.view_.unhighlightAllFields();
         }
 
         drawHousesOnField(fieldId: number, houseAmount: number) {
