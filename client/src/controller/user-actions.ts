@@ -4,24 +4,18 @@
 namespace controller {
 
     export class UserActions {
-
-        private onClickHandlers_: { [mode: number]: (id: number) => boolean } = {};
-        private recentlyOpenedField = 0;
+        private recentlyOpenedField_ = 0;
 
         constructor(private sender_: (arg: any) => void,
                     private model_: model.Model,
                     private viewChanges_: ViewChanges) {
-            this.initOnClick();
         }
 
-        private initOnClick(): void {
-            this.onClickHandlers_[model.ActionMode.NONE] = (id) => { return false; };
-            this.onClickHandlers_[model.ActionMode.BUILD] = this.buyHouse.bind(this);
-            this.onClickHandlers_[model.ActionMode.SELL] = this.sellHouse.bind(this);
-            this.onClickHandlers_[model.ActionMode.MORTGAGE] = this.mortgageField.bind(this);
-            this.onClickHandlers_[model.ActionMode.UNMORTGAGE] = this.unmortgageField.bind(this);
-        }
-
+        /**
+         * Prepares and sends message specifying
+         * chosen username of the new player.
+         * @param name chosen username to verify
+         */
         chooseName(name: string): void {
             let toSend = this.prepareMessage(message.MyName.message);
             toSend[message.MyName.name] = name;
@@ -29,14 +23,14 @@ namespace controller {
             this.model_.users.setMyUsername(name);
         }
 
-        rollDice(): void {
-            this.sender_(this.prepareMessage(message.RollDice.message));
-            this.viewChanges_.disable(view.Button.ROLL);
-        }
-
         playerIsReady(): void {
             this.sender_(this.prepareMessage(message.Ready.message));
             this.viewChanges_.disable(view.Button.READY);
+        }
+
+        rollDice(): void {
+            this.sender_(this.prepareMessage(message.RollDice.message));
+            this.viewChanges_.disable(view.Button.ROLL);
         }
 
         playerBuysField(): void {
@@ -55,30 +49,14 @@ namespace controller {
             return toSend;
         }
 
-        private highlightOnly(fields: Array<model.Field>): void {
-            this.viewChanges_.unhighlightAllFields();
-            this.viewChanges_.highlightFields(fields.map(f => f.id));
-        }
-
-        private setRoundMode(mode: model.ActionMode): void {
-            this.model_.round.mode = mode;
-        }
-
+        /**
+         * Handles click on the board field. Stores clicked field's id
+         * for further processing (build, sell etc.)
+         * @param fieldId id of clicked field
+         */
         fieldClicked(fieldId: number): void {
-            this.recentlyOpenedField = fieldId;
+            this.recentlyOpenedField_ = fieldId;
             this.updateVisibilityOfDynamicButtons();
-        }
-
-        fieldAction(fieldId: number): void {
-            if (!this.model_.users.isMyTurn()
-                || this.model_.round.mode === model.ActionMode.NONE)
-                return;
-            if (!this.onClickHandlers_[this.model_.round.mode](fieldId))
-                return;
-            /* The model is updated when server sends confirmation message.
-               The mode is set to NONE to avoid situation when server haven't
-               responded yet and user clicked the field multiple times. */
-            this.setRoundMode(model.ActionMode.NONE);
         }
 
         private userCanBuyHouseOn(fieldId: number): boolean {
@@ -129,56 +107,87 @@ namespace controller {
             return true;
         }
 
-        private startTrade(): void {
-            // TODO
+        /**
+         * Triggers when "choose player" in trade panel clicked.
+         * It sends enemies usernames to view so player can choose
+         * the enemy to trade with.
+         */
+        choosePlayerToTrade(): void {
             const others = this.model_.users.getEnemies();
-            const myFields = this.model_.board.fieldsToMortgage(this.model_.users.myUsername());
-            this.viewChanges_.showTradePanel(others, myFields);
+            this.viewChanges_.listEnemiesToTrade(others);
             this.viewChanges_.enable(view.Button.OFFER_TRADE);
         }
 
-        private userToTradeSelected(): void {
-            // TODO
-            const selected = "" // TODO get it from view
-            const enemiesFields = this.model_.board.fieldsToMortgage(selected);
-            this.model_.round.tradingWith = selected;
-            this.viewChanges_.showEnemiesFields(enemiesFields);
+        /**
+         * Triggers when "select my field" in trade panel clicked.
+         * It sends owned fields ids to view so player can choose
+         * the field he offers to his enemy.
+         */
+        chooseMyFieldsToTrade(): void {
+            const myFields = this.model_.board.fieldsToMortgage(this.model_.users.myUsername());
+            this.viewChanges_.listMyFieldsToTrade(myFields.map(f => f.id));
         }
 
-        iOwnField(id: number) {
-            return this.model_.board.ownsField(this.model_.users.myUsername(), id);
+        /**
+         * Triggers when "select enemy field" in trade panel clicked.
+         * Enemy's variant of chooseMyFieldsToTrade. The username is
+         * taken from view. Sends empty list if enemy was not chosen.
+         */
+        chooseEnemyFieldsToTrade(): void {
+            const enemy = this.viewChanges_.enemyChosenToTrade();
+            if (enemy === undefined)
+                this.viewChanges_.listMyFieldsToTrade([]);
+            const myFields = this.model_.board.fieldsToMortgage(enemy);
+            this.viewChanges_.listMyFieldsToTrade(myFields.map(f => f.id));
         }
 
+        /**
+         * Enables or disables buttons displayed on the field card
+         * due to user's state. It disables all of them if user is not
+         * in his turn or if he is not the owner of the opened field.
+         * Otherwise it tests enable condition for every button. 
+         */
         updateVisibilityOfDynamicButtons() {
             if (!this.model_.users.isMyTurn()
-                || !this.iOwnField(this.recentlyOpenedField)) {
+                || !this.isOwnedByMe(this.recentlyOpenedField_)) {
                 this.disableAllDynamicButtons();
                 return;
             }
 
-            const field = this.recentlyOpenedField;
+            const field = this.recentlyOpenedField_;
 
-            if (this.userCanBuyHouseOn(field))
-                this.viewChanges_.enableDynamic("build-button", this.buyHouse.bind(this, field));
-            else
-                this.viewChanges_.disableDynamic("build-button");
+            this.changeDynamicButton("build-button",
+                                     this.buyHouse.bind(this, field),
+                                     this.userCanBuyHouseOn(field));
 
-            if (this.userCanSellHouseOn(field))
-                this.viewChanges_.enableDynamic("sell-button", this.sellHouse.bind(this, field));
-            else
-                this.viewChanges_.disableDynamic("sell-button");
+            this.changeDynamicButton("sell-button",
+                                     this.sellHouse.bind(this, field),
+                                     this.userCanSellHouseOn(field));
 
-            if (this.userCanMortgageField(field))
-                this.viewChanges_.enableDynamic("mortgage-button", this.mortgageField.bind(this, field));
-            else
-                this.viewChanges_.disableDynamic("mortgage-button");
+            this.changeDynamicButton("mortgage-button",
+                                     this.mortgageField.bind(this, field),
+                                     this.userCanMortgageField(field));
 
-            if (this.userCanUnmortgageField(field))
-                this.viewChanges_.enableDynamic("unmortgage-button", this.unmortgageField.bind(this, field)); 
-            else
-                this.viewChanges_.disableDynamic("unmortgage-button");
+            this.changeDynamicButton("unmortgage-button",
+                                     this.unmortgageField.bind(this, field),
+                                     this.userCanUnmortgageField(field));
         }
 
+        private changeDynamicButton(id: string, callback: () => void, enable: boolean): void {
+            if (enable)
+                this.viewChanges_.enableDynamic(id, callback);
+            else
+                this.viewChanges_.disableDynamic(id);
+        }
+
+        private isOwnedByMe(id: number) {
+            return this.model_.board.ownsField(this.model_.users.myUsername(), id);
+        }
+
+        /**
+         * Disables all buttons displayed on the field card without
+         * testing user state.
+         */
         disableAllDynamicButtons() {
             this.viewChanges_.disableDynamic("build-button");
             this.viewChanges_.disableDynamic("sell-button");
@@ -186,6 +195,11 @@ namespace controller {
             this.viewChanges_.disableDynamic("unmortgage-button");
         }
 
+        /**
+         * Prepares and sends message with trade offer from active player.
+         * Takes neccessary data from the view getters, clears trade
+         * panel and disables all buttons.
+         */
         offerTrade(): void {
             // TODO
             // get cash and fields from view
@@ -194,7 +208,7 @@ namespace controller {
             this.model_.round.offeredFields = offeredFields;
             this.model_.round.demandedFields = demandedFields;
             const toSend = this.prepareMessage(message.Trade.message);
-            toSend[message.Trade.otherUsername] = this.model_.round.tradingWith;
+            toSend[message.Trade.otherUsername] = this.viewChanges_.enemyChosenToTrade();
             toSend[message.Trade.offeredCash] = cashOffered;
             toSend[message.Trade.demandedCash] = cashRequired;
             toSend[message.Trade.offeredFields] = offeredFields;
@@ -204,14 +218,21 @@ namespace controller {
             this.viewChanges_.disableAllButtons();
         }
 
+        /**
+         * Prepares and sends message with trade answer.
+         * @param decision Specifies if trade was accepted or rejected.
+         */
         responseTrade(decision: boolean): void {
             const toSend = this.prepareMessage(message.TradeAnswer.message);
             toSend[message.TradeAnswer.decision] = decision;
             this.sender_(toSend);
-            this.viewChanges_.closeTradeDecisionPanel();
             this.viewChanges_.disableAllButtons();
         }
 
+        /**
+         * Prepares message informing about paying to exit jail.
+         * It returns without sending message if player doesn't have neccessary cash to pay.
+         */
         exitJailPaying() {
             const me = this.model_.users.getMe();
             if (me.cash < 50)
@@ -221,6 +242,10 @@ namespace controller {
             this.exitJailWithMethod("pay");
         }
 
+        /**
+         * Prepares message informing about using chance card to exit jail.
+         * It returns without sending message if player doesn't have mentioned card.
+         */
         exitJailUsingChanceCard() {
             const me = this.model_.users.getMe();
             if (me.jailExitCards === 0)
@@ -239,6 +264,9 @@ namespace controller {
             this.sender_(toSend);
         }
 
+        /**
+         * Prepares and sends message with banruptcy declaration.
+         */
         declareBankruptcy(): void {
             this.viewChanges_.disableAllButtons();
             this.sender_(this.prepareMessage(message.DeclareBankruptcy.message));

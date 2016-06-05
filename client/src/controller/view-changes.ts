@@ -100,19 +100,24 @@ namespace controller {
             this.view_.unmortgageField(id);
         }
 
-        showTradePanel(enemiesUsernames: Array<string>, myFields: Array<model.Field>) {
-            // TODO
+        listEnemiesToTrade(enemiesUsernames: Array<string>): void {
+            this.view_.selectPlayerToTrade(enemiesUsernames);
         }
 
-        showEnemiesFields(selectedEnemyFields: Array<model.Field>): void {
+        listMyFieldsToTrade(fieldsIds: Array<number>): void {
+            this.view_.selectOfferedFieldToTrade(fieldsIds);
+        }
+
+        listEnemyFieldsToTrade(fieldsIds: Array<number>): void {
+            this.view_.selectRequestedFieldToTrade(fieldsIds);
+        }
+
+        enemyChosenToTrade(): string {
             // TODO
+            return "";
         }
 
         clearTradePanel(): void {
-            // TODO
-        }
-
-        closeTradeDecisionPanel(): void {
             // TODO
         }
 
@@ -124,19 +129,19 @@ namespace controller {
             // TODO
         }
 
+        showTradeOffer(offeredCash: number,
+                       offeredFields: Array<number>,
+                       demandedCash: number,
+                       demandedFields: Array<number>): void {
+            // TODO
+        }
+
         enableDynamic(id: string, callback: () => void) {
             this.view_.enableInfoWindowButton(id, callback);
         }
 
         disableDynamic(id: string) {
             this.view_.disableInfoWindowButton(id);
-        }
-
-        showTradeOffer(offeredCash: number,
-                       offeredFields: Array<number>,
-                       demandedCash: number,
-                       demandedFields: Array<number>): void {
-            // TODO
         }
 
         showJailExitOptions(canPay: boolean, canUseCard: boolean) {

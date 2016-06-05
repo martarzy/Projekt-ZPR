@@ -154,23 +154,16 @@ class GameManager:
                 player.error('notAllowedMessage')
 
     def roll_dice(self, player):
-        player.last_roll = self.generate_roll()
-        self.broadcast({'message': 'playerMove', 'player': player.name, 'move': player.last_roll})
+        roll = [randint(1, 6), (randint(1, 6))]
+        player.last_roll = roll[0] + roll[1]
+        self.broadcast({'message': 'playerMove', 'player': player.name, 'move': roll})
         self.move(player, player.last_roll)
 
     @staticmethod
     def generate_roll():
-        return 1
-        result = 0
-
-        for _ in range(3):
-            first = randint(1, 6)
-            second = randint(1, 6)
-            result += first + second
-            if first != second:
-                break
-
-        return result
+        first = randint(1, 6)
+        second = randint(1, 6)
+        return [first, second]
 
     def reset(self):
         for player in self.players:

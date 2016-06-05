@@ -9,7 +9,7 @@ namespace controller {
 
     export class ServerHandler {
         private handlers = new collections.Dictionary<string, EventHandler>();
-        private colorManager_: model.Colors;
+        private playersColors_: model.Colors;
 
         constructor(private model: model.Model,
             private viewChanges_: ViewChanges,
@@ -19,7 +19,7 @@ namespace controller {
         }
 
         private initialise() {
-            this.colorManager_ = new model.Colors();
+            this.playersColors_ = new model.Colors();
         }
 
         private installHandlers(): void {
@@ -75,7 +75,7 @@ namespace controller {
         private replacePlayers(usernames: Array<string>): void {
             this.model.users.removeAll();
             for (let i = 0; i < usernames.length; ++i)
-                this.model.users.addNew(usernames[i], this.colorManager_.getColor(i));
+                this.model.users.addNew(usernames[i], this.playersColors_.getColor(i));
         }
 
         private updatePlayerList(players: Array<model.Player>) {
@@ -124,8 +124,8 @@ namespace controller {
 
         private someoneMoved(object: any): void {
             const username: string = object[message.PlayerMove.playerName];
-            const rollValue: number = object[message.PlayerMove.movedBy];
-            this.performMovement(username, rollValue);
+            const rollValue: Array<number> = object[message.PlayerMove.movedBy];
+            this.performMovement(username, rollValue[0] + rollValue[1]);
         }
 
         private performMovement(username: string, rollResult: number) {

@@ -148,12 +148,12 @@ namespace view {
             this.selectValueFromDropdownMenu();
         }
 
-        public selectOfferedFieldToTrade() {
+        public selectOfferedFieldToTrade(ids: Array<number>) {
             //TODO
             this.selectValueFromDropdownMenu();
         }
 
-        public selectRequestedFieldToTrade() {
+        public selectRequestedFieldToTrade(ids: Array<number>) {
             //TODO
             this.selectValueFromDropdownMenu();
         }

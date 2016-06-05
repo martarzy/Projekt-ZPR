@@ -94,9 +94,8 @@ class TooManyPlayersConnectCase(unittest.TestCase):
         names = ['player' + str(i) for i in range(7)]
         for i in range(7):
             self.ws[i].send(json.dumps({'message': 'myName', 'myName': names[i]}))
-            self.ws[i].send(json.dumps({'message': 'ready'}))
 
-        recv = json.loads(self.ws[i].recv())
+        recv = json.loads(self.ws[6].recv())
         self.assertDictEqual(recv, {'message': 'nameAccepted', 'valid': False, 'error': 'tooManyUsers'})
 
     def tearDown(self):
