@@ -156,25 +156,28 @@ namespace controller {
 
             const field = this.recentlyOpenedField_;
 
-            if (this.userCanBuyHouseOn(field))
-                this.viewChanges_.enableDynamic("build-button", this.buyHouse.bind(this, field));
-            else
-                this.viewChanges_.disableDynamic("build-button");
+            this.changeDynamicButton("build-button",
+                                     this.buyHouse.bind(this, field),
+                                     this.userCanBuyHouseOn(field));
 
-            if (this.userCanSellHouseOn(field))
-                this.viewChanges_.enableDynamic("sell-button", this.sellHouse.bind(this, field));
-            else
-                this.viewChanges_.disableDynamic("sell-button");
+            this.changeDynamicButton("sell-button",
+                                     this.sellHouse.bind(this, field),
+                                     this.userCanSellHouseOn(field));
 
-            if (this.userCanMortgageField(field))
-                this.viewChanges_.enableDynamic("mortgage-button", this.mortgageField.bind(this, field));
-            else
-                this.viewChanges_.disableDynamic("mortgage-button");
+            this.changeDynamicButton("mortgage-button",
+                                     this.mortgageField.bind(this, field),
+                                     this.userCanMortgageField(field));
 
-            if (this.userCanUnmortgageField(field))
-                this.viewChanges_.enableDynamic("unmortgage-button", this.unmortgageField.bind(this, field)); 
+            this.changeDynamicButton("unmortgage-button",
+                                     this.unmortgageField.bind(this, field),
+                                     this.userCanUnmortgageField(field));
+        }
+
+        private changeDynamicButton(id: string, callback: () => void, enable: boolean): void {
+            if (enable)
+                this.viewChanges_.enableDynamic(id, callback);
             else
-                this.viewChanges_.disableDynamic("unmortgage-button");
+                this.viewChanges_.disableDynamic(id);
         }
 
         private isOwnedByMe(id: number) {
