@@ -66,10 +66,7 @@ namespace controller {
         fieldClicked(fieldId: number): void {
             if (!this.model_.users.isMyTurn())
                 return;
-            this.viewChanges_.assignCallbackToDynamic("build-button", this.buyHouse.bind(this, fieldId));
-            this.viewChanges_.assignCallbackToDynamic("sell-button", this.sellHouse.bind(this, fieldId));
-            this.viewChanges_.assignCallbackToDynamic("mortgage-button", this.mortgageField.bind(this, fieldId));
-            this.viewChanges_.assignCallbackToDynamic("unmortgage-button", this.unmortgageField.bind(this, fieldId)); 
+            this.updateVisibilityOfDynamicButtons(fieldId);
         }
 
         fieldAction(fieldId: number): void {
@@ -84,31 +81,47 @@ namespace controller {
             this.setRoundMode(model.ActionMode.NONE);
         }
 
+        private userCanBuyHouseOn(fieldId: number): boolean {
+            return this.model_.board.houseMayBeBoughtOn(fieldId, this.model_.users.myUsername())
+                && this.model_.users.activeCash() >= this.model_.board.priceOfHouseOn(fieldId);
+        }
+
         private buyHouse(fieldId: number): boolean {
-            const blockIf = () => !this.model_.board.houseMayBeBoughtOn(fieldId, this.model_.users.myUsername())
-                || this.model_.users.activeCash() < this.model_.board.priceOfHouseOn(fieldId);
-            return this.sendMessageWithCheck(fieldId, blockIf, message.BuyHouse);
+            const passCondition = this.userCanBuyHouseOn.bind(this, fieldId);
+            return this.sendMessageWithCheck(fieldId, passCondition, message.BuyHouse);
+        }
+
+        private userCanSellHouseOn(fieldId: number): boolean {
+            return this.model_.board.houseMayBeSoldOn(fieldId, this.model_.users.myUsername());
         }
 
         private sellHouse(fieldId: number): boolean {
-            const blockIf = () => !this.model_.board.houseMayBeSoldOn(fieldId, this.model_.users.myUsername());
-            return this.sendMessageWithCheck(fieldId, blockIf, message.SellHouse);
+            const passCondition = this.userCanSellHouseOn.bind(this, fieldId);
+            return this.sendMessageWithCheck(fieldId, passCondition, message.SellHouse);
+        }
+
+        private userCanMortgageField(fieldId: number): boolean {
+            return this.model_.board.fieldMayBeMortgaged(fieldId, this.model_.users.myUsername());
         }
 
         private mortgageField(fieldId: number): boolean {
-            const blockIf = () => !this.model_.board.fieldMayBeMortgaged(fieldId, this.model_.users.myUsername());
-            return this.sendMessageWithCheck(fieldId, blockIf, message.Mortgage);
+            const passCondition = this.userCanMortgageField.bind(this, fieldId);
+            return this.sendMessageWithCheck(fieldId, passCondition, message.Mortgage);
+        }
+
+        private userCanUnmortgageField(fieldId: number): boolean {
+            return this.model_.board.fieldMayBeUnmortgaged(fieldId, this.model_.users.myUsername());
         }
 
         private unmortgageField(fieldId: number): boolean {
-            const blockIf = () => !this.model_.board.fieldMayBeUnmortgaged(fieldId, this.model_.users.myUsername());
-            return this.sendMessageWithCheck(fieldId, blockIf, message.UnmortgageField);
+            const passCondition = this.userCanUnmortgageField.bind(this, fieldId);
+            return this.sendMessageWithCheck(fieldId, passCondition, message.UnmortgageField);
         }
 
         private sendMessageWithCheck(fieldId: number,
-                                     failureCondition: () => boolean,
+                                     passCondition: () => boolean,
                                      msgData: { message: string, field: string }): boolean {
-            if (failureCondition())
+            if (!passCondition())
                 return false;
             let toSend = this.prepareMessage(msgData.message);
             toSend[msgData.field] = fieldId;
@@ -130,6 +143,31 @@ namespace controller {
             const enemiesFields = this.model_.board.fieldsToMortgage(selected);
             this.model_.round.tradingWith = selected;
             this.viewChanges_.showEnemiesFields(enemiesFields);
+        }
+
+        updateVisibilityOfDynamicButtons(fieldId: number) {
+            if (!this.model_.users.isMyTurn())
+                return;
+
+            if (this.userCanBuyHouseOn(fieldId))
+                this.viewChanges_.enableDynamic("build-button", this.buyHouse.bind(this, fieldId));
+            else
+                this.viewChanges_.disableDynamic("build-button");
+
+            if (this.userCanSellHouseOn(fieldId))
+                this.viewChanges_.enableDynamic("sell-button", this.sellHouse.bind(this, fieldId));
+            else
+                this.viewChanges_.disableDynamic("sell-button");
+
+            if (this.userCanMortgageField(fieldId))
+                this.viewChanges_.enableDynamic("mortgage-button", this.mortgageField.bind(this, fieldId));
+            else
+                this.viewChanges_.disableDynamic("mortgage-button");
+
+            if (this.userCanUnmortgageField(fieldId))
+                this.viewChanges_.enableDynamic("unmortgage-button", this.unmortgageField.bind(this, fieldId)); 
+            else
+                this.viewChanges_.disableDynamic("unmortgage-button");
         }
 
         offerTrade(): void {
