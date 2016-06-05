@@ -10,15 +10,19 @@ namespace view {
         constructor() {
             for (let i = 0; i < 40; i++) {
                 this.fields[i] = new Field(i);
-                this.addEventToInfoWindow(i);
             }
+            this.addEventToInfoWindow(14);
         }
 
-        // Opakowane zdarzenie mouseover na wybranym polu
+        // Opakowane zdarzenie click na wybranym polu
         public addEventToInfoWindow(fieldNumber: number) {
             var fieldRect = d3.select("#hotel-field-" + fieldNumber);
+            var fieldDesc = Field.FieldDescription[fieldNumber];
 
-            this.createFieldInfoWindow("red", "Warszawa", "20", "10", "20", "10", "20", "10");
+            this.createFieldInfoWindow(fieldDesc.color, fieldDesc.name, fieldDesc.rent,
+                fieldDesc.oneHouse, fieldDesc.twoHouses, fieldDesc.threeHouses, fieldDesc.fourHouses,
+                fieldDesc.hotel, fieldDesc.buildHouse);
+
             var infoWindow = $("#field-info-window");
 
             fieldRect.on("click", function () {
@@ -33,7 +37,7 @@ namespace view {
 
         // Tworzenie okienka z danymi pola
         public createFieldInfoWindow(color: string, town: string, rent: string, oneHouse: string, twoHouses: string,
-                                     threeHouses: string, fourHouses: string, hotel: string) {
+                                     threeHouses: string, fourHouses: string, hotel: string, buildHouse: string) {
             var g = d3.select("#board-svg")
                 .append("g");
 
@@ -176,7 +180,7 @@ namespace view {
                 .attr("text-anchor", "end")
                 .attr("x", 550)
                 .attr("y", 530)
-                .text(hotel)
+                .text(buildHouse)
                 .attr("fill", "black")
                 .attr("font-size", "medium");
             // "guzik" do kupowania

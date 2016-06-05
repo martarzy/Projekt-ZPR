@@ -48,7 +48,7 @@
             [788, 700]
         ];
 
-        private static FieldDescription: any[] = [
+        public static FieldDescription: any[] = [
             { image: "images/go.svg", big: true },                                    // nr 0 - pole startowe
             {
                 color: "blueviolet", name: "Tczew", cash: "60$", buildHouse: "50",
