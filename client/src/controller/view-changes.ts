@@ -80,14 +80,6 @@ namespace controller {
             this.view_.setBoughtFieldColor(fieldNumber, color);
         }
 
-        highlightFields(fieldIds: Array<number>): void {
-            //this.view_.highlightFields(fieldIds);
-        }
-
-        unhighlightAllFields(): void {
-            //this.view_.unhighlightAllFields();
-        }
-
         drawHousesOnField(fieldId: number, houseAmount: number) {
             this.view_.drawHousesOnField(fieldId, houseAmount);
         }
@@ -113,8 +105,7 @@ namespace controller {
         }
 
         enemyChosenToTrade(): string {
-            // TODO
-            return "";
+            return this.view_.getSelectedPlayer();
         }
 
         clearTradePanel(): void {
@@ -145,7 +136,7 @@ namespace controller {
         }
 
         showJailExitOptions(canPay: boolean, canUseCard: boolean) {
-            if(canPay)
+            if (canPay)
                 this.enable(view.Button.JAIL_PAY);
             if (canUseCard)
                 this.enable(view.Button.JAIL_USE_CARD);
