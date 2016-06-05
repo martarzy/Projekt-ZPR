@@ -123,7 +123,7 @@
             },                     // nr 26 - zolte
             {
                 color: "yellow", name: "Zakopane", cash: "260$", buildHouse: "150",
-                ent: "22", oneHouse: "110", twoHouses: "330", threeHouses: "800", fourHouses: "975", hotel: "1150"
+                rent: "22", oneHouse: "110", twoHouses: "330", threeHouses: "800", fourHouses: "975", hotel: "1150"
             },                      // nr 27 - zolte
             { image: "images/water_works.svg", name: "Wodociągi", cash: "150" },      // nr 28 - wodociagi
             {
