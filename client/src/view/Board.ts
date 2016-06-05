@@ -317,20 +317,6 @@ namespace view {
                 .attr("font-size", "medium");
         }
 
-        public enableInfoWindowButton(id: string, listener: () => any)
-        {
-            var info_button = d3.select("#" + id);
-            info_button.select("text").attr("fill", "black");
-            info_button.on("click", listener);
-        }
-
-        public disableInfoWindowButton(id: string)
-        {
-            var info_button = d3.select("#" + id);
-            info_button.select("text").attr("fill", "gray");
-            info_button.on("click", null);
-        }
-
         public addPawn(pawnName: string, color: string)
         {
             this.pawns[pawnName] = new Pawn(this.fields[0], color);

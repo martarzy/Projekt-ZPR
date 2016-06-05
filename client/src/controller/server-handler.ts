@@ -202,28 +202,24 @@ namespace controller {
             const field: number = object[message.UserBoughtHouse.field];
             this.model.board.buyHouseOn(field);
             this.viewChanges_.drawHousesOnField(field, this.model.board.houseAmountOn(field));
-            this.enableModeIfMyTurn(this.userActions_.activateBuildMode);
         }
 
         private userSoldHouse(object: any): void {
             const field: number = object[message.UserSoldHouse.field];
             this.model.board.sellHouseOn(field);
             this.viewChanges_.drawHousesOnField(field, this.model.board.houseAmountOn(field));
-            this.enableModeIfMyTurn(this.userActions_.activateSellMode);
         }
 
         private userMortgagedField(object: any): void {
             const field: number = object[message.UserMortgaged.field];
             this.model.board.mortgageField(field);
             this.viewChanges_.mortgageField(field);
-            this.enableModeIfMyTurn(this.userActions_.activateMortgageMode);
         }
 
         private userUnmortgagedField(object: any): void {
             const field: number = object[message.UserUnmortgaged.field];
             this.model.board.unmortgageField(field);
             this.viewChanges_.unmortgageField(field);
-            this.enableModeIfMyTurn(this.userActions_.activateUnmortgageMode);
         }
 
         private enableModeIfMyTurn(modeActivateCallback: () => void) {
