@@ -124,12 +124,12 @@ namespace controller {
             // TODO
         }
 
-        assignCallbackToDynamic(id: string, callback: () => void) {
+        enableDynamic(id: string, callback: () => void) {
             this.view_.enableInfoWindowButton(id, callback);
         }
 
-        unassignCallbackFromDynamic(id: string, callback: () => void) {
-            this.view_.enableInfoWindowButton(id, callback);
+        disableDynamic(id: string) {
+            this.view_.disableInfoWindowButton(id);
         }
 
         showTradeOffer(offeredCash: number,

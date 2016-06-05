@@ -1,0 +1,7 @@
+PYTHON_VERSION = '3.5m'
+PYTHON_INCLUDE_PATH = '/usr/include/python' + PYTHON_VERSION
+
+env = Environment(CPPPATH=[PYTHON_INCLUDE_PATH])
+env['SHLIBPREFIX'] = ''
+env.SharedLibrary('chance', ['chance.cpp'], LIBS=['python' + PYTHON_VERSION, 'boost_python3'])
+
