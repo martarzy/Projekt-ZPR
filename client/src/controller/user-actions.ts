@@ -54,34 +54,6 @@ namespace controller {
             return toSend;
         }
 
-        activateBuildMode(): void {
-            const buildable = this.model_.board.buildableFields(this.model_.users.myUsername());
-            this.activateMode(model.ActionMode.BUILD, buildable);
-        }
-
-        activateSellMode(): void {
-            const sellable = this.model_.board.fieldsWithSellableHouses(this.model_.users.myUsername());
-            this.activateMode(model.ActionMode.SELL, sellable);
-        }
-
-        activateMortgageMode(): void {
-            const toMortgage = this.model_.board.fieldsToMortgage(this.model_.users.myUsername());
-            this.activateMode(model.ActionMode.MORTGAGE, toMortgage);
-        }
-
-        activateUnmortgageMode(): void {
-            const toUnmortgage = this.model_.board.fieldsToUnmortgage(this.model_.users.myUsername());
-            this.activateMode(model.ActionMode.UNMORTGAGE, toUnmortgage);
-        }
-
-        private activateMode(mode: model.ActionMode, toHighlight: Array<model.Field>): void {
-            if (!this.model_.users.isMyTurn())
-                return;
-            this.setRoundMode(mode);
-            this.viewChanges_.unhighlightAllFields();
-            this.highlightOnly(toHighlight);
-        }
-
         private highlightOnly(fields: Array<model.Field>): void {
             this.viewChanges_.unhighlightAllFields();
             this.viewChanges_.highlightFields(fields.map(f => f.id));
@@ -92,6 +64,15 @@ namespace controller {
         }
 
         fieldClicked(fieldId: number): void {
+            if (!this.model_.users.isMyTurn())
+                return;
+            this.viewChanges_.assignCallbackToDynamic("build-button", this.buyHouse.bind(this, fieldId));
+            this.viewChanges_.assignCallbackToDynamic("sell-button", this.sellHouse.bind(this, fieldId));
+            this.viewChanges_.assignCallbackToDynamic("mortgage-button", this.mortgageField.bind(this, fieldId));
+            this.viewChanges_.assignCallbackToDynamic("unmortgage-button", this.unmortgageField.bind(this, fieldId)); 
+        }
+
+        fieldAction(fieldId: number): void {
             if (!this.model_.users.isMyTurn()
                 || this.model_.round.mode === model.ActionMode.NONE)
                 return;

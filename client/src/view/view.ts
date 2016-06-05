@@ -4,7 +4,6 @@ namespace view {
 
     export enum Button {
         ROLL, READY, END_TURN, BUY_FIELD,
-        BUY_HOUSE, SELL_HOUSE, MORTGAGE, UNMORTGAGE,
         ACCEPT_TRADE, DECLINE_TRADE, OFFER_TRADE,
         JAIL_PAY, JAIL_USE_CARD, BANKRUPTCY
     }
@@ -19,10 +18,6 @@ namespace view {
             this.buttonsIds[Button.READY] = "ready-button";
             this.buttonsIds[Button.BUY_FIELD] = "buy-button";
             this.buttonsIds[Button.END_TURN] = "end-turn-button";
-            this.buttonsIds[Button.BUY_HOUSE] = "build-button";
-            this.buttonsIds[Button.SELL_HOUSE] = "sell-button";
-            this.buttonsIds[Button.MORTGAGE] = "mortgage-button";
-            this.buttonsIds[Button.UNMORTGAGE] = "unmortgage-button";
             this.buttonsIds[Button.ACCEPT_TRADE] = "accept-offer-button";
             this.buttonsIds[Button.DECLINE_TRADE] = "decline-offer-button";
             this.buttonsIds[Button.OFFER_TRADE] = "make-bid-button";
@@ -60,6 +55,18 @@ namespace view {
 
         public hideSignInWindow() {
             $("#myModal").modal('hide');
+        }
+
+        public enableInfoWindowButton(id: string, listener: () => any) {
+            var info_button = d3.select("#" + id);
+            info_button.select("text").attr("fill", "black");
+            info_button.on("click", listener);
+        }
+
+        public disableInfoWindowButton(id: string) {
+            var info_button = d3.select("#" + id);
+            info_button.select("text").attr("fill", "gray");
+            info_button.on("click", null);
         }
 
         public showError(msg: string) {
