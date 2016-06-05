@@ -26,19 +26,18 @@ namespace view {
             this.buttonsIds[Button.BANKRUPTCY] = "bankruptcy-button";
         }
 
+        constructor() {
+            this.board = new Board();
+            this.showSignInWindow();
+            this.initButtonsIds();
+            this.initTabs();
+        }
+
         private initTabs() {
             $('.nav-tabs a').click(function(e) {
                 e.preventDefault();
                 $(this).tab('show');
             })
-        }
-
-        constructor()
-        {
-            this.board = new Board();
-            this.showSignInWindow();
-            this.initButtonsIds();
-            this.initTabs();
         }
 
         public enableButton(id: Button | number) {
@@ -115,15 +114,6 @@ namespace view {
             });
         }
 
-        public highlightFields(fieldNumbers: Array<number>) {
-            return;
-        }
-
-        public unhighlightAllFields() {
-            var highlightedFields = $(".highlighted-field");
-            highlightedFields.remove();
-        }
-
         public drawHousesOnField(fieldNumber: number, houseAmount: number) {
             this.board.getField(fieldNumber).buildHouses(fieldNumber, houseAmount);
         }
@@ -150,10 +140,10 @@ namespace view {
             });
         }
 
-        public selectPlayerToTrade(list: Array<view.PlayerDTO>) {
+        public selectPlayerToTrade(list: Array<string>) {
             // pobierz wszystkich graczy
             for (var i = 0; i < list.length; i++)
-                $("#players-menu").append('<li><a href="#">' + list[i].username + '</a></li>');
+                $("#players-menu").append('<li><a href="#">' + list[i] + '</a></li>');
             // wybierz odpowiedniego gracza i wyswietl na przycisku
             this.selectValueFromDropdownMenu();
         }
@@ -168,14 +158,56 @@ namespace view {
             this.selectValueFromDropdownMenu();
         }
 
+        // getter - pole z wybranym graczem (przeciwnikiem)
+        public getSelectedPlayer(): any {
+            return $("#player-to-trade-button").val();
+        }
+
+        // getter - pole z oferowana kwota
         public getOfferedMoney(): any {
             var offeredMoney = $('#offered-money').val();
             return offeredMoney;
         }
 
+        // getter - pole z zadana kwota
         public getRequestedMoney(): any {
             var requestedMoney = $('#requested-money').val();
             return requestedMoney;
+        }
+
+        // getter - oferowane pole
+        public getOfferedField(): any {
+            return $("#offered-field-button").val();
+        }
+
+        // getter - zadane pole
+        public getRequestedField(): any {
+            return $("#requested-field-button").val();
+        }
+
+        // setter - oferowana kwota
+        public setOfferedMoney(offeredMoney: string) {
+            $("#offered-money").val(offeredMoney);
+        }
+
+        // setter - zadana kwota
+        public setRequestedMoney(requestedMoney: string) {
+            $("#requested-money").val(requestedMoney);
+        }
+
+        // setter - oferowane pole
+        public setOfferedField(offeredFieldName: string) {
+            $("#offered-field-button").val(offeredFieldName);
+            // disabled <a> ???
+        }
+
+
+        public makeBidButtonOnClick() {
+            $("#make-bid-button").on("click", () => {
+                var offeredMoney = this.getOfferedMoney;
+                var requestedMoney = this.getRequestedMoney;
+                // todo
+            });
         }
 	}
 }
