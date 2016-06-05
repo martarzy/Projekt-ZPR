@@ -50,45 +50,111 @@
 
         private static FieldDescription: any[] = [
             { image: "images/go.svg", big: true },                                    // nr 0 - pole startowe
-            { color: "blueviolet", name: "Tczew", cash: "60$" },                      // nr 1 - fioletowe
+            {
+                color: "blueviolet", name: "Tczew", cash: "60$", buildHouse: "50",
+                rent: "2", oneHouse: "10", twoHouses: "30", threeHouses: "90", fourHouses: "160", hotel: "250"
+            },                      // nr 1 - fioletowe
             { image: "images/chance.svg" },                                           // nr 2 - szansa
-            { color: "blueviolet", name: "Malbork", cash: "60$" },                    // nr 3 - fioletowe
+            {
+                color: "blueviolet", name: "Malbork", cash: "60$", buildHouse: "50",
+                rent: "4", oneHouse: "20", twoHouses: "60", threeHouses: "180", fourHouses: "320", hotel: "450"
+            },                    // nr 3 - fioletowe
             { image: "images/income_tax.svg" },                                       // nr 4 - podatek
             { image: "images/railroad.svg" , name: "Centralny", cash: "200$"},        // nr 5 - dworzec
-            { color: "lightblue", name: "Ostrołęka", cash: "100$"},                   // nr 6 - niebieske
+            {
+                color: "lightblue", name: "Ostrołęka", cash: "100$", buildHouse: "50",
+                rent: "6", oneHouse: "30", twoHouses: "90", threeHouses: "270", fourHouses: "400", hotel: "550"
+            },                   // nr 6 - niebieske
             { image: "images/chance.svg" },                                           // nr 7 - szansa
-            { color: "lightblue", name: "Łomża", cash: "100$" },                      // nr 8 - niebieske
-            { color: "lightblue", name: "Białystok", cash: "120$" },                  // nr 9 - niebieske
+            {
+                color: "lightblue", name: "Łomża", cash: "100$", buildHouse: "50",
+                rent: "6", oneHouse: "30", twoHouses: "90", threeHouses: "270", fourHouses: "400", hotel: "550"
+            },                      // nr 8 - niebieske
+            {
+                color: "lightblue", name: "Białystok", cash: "120$", buildHouse: "50",
+                rent: "8", oneHouse: "40", twoHouses: "100", threeHouses: "300", fourHouses: "450", hotel: "600"
+            },                  // nr 9 - niebieske
             { image: "images/jail.svg", big:true },                                   // nr 10 - wiezienie
-            { color: "darkred", name: "Grudziądz", cash: "140$"},                     // nr 11 - bordowe
+            {
+                color: "darkred", name: "Grudziądz", cash: "140$", buildHouse: "100",
+                rent: "10", oneHouse: "50", twoHouses: "150", threeHouses: "450", fourHouses: "625", hotel: "750"
+            },                     // nr 11 - bordowe
             { image: "images/electric_company.svg", name: "Elektrownia", cash: "150"},// nr 12 - elektorwnia
-            { color: "darkred", name: "Elbląg", cash: "140$"},                        // nr 13 - bordowe
-            { color: "darkred", name: "Olsztyn", cash: "160$"},                       // nr 14 - bordowe
+            {
+                color: "darkred", name: "Elbląg", cash: "140$", buildHouse: "100",
+                rent: "10", oneHouse: "50", twoHouses: "150", threeHouses: "450", fourHouses: "625", hotel: "750"
+            },                        // nr 13 - bordowe
+            {
+                color: "darkred", name: "Olsztyn", cash: "160$", buildHouse: "100",
+                rent: "12", oneHouse: "60", twoHouses: "180", threeHouses: "500", fourHouses: "700", hotel: "900"
+            },                       // nr 14 - bordowe
             { image: "images/railroad.svg", name: "Zachodni", cash: "200$"},          // nr 15 - dworzec
-            { color: "orange", name: "Konin", cash: "160$" },                         // nr 16 - pomaranczowe
+            {
+                color: "orange", name: "Konin", cash: "160$", buildHouse: "100",
+                rent: "14", oneHouse: "70", twoHouses: "200", threeHouses: "550", fourHouses: "750", hotel: "950"
+            },                         // nr 16 - pomaranczowe
             { image: "images/chance.svg" },                                           // nr 17 - sznasa
-            { color: "orange", name: "Toruń", cash: "160$" },                         // nr 18 - pomaranczowe
-            { color: "orange", name: "Bydgoszcz", cash: "180$" },                     // nr 19 - pomaranczowe
+            {
+                color: "orange", name: "Toruń", cash: "160$", buildHouse: "100",
+                rent: "14", oneHouse: "70", twoHouses: "200", threeHouses: "550", fourHouses: "750", hotel: "950"
+            },                         // nr 18 - pomaranczowe
+            {
+                color: "orange", name: "Bydgoszcz", cash: "180$", buildHouse: "100",
+                rent: "16", oneHouse: "80", twoHouses: "220", threeHouses: "600", fourHouses: "800", hotel: "1000"
+            },                     // nr 19 - pomaranczowe
             { image: "images/parking.svg", big:true },                                // nr 20 - parking
-            { color: "red", name: "Rybnik", cash: "220$" },                           // nr 21 - czerwone
+            {
+                color: "red", name: "Rybnik", cash: "220$", buildHouse: "150",
+                rent: "18", oneHouse: "90", twoHouses: "250", threeHouses: "700", fourHouses: "875", hotel: "1050"
+            },                           // nr 21 - czerwone
             { image: "images/chance.svg" },                                           // nr 22 - szansa
-            { color: "red", name: "Gliwice", cash: "220$" },                          // nr 23 - czerwone
-            { color: "red", name: "Katowice", cash: "240$" },                         // nr 24 - czerwone
+            {
+                color: "red", name: "Gliwice", cash: "220$", buildHouse: "150",
+                rent: "18", oneHouse: "90", twoHouses: "250", threeHouses: "700", fourHouses: "875", hotel: "1050"
+            },                          // nr 23 - czerwone
+            {
+                color: "red", name: "Katowice", cash: "240$", buildHouse: "150",
+                rent: "20", oneHouse: "100", twoHouses: "300", threeHouses: "750", fourHouses: "925", hotel: "1100"
+            },                         // nr 24 - czerwone
             { image: "images/railroad.svg", name: "Gdański", cash: "200$" },          // nr 25 - dworzec
-            { color: "yellow", name: "Wieliczka", cash: "260$" },                     // nr 26 - zolte
-            { color: "yellow", name: "Zakopane", cash: "260$" },                      // nr 27 - zolte
+            {
+                color: "yellow", name: "Wieliczka", cash: "260$", buildHouse: "150",
+                rent: "22", oneHouse: "110", twoHouses: "330", threeHouses: "800", fourHouses: "975", hotel: "1150"
+            },                     // nr 26 - zolte
+            {
+                color: "yellow", name: "Zakopane", cash: "260$", buildHouse: "150",
+                ent: "22", oneHouse: "110", twoHouses: "330", threeHouses: "800", fourHouses: "975", hotel: "1150"
+            },                      // nr 27 - zolte
             { image: "images/water_works.svg", name: "Wodociągi", cash: "150" },      // nr 28 - wodociagi
-            { color: "yellow", name: "Kraków", cash: "280$" },                        // nr 29 - zolte
+            {
+                color: "yellow", name: "Kraków", cash: "280$", buildHouse: "150",
+                rent: "24", oneHouse: "120", twoHouses: "360", threeHouses: "850", fourHouses: "1025", hotel: "1200"
+            },                        // nr 29 - zolte
             { image: "images/goto_jail.svg", big:true },                              // nr 30 - idz do wiezienia
-            { color: "green", name: "Sopot", cash: "300$" },                          // nr 31 - zielone
-            { color: "green", name: "Gdynia", cash: "300$" },                         // nr 32 - zielone
+            {
+                color: "green", name: "Sopot", cash: "300$", buildHouse: "200",
+                rent: "26", oneHouse: "130", twoHouses: "390", threeHouses: "900", fourHouses: "1100", hotel: "1275"
+            },                          // nr 31 - zielone
+            {
+                color: "green", name: "Gdynia", cash: "300$", buildHouse: "200",
+                rent: "26", oneHouse: "130", twoHouses: "390", threeHouses: "900", fourHouses: "1100", hotel: "1275"
+            },                         // nr 32 - zielone
             { image: "images/chance.svg" },                                           // nr 33 - szansa
-            { color: "green", name: "Gdańsk", cash: "320$" },                         // nr 34 - zielone
+            {
+                color: "green", name: "Gdańsk", cash: "320$", buildHouse: "200",
+                rent: "28", oneHouse: "150", twoHouses: "450", threeHouses: "1000", fourHouses: "1200", hotel: "1400"
+            },                         // nr 34 - zielone
             { image: "images/railroad.svg", name: "Wschodni", cash: "200$" },         // nr 35 - dworzec
             { image: "images/chance.svg" },                                           // nr 36 - szansa
-            { color: "darkblue", name: "Łódź", cash: "350$" },                        // nr 37 - granatowe
+            {
+                color: "darkblue", name: "Łódź", cash: "350$", buildHouse: "200",
+                rent: "35", oneHouse: "175", twoHouses: "500", threeHouses: "1100", fourHouses: "1300", hotel: "1500"
+            },                        // nr 37 - granatowe
             { image: "images/luxury_tax.svg" },                                       // nr 38 - podatek od luksusu
-            { color: "darkblue", name: "Warszawa", cash: "350$" },                    // nr 39 - granatowe
+            {
+                color: "darkblue", name: "Warszawa", cash: "350$", buildHouse: "200",
+                rent: "50", oneHouse: "200", twoHouses: "600", threeHouses: "1400", fourHouses: "1700", hotel: "2000"
+            },                    // nr 39 - granatowe
         ];
 
         private fieldId: number;
