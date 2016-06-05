@@ -158,6 +158,16 @@ namespace view {
             this.selectValueFromDropdownMenu();
         }
 
+        public selectOfferedFieldToTrade() {
+            //TODO
+            this.selectValueFromDropdownMenu();
+        }
+
+        public selectRequestedFieldToTrade() {
+            //TODO
+            this.selectValueFromDropdownMenu();
+        }
+
         public getOfferedMoney(): any {
             var offeredMoney = $('#offered-money').val();
             return offeredMoney;
