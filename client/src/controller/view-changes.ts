@@ -64,11 +64,11 @@ namespace controller {
 
         updatePlayersList(players: Array<view.PlayerDTO>) {
             this.view_.updateUserList(players);
+            this.view_.initUserList(players);
         }
 
         startGame(players: Array<view.PlayerDTO>) {
             this.view_.initPawnsDictionary(players);
-            this.view_.initUserList(players);
         }
 
         disableButtonsWhilePawnIsMoving(): void {

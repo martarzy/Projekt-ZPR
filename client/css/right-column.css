@@ -10,6 +10,8 @@
 
 .player-row {
     display: table-row;
+    height: 30px;
+    background-color: white;
 }
 
 .player-name,

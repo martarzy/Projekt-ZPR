@@ -169,7 +169,7 @@ namespace view {
                 .attr("height", 40)
                 .attr("fill", "white")
                 .attr("stroke", "black")
-                .attr("id", "buy-button");
+                .attr("id", "buy-house-button");
             // tekst "Buduj"
             g.append("text")
                 .attr("text-anchor", "middle")

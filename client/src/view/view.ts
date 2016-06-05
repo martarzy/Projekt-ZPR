@@ -78,9 +78,11 @@ namespace view {
             for (let i = 0; i < list.length; i++) {
                 if (list[i].active) {
                     $(".player-name")[i].style.fontWeight = "bold";
+                    $(".player-money")[i].style.fontWeight = "bold";
                 }
                 else {
                     $(".player-name")[i].style.fontWeight = "normal";
+                    $(".player-money")[i].style.fontWeight = "normal";
                 }
             }
         }
