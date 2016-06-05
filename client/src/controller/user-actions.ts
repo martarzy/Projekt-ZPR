@@ -145,8 +145,13 @@ namespace controller {
             this.viewChanges_.showEnemiesFields(enemiesFields);
         }
 
+        iOwnField(id: number) {
+            return this.model_.board.ownsField(this.model_.users.myUsername(), id);
+        }
+
         updateVisibilityOfDynamicButtons() {
-            if (!this.model_.users.isMyTurn()) {
+            if (!this.model_.users.isMyTurn()
+                || !this.iOwnField(this.recentlyOpenedField)) {
                 this.disableAllDynamicButtons();
                 return;
             }
