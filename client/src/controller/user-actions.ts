@@ -6,6 +6,7 @@ namespace controller {
     export class UserActions {
 
         private onClickHandlers_: { [mode: number]: (id: number) => boolean } = {};
+        private recentlyOpenedField = 0;
 
         constructor(private sender_: (arg: any) => void,
                     private model_: model.Model,
@@ -64,9 +65,8 @@ namespace controller {
         }
 
         fieldClicked(fieldId: number): void {
-            if (!this.model_.users.isMyTurn())
-                return;
-            this.updateVisibilityOfDynamicButtons(fieldId);
+            this.recentlyOpenedField = fieldId;
+            this.updateVisibilityOfDynamicButtons();
         }
 
         fieldAction(fieldId: number): void {
@@ -145,29 +145,40 @@ namespace controller {
             this.viewChanges_.showEnemiesFields(enemiesFields);
         }
 
-        updateVisibilityOfDynamicButtons(fieldId: number) {
-            if (!this.model_.users.isMyTurn())
+        updateVisibilityOfDynamicButtons() {
+            if (!this.model_.users.isMyTurn()) {
+                this.disableAllDynamicButtons();
                 return;
+            }
 
-            if (this.userCanBuyHouseOn(fieldId))
-                this.viewChanges_.enableDynamic("build-button", this.buyHouse.bind(this, fieldId));
+            const field = this.recentlyOpenedField;
+
+            if (this.userCanBuyHouseOn(field))
+                this.viewChanges_.enableDynamic("build-button", this.buyHouse.bind(this, field));
             else
                 this.viewChanges_.disableDynamic("build-button");
 
-            if (this.userCanSellHouseOn(fieldId))
-                this.viewChanges_.enableDynamic("sell-button", this.sellHouse.bind(this, fieldId));
+            if (this.userCanSellHouseOn(field))
+                this.viewChanges_.enableDynamic("sell-button", this.sellHouse.bind(this, field));
             else
                 this.viewChanges_.disableDynamic("sell-button");
 
-            if (this.userCanMortgageField(fieldId))
-                this.viewChanges_.enableDynamic("mortgage-button", this.mortgageField.bind(this, fieldId));
+            if (this.userCanMortgageField(field))
+                this.viewChanges_.enableDynamic("mortgage-button", this.mortgageField.bind(this, field));
             else
                 this.viewChanges_.disableDynamic("mortgage-button");
 
-            if (this.userCanUnmortgageField(fieldId))
-                this.viewChanges_.enableDynamic("unmortgage-button", this.unmortgageField.bind(this, fieldId)); 
+            if (this.userCanUnmortgageField(field))
+                this.viewChanges_.enableDynamic("unmortgage-button", this.unmortgageField.bind(this, field)); 
             else
                 this.viewChanges_.disableDynamic("unmortgage-button");
+        }
+
+        disableAllDynamicButtons() {
+            this.viewChanges_.disableDynamic("build-button");
+            this.viewChanges_.disableDynamic("sell-button");
+            this.viewChanges_.disableDynamic("mortgage-button");
+            this.viewChanges_.disableDynamic("unmortgage-button");
         }
 
         offerTrade(): void {
