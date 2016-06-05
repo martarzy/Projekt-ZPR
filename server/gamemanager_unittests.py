@@ -46,6 +46,19 @@ class TodoName(unittest.TestCase):
         self.assertTrue(self.gm.players[2].bankrupt)
         self.assertDictEqual(self.gm.players[0].handler.last_msg, {'message': 'gameOver'})
 
+    def test_nobody_owns_bankrupts_fields(self):
+        self.gm.move(self.gm.players[1], 1)
+        self.gm.buy_field(self.gm.players[1])
+        self.gm.bankrupt(self.gm.players[1])
+        self.assertIsNone(self.gm.fields[1].owner)
+
+    def test_get_out_of_jail_with_card(self):
+        self.gm.players[0].get_out_cards_no = 1
+        self.gm.players[0].goto_jail()
+        self.gm.get_out_of_jail(self.gm.players[0], 'useCard')
+        self.assertEqual(self.gm.players[0].get_out_cards_no, 0)
+        self.assertFalse(self.gm.players[0].in_jail)
+
 
 if __name__ == '__main__':
     unittest.main()

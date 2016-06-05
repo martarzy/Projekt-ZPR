@@ -341,6 +341,8 @@ class GameManager:
 
     def bankrupt(self, player):
         player.bankrupt = True
+        for field in self.fields:
+            field.owner = field.owner if field.owner is not player else None
         self.broadcast({'message': 'declareBankruptcy'})
         if len([player for player in self.players if not player.bankrupt]) == 1:
             self.broadcast({'message': 'gameOver'})
