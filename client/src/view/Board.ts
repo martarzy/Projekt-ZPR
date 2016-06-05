@@ -6,33 +6,53 @@ namespace view {
         private pawns: { [playerName: string]: Pawn; } = {};
         // pola
         private fields: Field[] = [];
+        private cardLocked: boolean = false;
 
         constructor() {
             for (let i = 0; i < 40; i++) {
                 this.fields[i] = new Field(i);
+                this.addEventToInfoWindow(i);
             }
-            this.addEventToInfoWindow(14);
         }
 
         // Opakowane zdarzenie click na wybranym polu
         public addEventToInfoWindow(fieldNumber: number) {
             var fieldRect = d3.select("#hotel-field-" + fieldNumber);
             var fieldDesc = Field.FieldDescription[fieldNumber];
+            var infoWindow = d3.select("#field-info-window");
 
-            this.createFieldInfoWindow(fieldDesc.color, fieldDesc.name, fieldDesc.rent,
-                fieldDesc.oneHouse, fieldDesc.twoHouses, fieldDesc.threeHouses, fieldDesc.fourHouses,
-                fieldDesc.hotel, fieldDesc.buildHouse);
-
-            var infoWindow = $("#field-info-window");
-
-            fieldRect.on("click", function () {
-                if (infoWindow.css("visibility") == "hidden") {
-                    infoWindow.css("visibility", "visible");
-                    
-                }
-                else if (fieldNumber)
-                    infoWindow.css("visibility", "hidden");
+            fieldRect.on("click", () => {
+                this.removeFieldInfoWindow();
+                this.createFieldInfoWindow(fieldDesc.color, fieldDesc.name, fieldDesc.rent,
+                        fieldDesc.oneHouse, fieldDesc.twoHouses, fieldDesc.threeHouses, fieldDesc.fourHouses,
+                        fieldDesc.hotel, fieldDesc.buildHouse);
+                this.cardLocked = true;
             });
+
+            fieldRect.on("mouseover", () => {
+                if (this.cardLocked)
+                    return;
+                this.removeFieldInfoWindow();
+                this.createFieldInfoWindow(fieldDesc.color, fieldDesc.name, fieldDesc.rent,
+                    fieldDesc.oneHouse, fieldDesc.twoHouses, fieldDesc.threeHouses, fieldDesc.fourHouses,
+                    fieldDesc.hotel, fieldDesc.buildHouse);
+            });
+
+            fieldRect.on("mouseout", () => {
+                if (this.cardLocked)
+                    return;
+                this.removeFieldInfoWindow();
+            });
+
+            d3.select("#close-button-rect").on("click", () => {
+                this.cardLocked = false;
+                this.removeFieldInfoWindow();
+            });
+        }
+
+        public removeFieldInfoWindow() {
+            var g = d3.select("#field-info-window");
+            g.remove();
         }
 
         // Tworzenie okienka z danymi pola
@@ -42,7 +62,6 @@ namespace view {
                 .append("g");
 
             g.attr("id","field-info-window");
-            g.attr("visibility", "hidden");
 
             g.append("rect")
                 .attr("x", 270)
@@ -54,6 +73,22 @@ namespace view {
                 .attr("fill", color)
                 .attr("stroke", "black")
                 .attr("id", "field-info-window-color");
+            // przycisk do zamykania okna
+            /*g.append('text')
+                .text('X')
+                .attr("x", 540)
+                .attr("y", 220)
+                .attr("font-size", "20px")
+                .attr("fill", "black")
+                .attr("id", "close-button-X");*/
+            g.append("rect")
+                .attr("x", 540)
+                .attr("y", 220)
+                .attr("width", 20)
+                .attr("height", 20)
+                .attr("id", "close-button-rect")
+                .attr("fill", "white")
+                .attr("opacity", 0.7);
 
             // glowny prostokat
             g.append("rect")
