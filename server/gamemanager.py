@@ -135,8 +135,6 @@ class GameManager:
         :return: None
         """
         player = self.pname_map[player_name]
-        if self.trade is not None:
-            self.broadcast_trade_acceptance(False)
 
         for field in self.fields:
             if field.owner is player:
@@ -146,6 +144,11 @@ class GameManager:
         del self.pname_map[player_name]
 
         self.broadcast_player_disconnection(player)
+
+        if self.trade is not None:
+            self.broadcast_trade_acceptance(False)
+
+        self.check_game_over()
 
         if player.state is not None:
             self.turn -= 1
@@ -160,9 +163,19 @@ class GameManager:
         return name != '' and name not in [player.name for player in self.players]
 
     def game_started(self):
+        """
+        Game started getter.
+        :return: True if game has already started.
+        """
         return self.started
 
     def on_message(self, pname, msg):
+        """
+        Reacts to message from the player.
+        :param pname: Player unique name.
+        :param msg: Message in dict.
+        :return: None
+        """
         player = self.pname_map[pname] if pname != '' else None
 
         if self.trade is not None and player is not self.trade.other_player:
@@ -222,6 +235,11 @@ class GameManager:
                 player.error('invalidMessage')
 
     def roll_dice(self, player):
+        """
+        Generates roll dice and broadcasts result.
+        :param player: Player who rolls dice.
+        :return: None
+        """
         roll = [randint(1, 6), (randint(1, 6))]
         player.last_roll = roll[0] + roll[1]
         self.broadcast({'message': 'playerMove', 'player': player.name, 'move': roll})
@@ -274,6 +292,10 @@ class GameManager:
         self.next_turn()
 
     def next_turn(self):
+        """
+        Changes active player, initializes its state and broadcasts information about new turn.
+        :return:
+        """
         while True:
             self.turn = (self.turn + 1) % len(self.players)
             if not self.players[self.turn].bankrupt:
@@ -283,6 +305,11 @@ class GameManager:
                 break
 
     def buy_field(self, player):
+        """
+        Invoked when player wants to buy field.
+        :param player: Player who wants to buy field.
+        :return: None
+        """
         field = self.fields[player.field_no]
         if field.buyable and field.owner is None and player.cash >= field.price:
             self.add_cash(player, -field.price)
@@ -292,6 +319,12 @@ class GameManager:
             player.error('notAbleToBuy')
 
     def buy_house(self, player, field_no):
+        """
+        Invoked when player wants to build new house.
+        :param player: Player who wants to build.
+        :param field_no: Field on which player wants to build.
+        :return: None
+        """
         field = self.fields[field_no]
         if field.owner is player and field.buildable and field.houses_no < 5 and player.cash >= field.price and self.uniform_building(field, +1) and self.own_all_in_group(player, field) and field.mortgaged is False:
             self.add_cash(player, -field.house_price)
@@ -301,6 +334,12 @@ class GameManager:
             player.error('notAbleToBuyHouse')
 
     def sell_house(self, player, field_no):
+        """
+        Invoked when player wants to sell house.
+        :param player: player who wants to sell house.
+        :param field_no: Number of field on which player wants to build.
+        :return:
+        """
         field = self.fields[field_no]
         if field.owner is player and field.buildable and field.houses_no > 0 and self.uniform_building(field, -1) and self.own_all_in_group(player, field):
             self.add_cash(player, field.house_price / 2)
@@ -310,6 +349,12 @@ class GameManager:
             player.error('notAbleToSell')
 
     def uniform_building(self, field, diff):
+        """
+        Checks if uniform building rule is obeyed.
+        :param field: Field on which player wants to change number of buildings.
+        :param diff: Difference - +1 when player wants to build, -1 when player wants to sell.
+        :return: True if rule is obeyed.
+        """
         houses_numbers = [f.houses_no for f in self.fields if f is not field and f.group_name == field.group_name]
         houses_numbers.append(field.houses_no + diff)
         if max(houses_numbers) - min(houses_numbers) <= 1:
@@ -317,6 +362,10 @@ class GameManager:
         return False
 
     def own_all_in_group(self, player, field):
+        """
+        Checks, if player is owner of all the fields in the group.
+        :return: True if player is owner of all the fields in the group.
+        """
         owners = [f.owner for f in self.fields if f.group_name == field.group_name]
 
         for owner in owners:
@@ -327,6 +376,11 @@ class GameManager:
         return False
 
     def stay_fee(self, player):
+        """
+        Charges proper stay fee from the player.
+        :param player: Player who will be charged.
+        :return: None
+        """
         field = self.fields[player.field_no]
         if field.owner is not None and field.owner is not player:
             if field.group_name == 'Railroad':
@@ -351,6 +405,13 @@ class GameManager:
             self.add_cash(player, -100)
 
     def mortgage(self, player, field_no):
+        """
+        Invoked when player wants to mortgage a field.
+        Broadcast information if mortgage successful.
+        :param player: Player, who wants to mortgage.
+        :param field_no: Number of field, which he wants to mortgage.
+        :return: None
+        """
         field = self.fields[field_no]
         if field.owner is player and field.mortgaged is False and field.houses_no == 0:
             self.add_cash(player, field.price / 2)
@@ -358,6 +419,13 @@ class GameManager:
             self.broadcast_mortgage(field_no)
 
     def unmortgage(self, player, field_no):
+        """
+        Invoked when player wants to unmortgage a field.
+        Broadcast information if unmortgage successful.
+        :param player: Player, who wants to unmortgage.
+        :param field_no: Number of field, which he wants to unmortgage.
+        :return: None
+        """
         field = self.fields[field_no]
         unmortgage_price = 1.1 * (field.price / 2)
         if field.owner is player and field.mortgaged is True and player.cash >= unmortgage_price:
@@ -366,6 +434,11 @@ class GameManager:
             self.broadcast_unmortgage(field_no)
 
     def trade_offer(self, trade):
+        """
+        Processes trade offer. If valid, stores it in the game manager and broadcasts information about offer.
+        :param trade: Trade object, has inside offer details.
+        :return: None
+        """
         offered_fields_owners = [self.fields[i].owner for i in trade.offered_fields_nos]
         demanded_fields_owners = [self.fields[i].owner for i in trade.demanded_fields_nos]
         offered_fields_without_houses = [self.fields[i] for i in trade.offered_fields_nos if self.fields[i].houses_no == 0]
@@ -380,6 +453,13 @@ class GameManager:
             trade.player.error('ImproperTradeOffer')
 
     def trade_acceptance(self, accepted):
+        """
+        Invoked, when player responds to trade offer.
+        Broadcasts info about decision.
+        If accepted, appropriate changes are made.
+        :param accepted:
+        :return: None
+        """
         if accepted:
             self.trade.player.cash -= self.trade.offered_cash
             self.trade.player.cash += self.trade.demanded_cash
@@ -398,6 +478,11 @@ class GameManager:
         self.broadcast_trade_acceptance(accepted)
 
     def chance(self, player):
+        """
+
+        :param player:
+        :return:
+        """
         card = self.chance_stack.get_card()
         self.broadcast(card)
         if card['action'] == 'goto':
@@ -431,10 +516,8 @@ class GameManager:
         for field in self.fields:
             field.owner = field.owner if field.owner is not player else None
         self.broadcast({'message': 'declareBankruptcy'})
-        if len([player for player in self.players if not player.bankrupt]) == 1:
-            winner = [player for player in self.players if not player.bankrupt][0]
-            self.broadcast_game_over(winner)
-            self.reset()
+        self.check_game_over()
+
 
     def add_cash(self, player, cash):
         player.cash += cash
@@ -454,6 +537,12 @@ class GameManager:
         elif self.fields[player.field_no].group_name == 'Go to jail':
             player.goto_jail()
             self.broadcast({'message': 'chance', 'action': 'gotoJail'})
+
+    def check_game_over(self):
+        if len([player for player in self.players if not player.bankrupt]) == 1:
+            winner = [player for player in self.players if not player.bankrupt][0]
+            self.broadcast_game_over(winner)
+            self.reset()
 
     def broadcast_field_buy(self, player):
         self.broadcast({'message': 'userBought', 'username': player.name})
@@ -485,18 +574,42 @@ class GameManager:
         self.broadcast({'message': 'tradeAcceptance', 'accepted': accepted})
 
     def broadcast_game_over(self, winner):
+        """
+        Broadcasts 
+        :param winner:
+        :return:
+        """
         self.broadcast({'message': 'gameOver', 'player': winner.name})
 
     def broadcast_player_disconnection(self, player):
+        """
+        Broadcasts information about disconnection one of the players after game start
+        :param player: Player who disconnected.
+        :return:
+        """
         self.broadcast({'message': 'playerDisconnected', 'player': player.name})
 
+    def broadcast_pnames(self):
+        """
+        Broadcasts list of accepted players in the room.
+        :return:
+        """
+        pnames = [player.name for player in self.players]
+        self.broadcast({'message': 'userList', 'userList': pnames})
+
     def broadcast(self, msg):
+        """
+        Sends message to every player.
+        :param msg: Dict containing message.
+        :return: None
+        """
         for player in self.players:
             player.handler.send_message(msg)
 
     def get_players_number(self):
+        """
+        Players number getter.
+        :return: Number of accepted players in room.
+        """
         return len(self.players)
 
-    def broadcast_pnames(self):
-        pnames = [player.name for player in self.players]
-        self.broadcast({'message': 'userList', 'userList': pnames})
