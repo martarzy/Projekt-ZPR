@@ -19,29 +19,26 @@ class WSHandler(websocket.WebSocketHandler):
     def on_message(self, msg):
         msg = json.loads(msg)
 
-        # Negotiate player name
-        try:
-            if msg['message'] == 'myName':
-                name = msg['myName']
+    # Negotiate player name
+        if msg['message'] == 'myName':
+            name = msg['myName']
 
-                if gm.game_started():
-                    self.write_message(json.dumps({'message': 'nameAccepted', 'valid': False, 'error': 'gameStarted'}))
-                elif gm.get_players_number() > 5:     # Max. 6 players allowed
-                    self.write_message(json.dumps({'message': 'nameAccepted', 'valid': False, 'error': 'tooManyUsers'}))
+            if gm.game_started():
+                self.write_message(json.dumps({'message': 'nameAccepted', 'valid': False, 'error': 'gameStarted'}))
+            elif gm.get_players_number() > 5:     # Max. 6 players allowed
+                self.write_message(json.dumps({'message': 'nameAccepted', 'valid': False, 'error': 'tooManyUsers'}))
 
-                elif gm.is_valid(name):
-                    self.player_name = name
-                    self.write_message(json.dumps({'message': 'nameAccepted', 'valid': True}))
-                    gm.add_player(name, self)
-                else:
-                    self.write_message(json.dumps({'message': 'nameAccepted', 'valid': False, 'error': 'notUniqueName'}))
-
-            # Other messages are handled by game manager
+            elif gm.is_valid(name):
+                self.player_name = name
+                self.write_message(json.dumps({'message': 'nameAccepted', 'valid': True}))
+                gm.add_player(name, self)
             else:
-                gm.on_message(self.player_name, msg)
+                self.write_message(json.dumps({'message': 'nameAccepted', 'valid': False, 'error': 'notUniqueName'}))
 
-        except KeyError:
-            self.send_message(json.dumps({'message': 'invalidOperation', 'error': 'notAllowedMessage'}))
+        # Other messages are handled by game manager
+        else:
+            gm.on_message(self.player_name, msg)
+
 
     def on_close(self):
         if self.player_name != '':

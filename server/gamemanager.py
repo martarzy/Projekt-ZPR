@@ -151,12 +151,10 @@ class GameManager:
                     self.bankrupt(player)
 
                 else:
-                    raise KeyError
+                    player.error('wrongMessageKey')
 
             else:
                 player.error('invalidMessage')
-
-
 
     def roll_dice(self, player):
         roll = [randint(1, 6), (randint(1, 6))]
