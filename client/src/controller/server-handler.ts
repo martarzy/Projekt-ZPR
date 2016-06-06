@@ -264,6 +264,8 @@ namespace controller {
                 this.changeOwnerAndRecolor(this.model_.round.offeredFields, this.model_.round.tradingWith);
                 this.changeOwnerAndRecolor(this.model_.round.demandedFields, this.model_.users.myUsername());
             }
+            this.model_.round.offeredFields = [];
+            this.model_.round.demandedFields = [];
             if (!this.isMyTurn())
                 return;
             this.viewChanges_.enableButtonsOnRoundStart();

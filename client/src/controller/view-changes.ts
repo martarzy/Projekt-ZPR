@@ -129,7 +129,7 @@ namespace controller {
             const cashOffered = parseInt(this.view_.getOfferedMoney());
             const cashRequired = parseInt(this.view_.getRequestedMoney());
             const fieldsOffered = parseInt(this.view_.getOfferedField());
-            const fieldsRequired = parseInt(this.view_.getOfferedMoney());
+            const fieldsRequired = parseInt(this.view_.getRequestedField());
             return new model.TradeOfferDTO(this.zeroIfNaN(cashOffered),
                                            this.zeroIfNaN(cashRequired),
                                            this.emptyArrayIfNaN(fieldsOffered),
