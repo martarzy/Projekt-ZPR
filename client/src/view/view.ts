@@ -201,11 +201,11 @@ namespace view {
         public clearTradeWindow() {
             this.setOfferedMoney("");
             this.setRequestedMoney("");
-            /*
+            
             this.setOfferedField("Wybierz pole");
             this.setRequestedField("Wybierz pole");
             this.setSelectedPlayer("Wybierz gracza");
-            */
+            
 
             this.removeDropdownMenuChildren("players-menu");
             this.removeDropdownMenuChildren("offered-menu");
