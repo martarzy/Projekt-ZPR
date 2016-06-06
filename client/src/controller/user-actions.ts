@@ -214,9 +214,9 @@ namespace controller {
 
         private changeDynamicButton(id: string, callback: () => void, enable: boolean): void {
             if (enable)
-                this.viewChanges_.enableDynamic(id, callback);
+                this.viewChanges_.enableFieldCardButton(id, callback);
             else
-                this.viewChanges_.disableDynamic(id);
+                this.viewChanges_.disableFieldCardButton(id);
         }
 
         private isOwnedByMe(id: number) {
@@ -228,10 +228,10 @@ namespace controller {
          * testing user state.
          */
         disableAllDynamicButtons() {
-            this.viewChanges_.disableDynamic("build-button");
-            this.viewChanges_.disableDynamic("sell-button");
-            this.viewChanges_.disableDynamic("mortgage-button");
-            this.viewChanges_.disableDynamic("unmortgage-button");
+            this.viewChanges_.disableFieldCardButton("build-button");
+            this.viewChanges_.disableFieldCardButton("sell-button");
+            this.viewChanges_.disableFieldCardButton("mortgage-button");
+            this.viewChanges_.disableFieldCardButton("unmortgage-button");
         }
 
         /**

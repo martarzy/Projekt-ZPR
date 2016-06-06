@@ -1,5 +1,10 @@
 namespace model {
 
+    /**
+     * Domain class representing board. Stores Field's array
+     * and provides access to them. It can calculate a field
+     * in the given distance to other.
+     */
     export class Board {
         private FIELDS_NUMBER = 40;
         private START_FIELD_NUMBER = 0;

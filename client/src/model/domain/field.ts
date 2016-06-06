@@ -1,5 +1,9 @@
 namespace model {
 
+    /**
+     * Domain class representing field of the board. Provides methods
+     * to manipulate its owner, houses and mortgage state.
+     */
     export class Field {
         static MAX_HOUSES = 5;
         private ownerUsername_ = "";

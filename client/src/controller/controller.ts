@@ -25,15 +25,10 @@ namespace controller {
          * @param serverUri uri string providing connection to server
          */
         constructor(serverUri: string) {
-            this.createSocketConnection(serverUri);
-
             const viewChanges = new ViewChanges(this.view_);
+            this.server_ = new SocketServer(serverUri, this.delegateMessageToHandler.bind(this));
             this.userActions_ = new UserActions(this.sendMessage.bind(this), this.model_, this.view_, viewChanges);
             this.serverHandler_ = new ServerHandler(this.model_, viewChanges, this.userActions_);
-        }
-
-        private createSocketConnection(uri: string): void {
-            this.server_ = new SocketServer(uri, this.delegateMessageToHandler.bind(this));
         }
 
         /**
@@ -42,12 +37,10 @@ namespace controller {
          */
         sendMessage(objectToSend: any): void {
             const toSend = JSON.stringify(objectToSend);
-            console.log("Client sent: " + toSend);
             this.server_.sendMessage(toSend);
         }
 
         private delegateMessageToHandler(message: any): void {
-            console.log("Server sent: " + message);
             this.serverHandler_.handle(JSON.parse(message));
         }
     }

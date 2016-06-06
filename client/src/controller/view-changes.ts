@@ -2,6 +2,13 @@
 
 namespace controller {
 
+    /**
+     * Class used by the UserActions and ServerHandler to manipulate
+     * view. It was meant to be convenient facade but it contains many
+     * methods which just forward arguments to the View class. Even though
+     * it contains nice methods transforming data to and from TradeOfferDTO.
+     * It should be rewritten to provide more methods of this kind.
+     */
     export class ViewChanges {
         constructor(private view_: view.View) {
             this.disableAllButtons();
@@ -11,11 +18,11 @@ namespace controller {
             this.view_.hideSignInWindow();
         }
 
-        enable(button: view.ID) {
+        enable(button: view.ID): void {
             this.view_.enableButton(button);
         }
 
-        disable(button: view.ID) {
+        disable(button: view.ID): void {
             this.view_.disableButton(button);
         }
 
@@ -52,11 +59,11 @@ namespace controller {
             this.view_.clearTradeWindow();
         }
 
-        displayErrorMessage(msg: string) {
+        displayErrorMessage(msg: string): void {
             this.view_.showError(msg);
         }
 
-        disableAllButtons() {
+        disableAllButtons(): void {
             for (const elem in view.ID) {
                 const toNumber = parseInt(elem);
                 if (!isNaN(toNumber))
@@ -64,7 +71,7 @@ namespace controller {
             }
         }
 
-        updatePlayersList(players: Array<view.PlayerDTO>) {
+        updatePlayersList(players: Array<view.PlayerDTO>): void {
             this.view_.updateUserList(players);
             this.view_.initUserList(players);
         }
@@ -73,7 +80,7 @@ namespace controller {
             this.view_.addHistoryMessage(message);
         }
 
-        startGame(players: Array<view.PlayerDTO>) {
+        startGame(players: Array<view.PlayerDTO>): void {
             this.view_.initPawnsDictionary(players);
         }
 
@@ -82,15 +89,18 @@ namespace controller {
             this.disable(view.ID.END_TURN);
         }
 
-        movePawn(player: string, targetField: number, onPawnMoveEnd: () => void, forward: boolean = true) {
+        movePawn(player: string,
+                 targetField: number,
+                 onPawnMoveEnd: () => void,
+                 forward: boolean = true): void {
             this.view_.movePawn(player, targetField, onPawnMoveEnd, forward);
         }
 
-        colorField(fieldNumber: number, color: string) {
+        colorField(fieldNumber: number, color: string): void {
             this.view_.setBoughtFieldColor(fieldNumber, color);
         }
 
-        drawHousesOnField(fieldId: number, houseAmount: number) {
+        drawHousesOnField(fieldId: number, houseAmount: number): void {
             this.view_.drawHousesOnField(fieldId, houseAmount);
         }
 
@@ -115,7 +125,7 @@ namespace controller {
             this.view_.selectRequestedFieldsToTrade(names);
         }
 
-        showRollResults(dice1: number, dice2: number) {
+        showRollResults(dice1: number, dice2: number): void {
             this.view_.showDices(dice1, dice2);
         }
 
@@ -167,9 +177,16 @@ namespace controller {
             return isNaN(toTest) ? [] : [toTest];
         }
 
+        /**
+         * Enables buttons and fields after choosing the other player
+         * to trade with.
+         */
         enableAfterTradeTargetChoose(): void {
-            const toEnable = [view.ID.CHOOSE_FIELDS_TO_OFFER, view.ID.CHOOSE_FIELDS_TO_REQUIRE,
-                view.ID.OFFERED_MONEY, view.ID.REQUESTED_MONEY, view.ID.OFFER_TRADE];
+            const toEnable = [view.ID.CHOOSE_FIELDS_TO_OFFER,
+                              view.ID.CHOOSE_FIELDS_TO_REQUIRE,
+                              view.ID.OFFERED_MONEY,
+                              view.ID.REQUESTED_MONEY,
+                              view.ID.OFFER_TRADE];
             this.enableGroup(toEnable);
         }
 
@@ -177,11 +194,11 @@ namespace controller {
             toEnable.forEach(id => this.enable(id));
         }
 
-        enableDynamic(id: string, callback: () => void) {
+        enableFieldCardButton(id: string, callback: () => void) {
             this.view_.enableInfoWindowButton(id, callback);
         }
 
-        disableDynamic(id: string) {
+        disableFieldCardButton(id: string): void {
             this.view_.disableInfoWindowButton(id);
         }
 
@@ -196,13 +213,10 @@ namespace controller {
             this.disable(view.ID.JAIL_PAY);
             this.disable(view.ID.JAIL_USE_CARD);
         }
-
-
+        
         enableButtonsProvidingCash(): void {
             this.disableAllButtonsButBankruptcy();
-            const toEnable = [view.ID.OFFER_TRADE];
-
-            toEnable.forEach(button => this.enable(button));
+            this.enable(view.ID.OFFER_TRADE);
         }
 
         enableButtonsForAcceptableCash(playerAlreadyMoved: boolean): void {
@@ -210,16 +224,12 @@ namespace controller {
             this.enableButtonsOnRoundStart();
             if (playerAlreadyMoved)
                 this.enable(view.ID.END_TURN);
-            const toDisable = [view.ID.ROLL];
-
-            toDisable.forEach(button => this.disable(button));
+            this.disable(view.ID.ROLL);
         }
 
         private disableAllButtonsButBankruptcy(): void {
             this.disableAllButtons();
             this.enable(view.ID.BANKRUPTCY);
         }
-
     }
-
 }

@@ -1,10 +1,6 @@
 ﻿namespace model {
-    export enum ActionMode {
-        NONE, BUILD, SELL, MORTGAGE, UNMORTGAGE
-    }
 
     export class Round {
-        mode: ActionMode;
         tradingWith: string;
         offeredFields: Array<number>;
         demandedFields: Array<number>;
@@ -19,7 +15,6 @@
         }
 
         reset(): void {
-            this.mode = ActionMode.NONE;
             this.playerMoved = false;
             this.tradingWith = "";
             this.offeredFields = [];

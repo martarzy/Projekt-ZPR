@@ -11,6 +11,8 @@ class Player:
         """
         Creates new player with given name and stores player's handler.
         Handler is a class which have implemented write_message() function.
+        :param name: Player's name.
+        :param handler: The handler which supports sending messages to the client.
         """
         self.name = name
         self.handler = handler
@@ -28,12 +30,15 @@ class Player:
     def error(self, error_code):
         """
         Sends information about illegal operation to client application.
+        :param error_code: Error code name, reason what has gone wrong.
+        :return: None
         """
         self.handler.send_message({'message': 'invalidOperation', 'error': error_code})
 
     def goto_jail(self):
         """
         Sets proper state when player goes to jail.
+        :return: None
         """
         self.field_no = 10
         self.in_jail = True
@@ -42,6 +47,8 @@ class Player:
         """
         Initializes turn state.
         This function is invoked at the start of player's turn.
+        :param trade_pending: True if the user should now response to trade offer.
+        :return: None
         """
         if trade_pending:
             self.state = self.trade_acceptance_state
@@ -51,13 +58,16 @@ class Player:
     def update_state(self, action):
         """
         Function updating player's turn state.
-        Returns boolean, False if action is not possible in the current state, True otherwise.
+        :param action: Action the user wants to do.
+        :return: False if action is not possible in the current state, True otherwise.
         """
         return self.state(action)
 
     def trade_acceptance_state(self, action):
         """
         Function representing a state when player have to accept or decline trade offer.
+        :param action: Action the user wants to do.
+        :return: False if there is no scenario when the action is correct in this state.
         """
         if action == 'tradeAcceptance':
             self.state = None
@@ -67,6 +77,8 @@ class Player:
     def jail_state(self, action):
         """
         Function representing a state when player is in jail.
+        :param action: Action the user wants to do.
+        :return: False if there is no scenario when the action is correct in this state.
         """
         if action == 'getOut':
             self.state = self.start_state
@@ -79,6 +91,8 @@ class Player:
     def start_state(self, action):
         """
         Function representing the state of "normal" start of turn.
+        :param action: Action the user wants to do.
+        :return: False if there is no scenario when the action is correct in this state.
         """
         if action == 'rollDice':
             self.state = self.buy_state
@@ -91,6 +105,8 @@ class Player:
     def buy_state(self, action):
         """
         Function representing the state after rolling dice - possibly player can buy field now.
+        :param action: Action the user wants to do.
+        :return: False if there is no scenario when the action is correct in this state.
         """
         if action == 'buyField' and self.cash >= 0:
             self.state = self.end_state
@@ -103,6 +119,8 @@ class Player:
     def end_state(self, action):
         """
         Function representing the state when player can only end turn (or declare bankruptcy)
+        :param action: Action the user wants to do.
+        :return: False if there is no scenario when the action is correct in this state.
         """
         if action == 'declareBankruptcy' or (action == 'endOfTurn' and self.cash >= 0):
             self.state = None
