@@ -42,7 +42,7 @@ namespace controller {
             this.byId("decline-offer-button").onclick = () => this.responseTrade(false);
             this.byId("player-to-trade-button").onclick = () => this.choosePlayerToTrade();
             this.byId("offered-field-button").onclick = () => this.chooseMyFieldsToTrade();
-            this.byId("orequested-field-button").onclick = () => this.chooseEnemyFieldsToTrade();
+            this.byId("requested-field-button").onclick = () => this.chooseEnemyFieldsToTrade();
         }
 
         byId(id: string): HTMLInputElement {

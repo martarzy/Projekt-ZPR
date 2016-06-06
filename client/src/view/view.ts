@@ -29,7 +29,7 @@ namespace view {
             this.buttonsIds[ID.BANKRUPTCY] = "bankruptcy-button";
             this.buttonsIds[ID.CHOOSE_PLAYER_TO_TRADE] = "player-to-trade-button";
             this.buttonsIds[ID.CHOOSE_FIELDS_TO_OFFER] = "offered-field-button";
-            this.buttonsIds[ID.CHOOSE_FIELDS_TO_REQUIRE] = "orequested-field-button";
+            this.buttonsIds[ID.CHOOSE_FIELDS_TO_REQUIRE] = "requested-field-button";
             this.buttonsIds[ID.OFFERED_MONEY] = "offered-money";
             this.buttonsIds[ID.REQUESTED_MONEY] = "requested-money";
         }
