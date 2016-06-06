@@ -48,6 +48,10 @@ namespace controller {
                 this.enable(button);
         }
 
+        clearTradePanel(): void {
+            this.view_.clearTradeWindow();
+        }
+
         displayErrorMessage(msg: string) {
             this.view_.showError(msg);
         }
@@ -113,10 +117,6 @@ namespace controller {
 
         enemyChosenToTrade(): string {
             return this.view_.getSelectedPlayer();
-        }
-
-        clearTradePanel(): void {
-            // TODO
         }
 
         /**

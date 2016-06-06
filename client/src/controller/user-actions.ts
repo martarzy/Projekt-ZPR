@@ -250,6 +250,7 @@ namespace controller {
             this.sender_(toSend);
             this.viewChanges_.clearTradePanel();
             this.viewChanges_.disableAllButtons();
+            this.viewChanges_.clearTradePanel();
         }
 
         /**
@@ -261,6 +262,7 @@ namespace controller {
             toSend[message.TradeAnswer.decision] = decision;
             this.sender_(toSend);
             this.viewChanges_.disableAllButtons();
+            this.viewChanges_.clearTradePanel();
         }
 
         /**
