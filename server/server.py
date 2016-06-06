@@ -1,3 +1,8 @@
+"""
+Module contaning top-level http and websocket handler based on Tornado Framework.
+"""
+
+
 from tornado import web, websocket, ioloop
 from gamemanager import GameManager
 import json
@@ -7,16 +12,32 @@ gm = GameManager()
 
 
 class MainHandler(web.RequestHandler):
+    """
+    Class representing http handler.
+    """
     def get(self):
+        """
+        Function called on GET request.
+        Returns index.html page.
+        """
         self.render("../client/index.html")
 
 
 class WSHandler(websocket.WebSocketHandler):
-
+    """
+    Class representing websocket handler.
+    """
     def open(self):
+        """
+        Function invoked on opening websocket connection between server and client.
+        """
         self.player_name = ''
 
     def on_message(self, msg):
+        """
+        Function invoked when message from client comes.
+        Converts message from JSON to dict and parses it (if it is name negotiating message) or sends it to GameManager.
+        """
         msg = json.loads(msg)
 
     # Negotiate player name
@@ -39,8 +60,11 @@ class WSHandler(websocket.WebSocketHandler):
         else:
             gm.on_message(self.player_name, msg)
 
-
     def on_close(self):
+        """
+        Function invoked when websocket connection between server and client is closed.
+        Removes player from players list if necessary.
+        """
         if self.player_name != '':
             gm.remove_player(self.player_name)
 
@@ -48,6 +72,9 @@ class WSHandler(websocket.WebSocketHandler):
         return True
 
     def send_message(self, json_msg):
+        """
+        Takes dict message, converts it to JSON and sends it to the client.
+        """
         self.write_message(json.dumps(json_msg))
 
 app = web.Application([
@@ -62,6 +89,10 @@ app = web.Application([
 
 
 def _main_loop():
+    """
+    Game server main loop.
+    Starts Tornado IOLoop on specified as command-line argument port (or on default port if not given)
+    """
     import sys
     port = sys.argv[1] if len(sys.argv) == 2 else 8888      # The first command-line argument is the server port
     app.listen(port)

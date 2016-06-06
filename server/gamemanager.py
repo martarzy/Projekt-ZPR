@@ -115,7 +115,7 @@ class GameManager:
         else:
             if self.trade is not None:
                 player.init_state(True)
-            
+
             if player.update_state(msg['message']):
 
                 if msg['message'] == 'rollDice':

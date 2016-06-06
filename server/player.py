@@ -1,3 +1,8 @@
+"""
+Module containing Player class.
+"""
+
+
 class Player:
     """
     Class representing game players. Contains information about player and turn state.
