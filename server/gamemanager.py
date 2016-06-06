@@ -103,8 +103,9 @@ class GameManager:
     def on_message(self, pname, msg):
         player = self.pname_map[pname] if pname != '' else None
 
-        if self.trade is not None and player is not self.trade.other_player:
-            player.error('WaitingForTradeDecision')
+        if self.trade is not None:
+            if player is not self.trade.other_player:
+                player.error('WaitingForTradeDecision')
 
         elif self.turn != -1 and self.players[self.turn] is not player:
             player.error('NotYourTurn')
@@ -286,8 +287,8 @@ class GameManager:
         demanded_fields_owners = [self.fields[i].owner for i in trade.demanded_fields_nos]
         offered_fields_without_houses = [self.fields[i] for i in trade.offered_fields_nos if self.fields[i].houses_no == 0]
         demanded_fields_without_houses = [self.fields[i] for i in trade.demanded_fields_nos if self.fields[i].houses_no == 0]
-        offered_fields_valid = len(offered_fields_owners) == offered_fields_owners.count(trade.player) == offered_fields_without_houses
-        demanded_fields_valid = len(demanded_fields_owners) == demanded_fields_owners.count(trade.other_player) == demanded_fields_without_houses
+        offered_fields_valid = len(offered_fields_owners) == offered_fields_owners.count(trade.player) == len(offered_fields_without_houses)
+        demanded_fields_valid = len(demanded_fields_owners) == demanded_fields_owners.count(trade.other_player) == len(demanded_fields_without_houses)
 
         if trade.player.cash >= trade.offered_cash and trade.other_player.cash >= trade.demanded_cash and offered_fields_valid and demanded_fields_valid:
             self.trade = trade
