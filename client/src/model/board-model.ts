@@ -162,6 +162,12 @@ namespace model {
         private field(id: number): Field {
             return this.board_.getField(id);
         }
+
+        clearOwner(username: string): Array<number> {
+            const ownedBy = this.fieldsOwnedBy(username);
+            ownedBy.forEach(f => f.markAsBought(""));
+            return ownedBy.map(f => f.id);
+        }
     }
 
 }
