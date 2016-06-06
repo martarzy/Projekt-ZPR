@@ -1,6 +1,11 @@
 ﻿namespace view {
+    /**
+     * Represents a field.
+     */
     export class Field {
-        // statyczna tablica ze wspolrzednymi kolejnych pol
+        /**
+        * Static table with fields coordinates.
+        */
         private static FieldCoords = [
             // pola na dole (od prawej)
             [788, 788],
@@ -14,7 +19,7 @@
             [210, 788],
             [140, 788],
             [52,  788],
-            // pola po lewej (od dolu)
+            // left side (from bottom)
             [52,  700],
             [52,  630],
             [52,  560],
@@ -24,7 +29,7 @@
             [52,  280],
             [52,  210],
             [52,  140],
-            // pola u gory (od lewej)
+            // top (from left side)
             [52,  52],
             [140, 52],
             [210, 52],
@@ -36,7 +41,7 @@
             [630, 52],
             [700, 52],
             [788, 52],
-            // pola po prawej (od gory)
+            // right (from top)
             [788, 140],
             [788, 210],
             [788, 280],
@@ -48,6 +53,9 @@
             [788, 700]
         ];
 
+        /**
+        * Static table with fields data (images, colors, names, all prices).
+        */
         public static FieldDescription: any[] = [
             { image: "images/go.svg", big: true },                                    // nr 0 - pole startowe
             {
@@ -157,11 +165,22 @@
             },                    // nr 39 - granatowe
         ];
 
+        /**
+        * Keeps field's number (id).
+        */
         private fieldId: number;
-        // wspolrzedne srodkow pol
+
+        /**
+        * Field center points coordinates.
+        */
         private coordinateX: number;
         private coordinateY: number;
 
+        /**
+         * Sets field id and coordinates from static table.
+         * Creates fields with right parameters. Also checks if fields should be routated.
+         * @param fieldId
+         */
         constructor(fieldId: number) {
             this.fieldId = fieldId;
             this.coordinateX = Field.FieldCoords[fieldId][0];
@@ -183,19 +202,35 @@
             }
         }
 
-        public getCoordX(): number {
+        /**
+         * Returns field's x coordinate.
+         */
+        getCoordX(): number {
             return this.coordinateX;
         }
 
-        public getCoordY(): number {
+       /**
+         * Returns field's y coordinate.
+         */
+        getCoordY(): number {
             return this.coordinateY;
         }
 
-        public getFieldId(): number {
+        /**
+         * Returns field's number.
+         */
+        getFieldId(): number {
             return this.fieldId;
         }
 
-        public createSpecialImageField(url: string, x: number, y: number, rotation: number) {
+        /**
+         * Creates a utility field with an image.
+         * @param url   image's url
+         * @param x     field's x coordinate
+         * @param y     field's y coordinate
+         * @param rotation  angle to set rotation
+         */
+        createSpecialImageField(url: string, x: number, y: number, rotation: number): void {
             var g = d3.select("#board-svg")
                 .append("g");
 
@@ -209,7 +244,7 @@
                 .attr("fill", "whitesmoke")
                 .attr("stroke", "black");
 
-                // kwadracik dla kupujacego
+                // square for buyer
                 g.append("rect")
                     .attr("x", +20)
                     .attr("y", -53)
@@ -226,7 +261,7 @@
                     .attr("width", 60)
                     .attr("height", 60);
                 
-                // Jesli dworzec 
+                // if railways station
                 if (this.fieldId == 5 || this.fieldId == 15 || this.fieldId == 25 || this.fieldId == 35) {
                     g.append("text")
                         .attr("text-anchor", "middle")
@@ -245,7 +280,15 @@
             g.attr("transform", "translate(" + x + " " + y + "), rotate(" + rotation + ")");
         }
 
-        public createImageField(url: string, x: number, y: number, rotation: number, big: boolean)
+        /**
+         * Creates a special field with an image.
+         * @param url image's url
+         * @param x field's x coordinate
+         * @param y field's y coordinate
+         * @param rotation angle to set rotation
+         * @param big check if an image is big (if is in the corners)
+         */
+        createImageField(url: string, x: number, y: number, rotation: number, big: boolean): void
         {
             var g = d3.select("#board-svg")
                 .append("g");
@@ -287,7 +330,16 @@
             g.attr("transform", "translate(" + x + " " + y + "), rotate(" + rotation + ")");
         }
 
-        public createPlaceField(name: string, price: string, color: string, x: number, y: number, rotation: number) {
+        /**
+         * Creates an order town's field.
+         * @param name town's name
+         * @param price field's price
+         * @param color field's color
+         * @param x field's x coordinate
+         * @param y field's y coordinate
+         * @param rotation angle to set rotation
+         */
+        createPlaceField(name: string, price: string, color: string, x: number, y: number, rotation: number): void {
             var g = d3.select("#board-svg")
                 .append("g");
 
@@ -381,39 +433,20 @@
             g.attr("transform", "translate("+x+" "+y+"), rotate("+rotation+")");
         }
 
-        public changeBoughtFieldColor(color: string) {
+        /**
+         * Changes a buyer squere color when a field is bought.
+         * @param color color of a buyer
+         */
+        changeBoughtFieldColor(color: string): void {
             var rect = document.getElementById("bought-field" + this.fieldId);
             rect.style.fill = color;
         }
 
-        drawHighlightField(x: number, y: number) {
-            var fieldRotation = Math.floor(this.fieldId / 10) * 90;
-            var g = d3.select("#board-svg").append("g");
-
-            g.append("rect")
-                .attr("x", -35)
-                .attr("y", -53)
-                .attr("width", 70)
-                .attr("height", 15)
-                .attr("fill", "lime")    
-                .attr("stroke", "black")
-                .attr("fill-opacity", 0.3)
-                .attr("class", "highlighted-field");
-
-            g.append("rect")
-                .attr("x", -35)
-                .attr("y", -38)
-                .attr("width", 70)
-                .attr("height", 90)
-                .attr("fill", "lime")
-                .attr("stroke", "black")
-                .attr("fill-opacity", 0.3)
-                .attr("class", "highlighted-field");
-
-            g.attr("transform", "translate(" + x + " " + y + "), rotate(" + fieldRotation + ")");
-        }
-
-        public sellAllHouses(fieldId: number) {
+        /**
+         * Removes all houses from chosen field.
+         * @param fieldId field's number
+         */
+        sellAllHouses(fieldId: number): void {
             $("#house-field4-" + fieldId).attr("stroke", "whitesmoke").attr("fill", "whitesmoke");
             $("#house-field3-" + fieldId).attr("stroke", "whitesmoke").attr("fill", "whitesmoke");
             $("#house-field2-" + fieldId).attr("stroke", "whitesmoke").attr("fill", "whitesmoke");
@@ -421,7 +454,12 @@
             $("#hotel-field-" + fieldId).attr("stroke", "whitesmoke").attr("fill", "whitesmoke");
         }
 
-        public buildHouses(fieldId: number, amount: number) {
+        /**
+         * Draws given amount of houses on chosen field.
+         * @param fieldId field's number
+         * @param amount number of houses to build
+         */
+        buildHouses(fieldId: number, amount: number): void {
             this.sellAllHouses(fieldId);
             switch (amount) {
                 case 4:
@@ -442,7 +480,11 @@
             }
         }
 
-        public mortgageField(fieldId: number) {
+        /**
+         * To set gray color of chosen field when a player takes mortgage.
+         * @param fieldId field's number
+         */
+        mortgageField(fieldId: number): void {
             $("#main-mortgage-field-" + fieldId).attr("fill", "gray");
             $("#hotel-field-" +  fieldId).attr("fill", "gray");
             $("#house-field4-" + fieldId).attr("fill", "gray");
@@ -450,23 +492,18 @@
             $("#house-field2-" + fieldId).attr("fill", "gray");
             $("#house-field1-" + fieldId).attr("fill", "gray");
         }
-        
-        public unmortgageField(fieldId: number) {
+
+        /**
+         * To restore color of a field when a player repurchases chosen field.
+         * @param fieldId field's number
+         */
+        unmortgageField(fieldId: number): void {
 			$("#main-mortgage-field-" + fieldId).attr("fill", "whitesmoke");
             $("#hotel-field-" +  fieldId).attr("fill", "whitesmoke");
             $("#house-field4-" + fieldId).attr("fill", "whitesmoke");
             $("#house-field3-" + fieldId).attr("fill", "whitesmoke");
             $("#house-field2-" + fieldId).attr("fill", "whitesmoke");
             $("#house-field1-" + fieldId).attr("fill", "whitesmoke");
-        }
-
-        public buyBackField(fieldNumber: number) {
-            $("#main-mortgage-field-" + fieldNumber).attr("fill", "whitesmoke");
-            $("#hotel-field-" +  fieldNumber).attr("fill", "whitesmoke");
-            $("#house-field4-" + fieldNumber).attr("fill", "whitesmoke");
-            $("#house-field3-" + fieldNumber).attr("fill", "whitesmoke");
-            $("#house-field2-" + fieldNumber).attr("fill", "whitesmoke");
-            $("#house-field1-" + fieldNumber).attr("fill", "whitesmoke");
         }
     }
 }
