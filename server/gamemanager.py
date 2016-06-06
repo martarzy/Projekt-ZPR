@@ -103,17 +103,19 @@ class GameManager:
     def on_message(self, pname, msg):
         player = self.pname_map[pname] if pname != '' else None
 
-        if self.trade is not None:
-            if player is not self.trade.other_player:
-                player.error('WaitingForTradeDecision')
+        if self.trade is not None and player is not self.trade.other_player:
+            player.error('WaitingForTradeDecision')
 
-        elif self.turn != -1 and self.players[self.turn] is not player:
+        elif self.trade is None and self.turn != -1 and self.players[self.turn] is not player:
             player.error('NotYourTurn')
 
         elif msg['message'] == 'ready':
             self.ready(player)
 
         else:
+            if self.trade is not None:
+                player.init_state(True)
+            
             if player.update_state(msg['message']):
 
                 if msg['message'] == 'rollDice':
@@ -194,7 +196,7 @@ class GameManager:
         while True:
             self.turn = (self.turn + 1) % len(self.players)
             if not self.players[self.turn].bankrupt:
-                self.players[self.turn].init_state(self.trade is not None)
+                self.players[self.turn].init_state()
                 msg = {'message': 'newTurn', 'player': self.players[self.turn].name}
                 self.broadcast(msg)
                 break
