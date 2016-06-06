@@ -40,6 +40,7 @@ namespace controller {
             this.handlers.setValue(message.ChanceCard.message, this.chanceCard);
             this.handlers.setValue(message.DeclareBankruptcy.message, this.activeUserBankrupted);
             this.handlers.setValue(message.GameOver.message, this.gameOver);
+            this.handlers.setValue(message.PlayerDisconnected.message, this.removeUser);
         }
 
         handle(msgFromServer: any): void {
@@ -332,11 +333,11 @@ namespace controller {
         }
 
         private gameOver(object: any) {
-            this.viewChanges_.showGameOverScreen("Winner is 'put username here' !!!");
+            this.viewChanges_.showGameOverScreen("Winner is " + object[message.GameOver.winner] + " !");
         }
 
         private removeUser(object: any) {
-            const username: string = ""; // TODO
+            const username: string = object[message.PlayerDisconnected.player];
             this.model_.users.removeSingle(username);
             const cleared: Array<number> = this.model_.board.clearOwner(username);
             this.recolorFields(cleared, "white");

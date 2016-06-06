@@ -151,5 +151,11 @@ namespace message {
 
     export class GameOver {
         static get message(): string { return "gameOver"; }
+        static get winner(): string { return "player"; }
+    }
+
+    export class PlayerDisconnected {
+        static get message(): string { return "playerDisconnected"; }
+        static get player(): string { return "player"; }
     }
 }
