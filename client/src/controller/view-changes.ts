@@ -104,6 +104,10 @@ namespace controller {
             //this.view_.selectRequestedFieldToTrade(fieldsIds);
         }
 
+        showRollResults(dice1: number, dice2: number) {
+            this.view_.showDices(dice1, dice2);
+        }
+
         enemyChosenToTrade(): string {
             return this.view_.getSelectedPlayer();
         }
