@@ -143,7 +143,7 @@ namespace view {
         public selectValueFromDropdownMenu(dropdownId: string) {
             $("#" + dropdownId).children("li").click(function (e) {
                 $(this).parents(".btn-group").find('.btn').html(
-                    $(this).text() + " <span class=\"caret\"></span>"
+                    $(this).text() + "<span class=\"caret\"></span>"
                 );
                 e.preventDefault();
             });
@@ -183,29 +183,29 @@ namespace view {
         }
 
         // getter - pole z wybranym graczem (przeciwnikiem)
-        public getSelectedPlayer(): any {
+        public getSelectedPlayer(): string {
             return $("#player-to-trade-button").text();
         }
 
         // getter - pole z oferowana kwota
-        public getOfferedMoney(): any {
+        public getOfferedMoney(): string {
             var offeredMoney = $('#offered-money').val();
             return offeredMoney;
         }
 
         // getter - pole z zadana kwota
-        public getRequestedMoney(): any {
+        public getRequestedMoney(): string {
             var requestedMoney = $('#requested-money').val();
             return requestedMoney;
         }
 
         // getter - oferowane pole
-        public getOfferedField(): any {
+        public getOfferedField(): string {
             return $("#offered-field-button").text();
         }
 
         // getter - zadane pole
-        public getRequestedField(): any {
+        public getRequestedField(): string {
             return $("#requested-field-button").text();
         }
 

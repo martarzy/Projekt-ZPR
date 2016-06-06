@@ -40,9 +40,9 @@ namespace controller {
         }
 
         enableButtonsOnRoundStart(): void {
-            const buttons = [ view.ID.ROLL,
-                              view.ID.BANKRUPTCY,
-                              view.ID.CHOOSE_PLAYER_TO_TRADE];
+            const buttons = [view.ID.ROLL,
+                view.ID.BANKRUPTCY,
+                view.ID.CHOOSE_PLAYER_TO_TRADE];
             for (const button of buttons)
                 this.enable(button);
         }
@@ -127,10 +127,50 @@ namespace controller {
         }
 
         showTradeOffer(offeredCash: number,
-                       offeredFields: Array<number>,
-                       demandedCash: number,
-                       demandedFields: Array<number>): void {
+            offeredFields: Array<number>,
+            demandedCash: number,
+            demandedFields: Array<number>): void {
             // TODO
+        }
+
+        /**
+         * Collects trade info from view. In the current version of the game
+         * cash is not considered to be a real number. Moreover view sends everything
+         * in the string form so parsing is neccessary. As the not filled elements
+         * are passed as the undefined, the default values were required ( in the form
+         * of emptyArrayIfNaN and zeroIfNaN ).
+         */
+        collectTradeInfo(): model.TradeOfferDTO {
+            const cashOffered = parseInt(this.view_.getOfferedMoney());
+            const cashRequired = parseInt(this.view_.getRequestedMoney());
+            const fieldsOffered = parseInt(this.view_.getOfferedField());
+            const fieldsRequired = parseInt(this.view_.getOfferedMoney());
+            return new model.TradeOfferDTO(this.zeroIfNaN(cashOffered),
+                                           this.zeroIfNaN(cashRequired),
+                                           this.emptyArrayIfNaN(fieldsOffered),
+                                           this.emptyArrayIfNaN(fieldsRequired));
+        }
+
+        /**
+         * Displays offered trade on the screen of the target player the active
+         * wants to trade with. 
+         * @param info
+         */
+        displayTradeInfo(info: model.TradeOfferDTO): void {
+            this.view_.setOfferedMoney(String(info.cashOffered));
+            this.view_.setRequestedMoney(String(info.cashRequired));
+            if (info.offeredFields.length > 0)
+                this.view_.setOfferedField(String(info.offeredFields[0]));
+            if (info.requiredFields.length > 0)
+                this.view_.setRequestedField(String(info.requiredFields[0]));
+        }
+
+        private zeroIfNaN(toTest: number): number {
+            return isNaN(toTest) ? 0 : toTest;
+        }
+
+        private emptyArrayIfNaN(toTest: number): number[] {
+            return isNaN(toTest) ? [] : [toTest];
         }
 
         enableAfterTradeTargetChoose(): void {

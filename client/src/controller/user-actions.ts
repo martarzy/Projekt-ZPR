@@ -240,18 +240,15 @@ namespace controller {
          * panel and disables all buttons.
          */
         offerTrade(): void {
-            // TODO
-            // get cash and fields from view
-            const cashOffered = 0, cashRequired = 0;
-            const offeredFields: Array<number> = [], demandedFields: Array<number> = [];
-            this.model_.round.offeredFields = offeredFields;
-            this.model_.round.demandedFields = demandedFields;
+            const offer = this.viewChanges_.collectTradeInfo();
+            this.model_.round.offeredFields = offer.offeredFields;
+            this.model_.round.demandedFields = offer.requiredFields;
             const toSend = this.prepareMessage(message.Trade.message);
             toSend[message.Trade.otherUsername] = this.viewChanges_.enemyChosenToTrade();
-            toSend[message.Trade.offeredCash] = cashOffered;
-            toSend[message.Trade.demandedCash] = cashRequired;
-            toSend[message.Trade.offeredFields] = offeredFields;
-            toSend[message.Trade.demandedFields] = demandedFields;
+            toSend[message.Trade.offeredCash] = offer.cashOffered;
+            toSend[message.Trade.demandedCash] = offer.cashRequired;
+            toSend[message.Trade.offeredFields] = offer.offeredFields;
+            toSend[message.Trade.demandedFields] = offer.requiredFields;
             this.sender_(toSend);
             this.viewChanges_.clearTradePanel();
             this.viewChanges_.disableAllButtons();
