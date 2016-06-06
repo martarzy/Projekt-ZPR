@@ -30,7 +30,6 @@ class Field:
         self.buyable = price > 0
         self.buildable = house_price > 0
 
-        self.bought = False
         self.houses_no = 0
 
 
@@ -262,12 +261,23 @@ class GameManager:
         """
         for player in self.players:
             player.ready = False
+        for field in self.fields:
+            field.owner = None
+            field.houses_no = 0
         self.turn = -1
         self.started = False
         self.trade = None
         self.chance_stack = ChanceStack()
-
         self.broadcast_pnames()
+
+    @staticmethod
+    def reset_field(field):
+        """
+        Changes the field owner to nobody and resets the number of houses built.
+        :return: None
+        """
+        field.owner = None
+        field.houses_no = 0
 
     def ready(self, player):
         """
@@ -481,9 +491,9 @@ class GameManager:
 
     def chance(self, player):
         """
-
-        :param player:
-        :return:
+        Executes actions depending on chance card drawn from chance stack.
+        :param player: Player, who will be the subject of chance action.
+        :return: None
         """
         card = self.chance_stack.get_card()
         self.broadcast(card)
@@ -503,6 +513,10 @@ class GameManager:
             player.goto_jail()
 
     def get_out_of_jail(self, player, method):
+        """
+        Invoked, when player want to get out of jail.
+        Executes actions associated with the way user want to get out, and broadcasts suitable information.
+        """
         if method == 'useCard' and player.get_out_cards_no > 0:
             player.get_out_cards_no -= 1
             self.chance_stack.return_get_out_card()
@@ -514,18 +528,32 @@ class GameManager:
             player.error('ImproperGetOutMethod')
 
     def bankrupt(self, player):
+        """
+        Function executed when player becomes bankrupt.
+        Sets his field owner to nobody and resets its buildings state.
+        :param player: Player who became bankrupt.
+        """
         player.bankrupt = True
         for field in self.fields:
-            field.owner = field.owner if field.owner is not player else None
+            self.reset_field(field)
         self.broadcast({'message': 'declareBankruptcy'})
         self.check_game_over()
 
-
     def add_cash(self, player, cash):
+        """
+        Changes player's cash and broadcasts information about the change.
+        :param player: Player, whose cash changes.
+        :param cash: Cash difference. Can be either positive or negative.
+        """
         player.cash += cash
         self.broadcast_cash_info(player)
 
     def move(self, player, move):
+        """
+        Moves the player's pawn and executes actions related to the field where the pawn now stands.
+        :param player: Player, who moves.
+        :param move: The number of fields the pawn moves forward (if negative, the pawn moves backwards).
+        """
         player.field_no += move
         if player.field_no >= 40:
             self.add_cash(player, 400)
@@ -541,27 +569,64 @@ class GameManager:
             self.broadcast({'message': 'chance', 'action': 'gotoJail'})
 
     def check_game_over(self):
+        """
+        Checks, if conditions of ending the game are met.
+        If so, broadcasts information about winner and resets the game.
+        :return: None
+        """
         if len([player for player in self.players if not player.bankrupt]) == 1:
             winner = [player for player in self.players if not player.bankrupt][0]
             self.broadcast_game_over(winner)
             self.reset()
 
     def broadcast_field_buy(self, player):
+        """
+        Broadcasts information about buying the field by the player.
+        :param player: The player, who has bought the field.
+        :return: None
+        """
         self.broadcast({'message': 'userBought', 'username': player.name})
 
     def broadcast_cash_info(self, player):
+        """
+        Broadcasts information about cash the player owns.
+        :param player: The player.
+        :return: None
+        """
         self.broadcast({'message': 'setCash', 'cash': player.cash, 'player': player.name})
 
     def broadcast_house_buy_info(self, player, field_no):
+        """
+        Broadcasts info about buying house.
+        :param player: Player, who sells house.
+        :param field_no: Number of the field where the house will be built.
+        :return: None
+        """
         self.broadcast({'message': 'userBoughtHouse', 'username': player.name, 'field': field_no})
 
     def broadcast_house_sell_info(self, player, field_no):
+        """
+        Broadcasts info about selling house.
+        :param player: Player, who sells house.
+        :param field_no: Number of the field where the house was.
+        :return: None
+        """
         self.broadcast({'message': 'userSoldHouse', 'username': player.name, 'field': field_no})
 
     def broadcast_mortgage(self, field_no):
+        """
+        Broadcasts information about mortgaging field.
+        :param field_no: Number of field, which will be mortgaged.
+        :return: None
+        """
         self.broadcast({'message': 'userMortgaged', 'field': field_no})
 
     def broadcast_unmortgage(self, field_no):
+        """
+        Broadcasts information about unmortgaging field.
+        :param field_no: Number of field, which will be unmortgaged.
+        :return: None
+        """
         self.broadcast({'message': 'userUnmortgaged', 'field': field_no})
 
     def broadcast_trade_offer(self, trade):
@@ -573,13 +638,18 @@ class GameManager:
                         'demandedCash': trade.demanded_cash})
 
     def broadcast_trade_acceptance(self, accepted):
+        """
+        Broadcasts trade acceptance decision.
+        :param accepted: True, if offer accepted.
+        :return: None
+        """
         self.broadcast({'message': 'tradeAcceptance', 'accepted': accepted})
 
     def broadcast_game_over(self, winner):
         """
         Broadcasts 
-        :param winner:
-        :return:
+        :param winner: Player, who won the game.
+        :return: None
         """
         self.broadcast({'message': 'gameOver', 'player': winner.name})
 

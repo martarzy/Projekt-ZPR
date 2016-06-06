@@ -1,16 +1,9 @@
 import unittest
 from gamemanager import GameManager
-import websocket
-
-class MockHandler:
-    def __init__(self):
-        self.last_msg = None
-
-    def send_message(self, msg):
-        self.last_msg = msg
+from mocks import MockHandler
 
 
-class TodoName(unittest.TestCase):
+class ScenariosAfterStart(unittest.TestCase):
     def setUp(self):
         self.gm = GameManager()
         self.gm.add_player('krol_julian', MockHandler())
