@@ -190,6 +190,16 @@ namespace view {
             });
         }
 
+        // todo
+        public clearTradeWindow() {
+            this.setOfferedMoney("");
+            this.setRequestedMoney("");
+            this.setOfferedField("Wybierz pole");
+            this.setRequestedField("Wybierz pole");
+            this.setSelectedPlayer("Wybierz gracza");
+
+        }
+
         // getter - pole z wybranym graczem (przeciwnikiem)
         public getSelectedPlayer(): string {
             return $("#player-to-trade-button").text();
@@ -224,7 +234,7 @@ namespace view {
 
         // setter - oferowana kwota
         public setOfferedMoney(offeredMoney: string) {
-            $("#offered-money").val(offeredMoney);
+            $("#offered-money").text(offeredMoney);
         }
 
         // setter - zadana kwota
