@@ -22,6 +22,7 @@ namespace controller {
         enableTradeDecisions(): void {
             this.enable(view.ID.ACCEPT_TRADE);
             this.enable(view.ID.DECLINE_TRADE);
+            this.view_.switchToTradePanel();
         }
 
         enableReadyIf(condition: boolean): void {

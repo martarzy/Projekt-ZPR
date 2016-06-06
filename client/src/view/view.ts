@@ -106,6 +106,10 @@ namespace view {
             }
         }
 
+        public switchToTradePanel(): void {
+            $("#trade-panel > a").click();
+        }
+
         public initPawnsDictionary(list: Array<view.PlayerDTO>) {
             for (let i = 0; i < list.length; i++)
                 this.board.addPawn(list[i].username, list[i].color);
