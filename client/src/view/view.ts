@@ -89,7 +89,7 @@ namespace view {
             info_button.select("text").attr("fill", "gray");
             info_button.on("click", null);
         }
-
+  
         public initUserList(list: Array<view.PlayerDTO>) {
             for (let i = 0; i < list.length; i++) {
                 $(".player-name")[i].innerHTML = list[i].username;
@@ -109,10 +109,6 @@ namespace view {
                     $(".player-money")[i].style.textDecoration = "none";
                 }
             }
-        }
-
-        public switchToTradePanel(): void {
-            $("#trade-panel > a").click();
         }
 
         public initPawnsDictionary(list: Array<view.PlayerDTO>) {
@@ -150,6 +146,14 @@ namespace view {
 
         public buyBackField(fieldNumber: number) {
             this.board.getField(fieldNumber).buyBackField(fieldNumber);
+        }
+
+        public addHistoryMessage(message: string) {
+            $("#history-box").val();
+        }
+
+        public switchToTradePanel(): void {
+            $("#trade-panel > a").click();
         }
 
         // Wybieranie z dropdown menu
@@ -202,7 +206,7 @@ namespace view {
             });
         }
 
-        // todo
+        
         public clearTradeWindow() {
             this.setOfferedMoney("");
             this.setRequestedMoney("");
