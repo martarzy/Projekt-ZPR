@@ -125,6 +125,7 @@ namespace controller {
         private someoneMoved(object: any): void {
             const username: string = object[message.PlayerMove.playerName];
             const rollValue: Array<number> = object[message.PlayerMove.movedBy];
+            this.viewChanges_.showRollResults(rollValue[0], rollValue[1]);
             this.performMovement(username, rollValue[0] + rollValue[1]);
         }
 
