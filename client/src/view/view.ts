@@ -234,12 +234,12 @@ namespace view {
 
         // setter - oferowana kwota
         public setOfferedMoney(offeredMoney: string) {
-            $("#offered-money").text(offeredMoney);
+            $("#offered-money").val(offeredMoney);
         }
 
         // setter - zadana kwota
         public setRequestedMoney(requestedMoney: string) {
-            $("#requested-money").text(requestedMoney);
+            $("#requested-money").val(requestedMoney);
         }
 
         // setter - oferowane pole
