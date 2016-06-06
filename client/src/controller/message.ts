@@ -1,4 +1,11 @@
-﻿namespace message {
+﻿/**
+ * The only responsibility of this class is providing the names
+ * of the properties appointed in the game protocol. Ex. myName message
+ * has form of: { "message": "myName", "myName": "chosenUsername" }
+ * where chosenUsername is set by the player. The controller uses it as:
+ * @example obj[message.messageTitle] = message.MyName.message;
+ */
+namespace message {
 
     export const messageTitle = "message";
 

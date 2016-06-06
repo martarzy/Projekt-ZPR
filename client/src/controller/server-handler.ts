@@ -197,7 +197,7 @@ namespace controller {
             const currentPlayer = this.model.users.activeUsername();
             this.model.board.buyField(currentPlayer);
             this.userActions_.updateVisibilityOfDynamicButtons();
-            this.viewChanges_.disable(view.Button.BUY_FIELD);
+            this.viewChanges_.disable(view.ID.BUY_FIELD);
             this.viewChanges_.colorField( this.model.board.getField(currentPlayer).id,
                                        this.model.users.activeColor() );
         }
@@ -257,7 +257,7 @@ namespace controller {
                 return;
             this.viewChanges_.enableButtonsOnRoundStart();
             if (this.model.round.playerMoved)
-                this.viewChanges_.disable(view.Button.ROLL);
+                this.viewChanges_.disable(view.ID.ROLL);
             decision ? this.viewChanges_.tradeSuccessful() :
                 this.viewChanges_.tradeUnsuccessful();
         }

@@ -21,10 +21,10 @@ namespace controller {
          */
         constructor(private sender_: (arg: any) => void,
                     private model_: model.Model,
-                    view: view.View,
+                    view_: view.View,
                     private viewChanges_: ViewChanges) {
             this.bindDOMElements();
-            view.assignFieldClickedCallback(this.fieldClicked.bind(this));
+            view_.assignFieldClickedCallback(this.fieldClicked.bind(this));
         }
 
         bindDOMElements(): void {
@@ -40,6 +40,9 @@ namespace controller {
             this.byId("make-bid-button").onclick = () => this.offerTrade();
             this.byId("accept-offer-button").onclick = () => this.responseTrade(true);
             this.byId("decline-offer-button").onclick = () => this.responseTrade(false);
+            this.byId("player-to-trade-button").onclick = () => this.choosePlayerToTrade();
+            this.byId("offered-field-button").onclick = () => this.chooseMyFieldsToTrade();
+            this.byId("orequested-field-button").onclick = () => this.chooseEnemyFieldsToTrade();
         }
 
         byId(id: string): HTMLInputElement {
@@ -60,17 +63,17 @@ namespace controller {
 
         playerIsReady(): void {
             this.sender_(this.prepareMessage(message.Ready.message));
-            this.viewChanges_.disable(view.Button.READY);
+            this.viewChanges_.disable(view.ID.READY);
         }
 
         rollDice(): void {
             this.sender_(this.prepareMessage(message.RollDice.message));
-            this.viewChanges_.disable(view.Button.ROLL);
+            this.viewChanges_.disable(view.ID.ROLL);
         }
 
         playerBuysField(): void {
             this.sender_(this.prepareMessage(message.BuyField.message));
-            this.viewChanges_.disable(view.Button.BUY_FIELD);
+            this.viewChanges_.disable(view.ID.BUY_FIELD);
         }
 
         playerEndsTurn(): void {
@@ -149,8 +152,7 @@ namespace controller {
          */
         choosePlayerToTrade(): void {
             const others = this.model_.users.getEnemies();
-            this.viewChanges_.listEnemiesToTrade(others);
-            this.viewChanges_.enable(view.Button.OFFER_TRADE);
+            this.viewChanges_.listEnemiesToTrade(others, () => this.viewChanges_.enableAfterTradeTargetChoose());
         }
 
         /**
@@ -160,7 +162,7 @@ namespace controller {
          */
         chooseMyFieldsToTrade(): void {
             const myFields = this.model_.board.fieldsToMortgage(this.model_.users.myUsername());
-            this.viewChanges_.listMyFieldsToTrade(myFields.map(f => f.id));
+            this.viewChanges_.listMyFieldsToTrade(myFields.map(f => String(f.id)));
         }
 
         /**
@@ -170,10 +172,12 @@ namespace controller {
          */
         chooseEnemyFieldsToTrade(): void {
             const enemy = this.viewChanges_.enemyChosenToTrade();
-            if (enemy === undefined)
+            if (enemy === undefined || enemy === "") {
                 this.viewChanges_.listMyFieldsToTrade([]);
+                return;
+            }                
             const myFields = this.model_.board.fieldsToMortgage(enemy);
-            this.viewChanges_.listMyFieldsToTrade(myFields.map(f => f.id));
+            this.viewChanges_.listMyFieldsToTrade(myFields.map(f => String(f.id)));
         }
 
         /**
@@ -292,7 +296,7 @@ namespace controller {
         }
 
         private exitJailWithMethod(method: string): void {
-            this.viewChanges_.enable(view.Button.END_TURN);
+            this.viewChanges_.enable(view.ID.END_TURN);
             this.viewChanges_.disableJailExitOptions();
             let toSend = this.prepareMessage(message.GetOut.message);
             toSend[message.GetOut.method] = method;
