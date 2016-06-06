@@ -1,7 +1,9 @@
 /// <reference path="../model/model.ts" />
 
 namespace view {
-
+    /**
+    * enum with buttons ID
+    */
     export enum ID {
         ROLL, READY, END_TURN, BUY_FIELD,
         ACCEPT_TRADE, DECLINE_TRADE, OFFER_TRADE,
@@ -10,12 +12,19 @@ namespace view {
         CHOOSE_FIELDS_TO_REQUIRE, OFFERED_MONEY, REQUESTED_MONEY
     }
 
+    /**
+     * Represents View in MVC in client.
+     * Stores Board and Dices.
+     */
     export class View {
         private board: Board;
         private dices: Dices;
 
         private buttonsIds: { [elem: number]: string } = {};
 
+        /**
+         * Assigns names to buttons.
+         */
         private initButtonsIds(): void {
             this.buttonsIds[ID.ROLL] = "roll-button";
             this.buttonsIds[ID.READY] = "ready-button";
@@ -34,6 +43,9 @@ namespace view {
             this.buttonsIds[ID.REQUESTED_MONEY] = "requested-money";
         }
 
+        /**
+         * Creates board and dices, shows window to sign in game.
+         */
         constructor() {
             this.board = new Board();
             this.showSignInWindow();
@@ -42,10 +54,17 @@ namespace view {
             this.dices = new Dices();
         }
 
+        /**
+         * Returns button id
+         * @param id 
+         */
         idOf(id: view.ID): string {
             return this.buttonsIds[id];
         }
 
+        /**
+         * Initializes tabs in DOM. Adds click event on tabs.
+         */
         private initTabs() {
             $('.nav-tabs a').click(function(e) {
                 e.preventDefault();
@@ -53,44 +72,98 @@ namespace view {
             })
         }
 
-        public enableButton(id: ID | number) {
+        /**
+         * Initializes pawns dictionary.
+         * @param list list of players
+         */
+        initPawnsDictionary(list: Array<view.PlayerDTO>): void {
+            for (let i = 0; i < list.length; i++)
+                this.board.addPawn(list[i].username, list[i].color);
+        }
+
+        /**
+        * Moves chosen pawn on chosen field.
+        * @param pawnName
+        * @param fieldNumber
+        * @param onMovingEnd
+        * @param forward
+        */
+        movePawn(pawnName: string, fieldNumber: number, onMovingEnd: () => any, forward: boolean): void {
+            this.board.movePawn(pawnName, fieldNumber, onMovingEnd, forward);
+        }
+        /**
+         * Makes chosen button enable.
+         * @param id button id
+         */
+        enableButton(id: ID | number): void {
             $("#" + this.buttonsIds[id]).removeAttr("disabled");
         }
 
-        public disableButton(id: ID | number) {
+       /**
+         * Makes chosen button disable.
+         * @param id button id
+         */
+        disableButton(id: ID | number): void {
             $("#" + this.buttonsIds[id]).attr("disabled", 1);
         }
 
-        public showSignInWindow() {
+        /**
+         * Shows sign in window.
+         */
+        showSignInWindow(): void {
             $("#myModal").modal('show');
         }
 
-        public hideSignInWindow() {
+       /**
+         * Hide sign in window.
+         */
+        hideSignInWindow(): void {
             $("#myModal").modal('hide');
         }
 
-        public showError(msg: string) {
+        /**
+         * Shows error in sign in window.
+         * @param msg message to show
+         */
+        showError(msg: string): void {
             document.getElementById("message").innerHTML = msg;
         }
 
-        public showEndOfGameWindow(messageGameEnd: string) {
+        /**
+         * Shows message in window after the end of game.
+         * @param messageGameEnd message to show in window after the end of game
+         */
+        showEndOfGameWindow(messageGameEnd: string): void {
             $("#game-end").modal('show');
             $("#message-game-end").text(messageGameEnd);
         }
 
-        public enableInfoWindowButton(id: string, listener: () => any) {
+        /**
+         * Allows player to click od chosen buuton in field's information window.
+         * @param id button id
+         * @param listener calback after clicking 
+         */
+        enableInfoWindowButton(id: string, listener: () => any): void {
             var info_button = d3.select("#" + id);
             info_button.select("text").attr("fill", "black");
             info_button.on("click", listener);
         }
 
-        public disableInfoWindowButton(id: string) {
+        /**
+         * Prohibits player to click od chosen buuton in field's information window.
+         * @param id button id
+         */
+        disableInfoWindowButton(id: string): void {
             var info_button = d3.select("#" + id);
             info_button.select("text").attr("fill", "gray");
             info_button.on("click", null);
         }
-  
-        public initUserList(list: Array<view.PlayerDTO>) {
+
+        /**
+         * Initializes players list in DOM.
+         * @param list list of players
+         */
+        initUserList(list: Array<view.PlayerDTO>): void {
             d3.selectAll(".player-row")
                 .style("background-color", "white");
             d3.selectAll(".player-money")
@@ -105,7 +178,11 @@ namespace view {
             }
         }
 
-        public updateUserList(list: Array<view.PlayerDTO>) {
+        /**
+         * Updates list of players in DOM.
+         * @param list list of players
+         */
+        updateUserList(list: Array<view.PlayerDTO>): void {
             for (let i = 0; i < list.length; i++) {
                 if (list[i].active) {
                     $(".player-name")[i].style.textDecoration = "underline";
@@ -118,49 +195,72 @@ namespace view {
             }
         }
 
-        public initPawnsDictionary(list: Array<view.PlayerDTO>) {
-            for (let i = 0; i < list.length; i++)
-                this.board.addPawn(list[i].username, list[i].color);
-        }
-
-        public movePawn(pawnName: string, fieldNumber: number, onMovingEnd: () => any, forward: boolean) {
-            this.board.movePawn(pawnName, fieldNumber, onMovingEnd, forward);
-        }
-
-        public setBoughtFieldColor(fieldNumber: number, color: string) {
+        /**
+         * Changes color of bought field.
+         * @param fieldNumber field's number
+         * @param color color
+         */
+        setBoughtFieldColor(fieldNumber: number, color: string): void {
             var field = this.board.getField(fieldNumber);
             field.changeBoughtFieldColor(color);
         }
 
-        public assignFieldClickedCallback(callback: (clickedId: number) => void) {
+        /**
+         * Assigns callback to clicked field.
+         * @param callback callback after clicking on chosen field
+         */
+        assignFieldClickedCallback(callback: (clickedId: number) => void): void {
             var gAllElements = d3.selectAll("g");
             gAllElements.on("click", function () {
                 callback(parseInt((<HTMLElement>this).getAttribute("game-id")));
             });
         }
 
-        public drawHousesOnField(fieldNumber: number, houseAmount: number) {
+        /**
+         * Draws colorful rectagles on fields - houses. Calls board method to build house.
+         * @param fieldNumber field's number
+         * @param houseAmount amount of houses to draw
+         */
+        drawHousesOnField(fieldNumber: number, houseAmount: number): void {
             this.board.getField(fieldNumber).buildHouses(fieldNumber, houseAmount);
         }
 
-        public mortgageField(fieldNumber: number) {
+        /**
+         * Calls board method to mortgage field.
+         * @param fieldNumber field's number
+         */
+        mortgageField(fieldNumber: number): void {
             this.board.getField(fieldNumber).mortgageField(fieldNumber);
         }
 
-        public unmortgageField(fieldNumber: number) {
+       /**
+         * Calls board method to unmortgage field.
+         * @param fieldNumber field's number
+         */
+        unmortgageField(fieldNumber: number): void {
             this.board.getField(fieldNumber).unmortgageField(fieldNumber);
         }
 
-        public addHistoryMessage(message: string) {
+        /**
+         * Shows message in textarea in DOM.
+         * @param message message to show
+         */
+        addHistoryMessage(message: string): void {
             $("#history-box").val(message + "\n" + $("#history-box").val());
         }
 
-        public switchToTradePanel(): void {
+        /**
+         * Cwitch to trade panel view.
+         */
+        switchToTradePanel(): void {
             $("#trade-panel > a").click();
         }
 
-        // Wybieranie z dropdown menu
-        public selectValueFromDropdownMenu(dropdownId: string) {
+        /**
+         * To choose from dropdown menu
+         * @param dropdownId dropdown menu id in DOM
+         */
+        selectValueFromDropdownMenu(dropdownId: string): void {
             $("#" + dropdownId).children("li").click(function (e) {
                 $(this).parents(".btn-group").find('.btn').html(
                     $(this).text() + "<span class=\"caret\"></span>"
@@ -169,29 +269,43 @@ namespace view {
             });
         }
 
-        public removeDropdownMenuChildren(id: string) {
+        /**
+         * Removes list in dropdown menu
+         * @param id dropdown menu id
+         */
+        removeDropdownMenuChildren(id: string): void {
             $("#" + id).children().remove();
         }
 
-        public selectPlayerToTrade(list: Array<string>) {
+        /**
+         * Sets player name on button after making a choice
+         * @param list list of players
+         */
+        selectPlayerToTrade(list: Array<string>): void {
             this.removeDropdownMenuChildren("players-menu");
             for (var i = 0; i < list.length; i++)
                 $("#players-menu").append('<li><a href="#">' + list[i] + '</a></li>');
-            // wybierz odpowiedniego gracza i wyswietl na przycisku
             this.selectValueFromDropdownMenu("players-menu");
         }
 
-        public selectOfferedFieldsToTrade(list: Array<string>) {
+        /**
+         * Sets offered field to trade on button after making a choice
+         * @param list list of players
+         */
+        selectOfferedFieldsToTrade(list: Array<string>): void {
             this.removeDropdownMenuChildren("offered-menu");
             for (var i = 0; i < list.length; i++)
                 $("#offered-menu").append('<li><a href="#">' + list[i] + '</a></li>');
-            // dodatkowe puste pole
+            // empty field
             $("#offered-menu").append('<li><a href="#">Brak</a></li>');
-
             this.selectValueFromDropdownMenu("offered-menu");
         }
 
-        public selectRequestedFieldsToTrade(list: Array<string>) {
+        /**
+         * Sets requested field to trade on button after making a choice
+         * @param list list of players
+         */
+        selectRequestedFieldsToTrade(list: Array<string>): void {
             this.removeDropdownMenuChildren("requested-menu");
             $("#").children().remove();
             for (var i = 0; i < list.length; i++)
@@ -201,7 +315,11 @@ namespace view {
             this.selectValueFromDropdownMenu("requested-menu");
         }
 
-        public onPlayerChosen(listener: () => any)
+        /**
+         * To actions on dropdown menu.
+         * @param listener callback to trade events
+         */
+        onPlayerChosen(listener: () => any): void
         {
             $("#players-menu").children("li").click(function (e) {
                 listener();
@@ -209,8 +327,10 @@ namespace view {
             });
         }
 
-        
-        public clearTradeWindow() {
+        /**
+         * Clears trade window after making a deal.
+         */
+        clearTradeWindow(): void {
             this.setOfferedMoney("");
             this.setRequestedMoney("");
             
@@ -224,58 +344,83 @@ namespace view {
             this.removeDropdownMenuChildren("requested-menu");
         }
 
-        // getter - pole z wybranym graczem (przeciwnikiem)
-        public getSelectedPlayer(): string {
+        /**
+         * Returns field with chosen player
+         */
+        getSelectedPlayer(): string {
             return $("#player-to-trade-button").text();
         }
 
-        // getter - pole z oferowana kwota
-        public getOfferedMoney(): string {
+       /**
+         * Returns field with offered money
+         */
+        getOfferedMoney(): string {
             var offeredMoney = $('#offered-money').val();
             return offeredMoney;
         }
 
-        // getter - pole z zadana kwota
-        public getRequestedMoney(): string {
+       /**
+         * Returns field with requested money
+         */
+        getRequestedMoney(): string {
             var requestedMoney = $('#requested-money').val();
             return requestedMoney;
         }
 
-        // getter - oferowane pole
-        public getOfferedField(): string {
+       /**
+         * Returns field with offered field
+         */
+        getOfferedField(): string {
             return $("#offered-field-button").text();
         }
 
-        // getter - zadane pole
-        public getRequestedField(): string {
+       /**
+         * Returns chosen field
+         */
+        getRequestedField(): string {
             return $("#requested-field-button").text();
         }
 
-        // setter - wybrany gracz
-        public setSelectedPlayer(playerName: string) {
+       /**
+         * Sets button with chosen player
+         */
+        setSelectedPlayer(playerName: string): void {
             $("#player-to-trade-button").text(playerName);
         }
 
-        // setter - oferowana kwota
-        public setOfferedMoney(offeredMoney: string) {
+       /**
+         * Sets field with offered money
+         */
+        setOfferedMoney(offeredMoney: string): void {
             $("#offered-money").val(offeredMoney);
         }
 
-        // setter - zadana kwota
-        public setRequestedMoney(requestedMoney: string) {
+       /**
+         * Sets field with requested money
+         */
+        setRequestedMoney(requestedMoney: string): void {
             $("#requested-money").val(requestedMoney);
         }
 
-        // setter - oferowane pole
-        public setOfferedField(offeredFieldName: string) {
+       /**
+         * Sets button with offered field
+         */
+        setOfferedField(offeredFieldName: string): void {
             $("#offered-field-button").text(offeredFieldName);
         }
 
-        // setter - zadane pole
-        public setRequestedField(requestedFieldName: string) {
+       /**
+         * Sets button with chosen field
+         */
+        setRequestedField(requestedFieldName: string): void {
             $("#requested-field-button").text(requestedFieldName);
         }
 
+        /**
+         * Calls dices methon to show right images.
+         * @param firstDice number on first dice
+         * @param secondDice number on second dice
+         */
         public showDices(firstDice: number, secondDice: number) {
             this.dices.setValue(firstDice, secondDice);
         }
