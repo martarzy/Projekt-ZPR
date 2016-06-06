@@ -7,10 +7,21 @@ namespace controller {
 
     type EventHandler = (object: any) => void;
 
+    /**
+     * Handles messages coming from server. Stores map of handlers
+     * and calls them depending on "message" property of obtained object.
+     */
     export class ServerHandler {
         private handlers = new collections.Dictionary<string, EventHandler>();
         private playersColors_: model.Colors;
 
+        /**
+         * Initializes handlers and creates object managing colors
+         * available to users.
+         * @param model_
+         * @param viewChanges_
+         * @param userActions_
+         */
         constructor(private model_: model.Model,
             private viewChanges_: ViewChanges,
             private userActions_: UserActions) {
@@ -281,11 +292,11 @@ namespace controller {
 
         private changeOwnerAndRecolor(ids: Array<number>, username: string): void {
             this.model_.board.changeOwner(ids, username);
-            this.recolorFields(ids, username);
+            this.recolorFields(ids, this.model_.users.get(username).color);
         }
 
-        private recolorFields(ids: Array<number>, username: string): void {
-            ids.forEach(f => this.viewChanges_.colorField(f, this.model_.users.get(username).color));
+        private recolorFields(ids: Array<number>, color: string): void {
+            ids.forEach(f => this.viewChanges_.colorField(f, color));
         }
 
         private chanceCard(object: any) {
@@ -341,6 +352,7 @@ namespace controller {
             this.model_.users.removeSingle(username);
             const cleared: Array<number> = this.model_.board.clearOwner(username);
             this.recolorFields(cleared, "white");
+            this.updatePlayerList(this.model_.users.getAll())
         }
     }
 
