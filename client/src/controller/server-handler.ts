@@ -267,6 +267,8 @@ namespace controller {
             }
             this.model_.round.offeredFields = [];
             this.model_.round.demandedFields = [];
+            if(this.model_.round.tradingWith === this.model_.users.myUsername())
+                this.userActions_.clearViewAfterTradeDecision();
             if (!this.isMyTurn())
                 return;
             this.viewChanges_.enableButtonsOnRoundStart();
@@ -330,8 +332,14 @@ namespace controller {
         }
 
         private gameOver(object: any) {
-            // TODO
-            console.log("Game over handler");
+            this.viewChanges_.showGameOverScreen("Winner is 'put username here' !!!");
+        }
+
+        private removeUser(object: any) {
+            const username: string = ""; // TODO
+            this.model_.users.removeSingle(username);
+            const cleared: Array<number> = this.model_.board.clearOwner(username);
+            this.recolorFields(cleared, "white");
         }
     }
 

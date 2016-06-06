@@ -69,6 +69,15 @@ namespace view {
             $("#myModal").modal('hide');
         }
 
+        public showError(msg: string) {
+            document.getElementById("message").innerHTML = msg;
+        }
+
+        public showEndOfGameWindow(messageGameEnd: string) {
+            $("#game-end").modal('show');
+            $("#message-game-end").text(messageGameEnd);
+        }
+
         public enableInfoWindowButton(id: string, listener: () => any) {
             var info_button = d3.select("#" + id);
             info_button.select("text").attr("fill", "black");
@@ -79,10 +88,6 @@ namespace view {
             var info_button = d3.select("#" + id);
             info_button.select("text").attr("fill", "gray");
             info_button.on("click", null);
-        }
-
-        public showError(msg: string) {
-            document.getElementById("message").innerHTML = msg;
         }
 
         public initUserList(list: Array<view.PlayerDTO>) {
@@ -157,9 +162,12 @@ namespace view {
             });
         }
 
+        public removeDropdownMenuChildren(id: string) {
+            $("#" + id).children().remove();
+        }
+
         public selectPlayerToTrade(list: Array<string>) {
-            // pobierz wszystkich graczy
-            $("#players-menu").children().remove();
+            this.removeDropdownMenuChildren("players-menu");
             for (var i = 0; i < list.length; i++)
                 $("#players-menu").append('<li><a href="#">' + list[i] + '</a></li>');
             // wybierz odpowiedniego gracza i wyswietl na przycisku
@@ -167,17 +175,21 @@ namespace view {
         }
 
         public selectOfferedFieldsToTrade(list: Array<string>) {
-            $("#offered-menu").children().remove();
+            this.removeDropdownMenuChildren("offered-menu");
             for (var i = 0; i < list.length; i++)
                 $("#offered-menu").append('<li><a href="#">' + list[i] + '</a></li>');
+            // dodatkowe puste pole
+            $("#offered-menu").append('<li><a href="#">Brak</a></li>');
 
             this.selectValueFromDropdownMenu("offered-menu");
         }
 
         public selectRequestedFieldsToTrade(list: Array<string>) {
-            $("#requested-menu").children().remove();
+            this.removeDropdownMenuChildren("requested-menu");
+            $("#").children().remove();
             for (var i = 0; i < list.length; i++)
                 $("#requested-menu").append('<li><a href="#">' + list[i] + '</a></li>');
+            $("#requested-menu").append('<li><a href="#">Brak</a></li>');
 
             this.selectValueFromDropdownMenu("requested-menu");
         }
@@ -188,6 +200,21 @@ namespace view {
                 listener();
                 e.preventDefault();
             });
+        }
+
+        // todo
+        public clearTradeWindow() {
+            this.setOfferedMoney("");
+            this.setRequestedMoney("");
+            
+            this.setOfferedField("Wybierz pole");
+            this.setRequestedField("Wybierz pole");
+            this.setSelectedPlayer("Wybierz gracza");
+            
+
+            this.removeDropdownMenuChildren("players-menu");
+            this.removeDropdownMenuChildren("offered-menu");
+            this.removeDropdownMenuChildren("requested-menu");
         }
 
         // getter - pole z wybranym graczem (przeciwnikiem)
@@ -229,7 +256,7 @@ namespace view {
 
         // setter - zadana kwota
         public setRequestedMoney(requestedMoney: string) {
-            $("#requested-money").text(requestedMoney);
+            $("#requested-money").val(requestedMoney);
         }
 
         // setter - oferowane pole
