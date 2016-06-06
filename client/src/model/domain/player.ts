@@ -1,4 +1,8 @@
 ﻿namespace model {
+
+    /**
+     * Simple domain class representing player.
+     */
     export class Player {
         private cash_ = 0;
         jailExitCards = 0;
