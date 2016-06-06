@@ -267,6 +267,8 @@ namespace controller {
             }
             this.model_.round.offeredFields = [];
             this.model_.round.demandedFields = [];
+            if(this.model_.round.tradingWith === this.model_.users.myUsername())
+                this.userActions_.clearViewAfterTradeDecision();
             if (!this.isMyTurn())
                 return;
             this.viewChanges_.enableButtonsOnRoundStart();

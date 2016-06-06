@@ -261,6 +261,14 @@ namespace controller {
             const toSend = this.prepareMessage(message.TradeAnswer.message);
             toSend[message.TradeAnswer.decision] = decision;
             this.sender_(toSend);
+            this.clearViewAfterTradeDecision();
+        }
+
+        /**
+         * Disables all buttons and clears trade panel.
+         * Exposed as public to don't duplicate code in server-handler.
+         */
+        clearViewAfterTradeDecision(): void {
             this.viewChanges_.disableAllButtons();
             this.viewChanges_.clearTradePanel();
         }
