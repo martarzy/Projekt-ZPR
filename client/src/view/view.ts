@@ -171,7 +171,7 @@ namespace view {
             for (var i = 0; i < list.length; i++)
                 $("#offered-menu").append('<li><a href="#">' + list[i] + '</a></li>');
             // dodatkowe puste pole
-            $("#offered-menu").append('<li><a href="#"></a></li>');
+            $("#offered-menu").append('<li><a href="#">Brak</a></li>');
 
             this.selectValueFromDropdownMenu("offered-menu");
         }
@@ -180,7 +180,7 @@ namespace view {
             $("#requested-menu").children().remove();
             for (var i = 0; i < list.length; i++)
                 $("#requested-menu").append('<li><a href="#">' + list[i] + '</a></li>');
-            $("#requested-menu").append('<li><a href="#"></a></li>');
+            $("#requested-menu").append('<li><a href="#">Brak</a></li>');
 
             this.selectValueFromDropdownMenu("requested-menu");
         }
