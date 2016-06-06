@@ -151,7 +151,7 @@ namespace view {
 
         public selectPlayerToTrade(list: Array<string>) {
             // pobierz wszystkich graczy
-            $("#players-menu").remove("li");
+            $("#players-menu").children().remove();
             for (var i = 0; i < list.length; i++)
                 $("#players-menu").append('<li><a href="#">' + list[i] + '</a></li>');
             // wybierz odpowiedniego gracza i wyswietl na przycisku
@@ -159,7 +159,7 @@ namespace view {
         }
 
         public selectOfferedFieldsToTrade(list: Array<string>) {
-            $("#offered-menu").remove("li");
+            $("#offered-menu").children().remove();
             for (var i = 0; i < list.length; i++)
                 $("#offered-menu").append('<li><a href="#">' + list[i] + '</a></li>');
 
@@ -167,7 +167,7 @@ namespace view {
         }
 
         public selectRequestedFieldsToTrade(list: Array<string>) {
-            $("#requested-menu").remove("li");
+            $("#requested-menu").children().remove();
             for (var i = 0; i < list.length; i++)
                 $("#requested-menu").append('<li><a href="#">' + list[i] + '</a></li>');
 
