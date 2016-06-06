@@ -119,6 +119,10 @@ namespace controller {
             return this.view_.getSelectedPlayer();
         }
 
+        showGameOverScreen(gameOverMsg: string): void {
+            this.view_.showEndOfGameWindow(gameOverMsg);
+        }
+
         /**
          * Collects trade info from view. In the current version of the game
          * cash is not considered to be a real number. Moreover view sends everything

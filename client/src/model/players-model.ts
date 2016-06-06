@@ -11,6 +11,10 @@ namespace model {
             this.players_.push(new Player(username, color));
         }
 
+        removeSingle(username: string): void {
+            this.players_ = this.players_.filter(p => p.username !== username);
+        }
+
         removeAll(): void {
             this.players_ = [];
         }
@@ -74,7 +78,7 @@ namespace model {
 
         addCash(username: string, amount: number): void {
             const player = this.get(username);
-            player.cash += amount;
+            player.setCash(player.cash + amount);
         }
     }
 
