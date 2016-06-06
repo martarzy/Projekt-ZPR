@@ -89,8 +89,15 @@ namespace view {
             info_button.select("text").attr("fill", "gray");
             info_button.on("click", null);
         }
-
+  
         public initUserList(list: Array<view.PlayerDTO>) {
+            d3.selectAll(".player-row")
+                .attr("fill", "white");
+            d3.selectAll(".player-money")
+                .text("");
+            d3.selectAll(".player-name")
+                .text("");
+
             for (let i = 0; i < list.length; i++) {
                 $(".player-name")[i].innerHTML = list[i].username;
                 $(".player-money")[i].innerHTML = (list[i].cash).toString();
@@ -111,17 +118,13 @@ namespace view {
             }
         }
 
-        public switchToTradePanel(): void {
-            $("#trade-panel > a").click();
-        }
-
         public initPawnsDictionary(list: Array<view.PlayerDTO>) {
             for (let i = 0; i < list.length; i++)
                 this.board.addPawn(list[i].username, list[i].color);
         }
 
-        public movePawn(pawnName: string, fieldNumber: number, onMovingEnd: () => any) {
-            this.board.movePawn(pawnName, fieldNumber, onMovingEnd);
+        public movePawn(pawnName: string, fieldNumber: number, onMovingEnd: () => any, forward: boolean) {
+            this.board.movePawn(pawnName, fieldNumber, onMovingEnd, forward);
         }
 
         public setBoughtFieldColor(fieldNumber: number, color: string) {
@@ -150,6 +153,14 @@ namespace view {
 
         public buyBackField(fieldNumber: number) {
             this.board.getField(fieldNumber).buyBackField(fieldNumber);
+        }
+
+        public addHistoryMessage(message: string) {
+            $("#history-box").val(message + "\n" + $("#history-box").val());
+        }
+
+        public switchToTradePanel(): void {
+            $("#trade-panel > a").click();
         }
 
         // Wybieranie z dropdown menu
@@ -202,7 +213,7 @@ namespace view {
             });
         }
 
-        // todo
+        
         public clearTradeWindow() {
             this.setOfferedMoney("");
             this.setRequestedMoney("");
