@@ -1,13 +1,27 @@
 ﻿/// <reference path="Pawn.ts" />
 /// <reference path="Field.ts" />
 namespace view {
+    /**
+     * Represents a game board.
+     */
     export class Board {
-        // pionki - slownik: gracz->pionek
+        /** 
+        * A dictionary: player->pawn
+        */
         private pawns: { [playerName: string]: Pawn; } = {};
-        // pola
+
+        /**
+        * A table of fields.
+        */
         private fields: Field[] = [];
+        /** 
+        * To check if a player clicked on a field's information card to take an action of building etc. 
+        */
         private cardLocked: boolean = false;
 
+        /**
+         * Creates fields and adds an event on fields to show field's information card after clicking. 
+         */
         constructor() {
             for (let i = 0; i < 40; i++) {
                 this.fields[i] = new Field(i);
@@ -16,7 +30,11 @@ namespace view {
         }
 
         // Opakowane zdarzenie click na wybranym polu
-        public addEventToInfoWindow(fieldNumber: number) {
+        /**
+         * Adds an event that a player can show a filed's information window after clicking on chosen field.
+         * @param fieldNumber field's number
+         */
+        addEventToInfoWindow(fieldNumber: number): void {
             var fieldRect = d3.select("#hotel-field-" + fieldNumber);
             var fieldDesc = Field.FieldDescription[fieldNumber];
             var infoWindow = d3.select("#field-info-window");
@@ -48,14 +66,29 @@ namespace view {
             });
         }
 
-        public removeFieldInfoWindow() {
+        /**
+         * Removes a filed's information window from DOM
+         */
+        removeFieldInfoWindow(): void {
             var g = d3.select("#field-info-window");
             g.remove();
         }
 
         // Tworzenie okienka z danymi pola
-        public createFieldInfoWindow(color: string, town: string, rent: string, oneHouse: string, twoHouses: string,
-                                     threeHouses: string, fourHouses: string, hotel: string, buildHouse: string) {
+        /**
+         * Creates a window with information about a field.
+         * @param color field's color
+         * @param town town's name
+         * @param rent price for staying on the field without houses
+         * @param oneHouse price for staying on the field with one house
+         * @param twoHouses price for staying on the field with two houses
+         * @param threeHouses price for staying on the field with three houses
+         * @param fourHouses price for staying on the field with four houses
+         * @param hotel price for staying on the field with hotel 
+         * @param buildHouse price for building one house
+         */
+        createFieldInfoWindow(color: string, town: string, rent: string, oneHouse: string, twoHouses: string,
+                                     threeHouses: string, fourHouses: string, hotel: string, buildHouse: string): void {
             var g = d3.select("#board-svg")
                 .append("g");
 
@@ -73,7 +106,7 @@ namespace view {
                 .attr("stroke", "black")
                 .attr("id", "field-info-window-color");
 
-            // przycisk do zamykania okna
+            // button to close window
             var exit_button = g.append("g").attr("id", "field-info-close-button");
             exit_button.append("rect")
                 .attr("x", 540)
@@ -106,7 +139,7 @@ namespace view {
             });
 
 
-            // glowny prostokat
+            // main rectangle
             g.append("rect")
                 .attr("x", 270)
                 .attr("y", 250)
@@ -118,7 +151,7 @@ namespace view {
                 .attr("stroke", "black")
                 .attr("id", "field-info-window-main");
 
-            // tytul pola
+            // title
             g.append("text")
                 .attr("text-anchor", "middle")
                 .attr("x", 420)
@@ -128,8 +161,7 @@ namespace view {
                 .attr("font-size", "xx-large")
                 .attr("font-weight", "bold");;
 
-            // koszt budowy domu/hotelu
-            // czynsz 
+            // rent
             g.append("text")
                 .attr("text-anchor", "middle")
                 .attr("x", 420)
@@ -138,7 +170,7 @@ namespace view {
                 .attr("fill", "black")
                 .attr("font-size", "large")
                 .attr("font-weight", "bold");
-            // jeden dom
+            // one house
             g.append("text")
                 .attr("text-anchor", "start")
                 .attr("x", 290)
@@ -146,7 +178,6 @@ namespace view {
                 .text("Z jednym domem ")                        
                 .attr("fill", "black")
                 .attr("font-size", "medium");
-            // cena z jednym domem
             g.append("text")
                 .attr("text-anchor", "end")
                 .attr("x", 550)
@@ -154,7 +185,7 @@ namespace view {
                 .text(oneHouse)                        
                 .attr("fill", "black")
                 .attr("font-size", "medium");
-            // dwa domy
+            // two houses
             g.append("text")
                 .attr("text-anchor", "start")
                 .attr("x", 290)
@@ -162,7 +193,6 @@ namespace view {
                 .text("Z dwoma domami ")                        
                 .attr("fill", "black")
                 .attr("font-size", "medium");
-            // cena - dwa domy
             g.append("text")
                 .attr("text-anchor", "end")
                 .attr("x", 550)
@@ -170,7 +200,7 @@ namespace view {
                 .text(twoHouses)                     
                 .attr("fill", "black")
                 .attr("font-size", "medium");
-            // trzy domy
+            // three houses
             g.append("text")
                 .attr("text-anchor", "start")
                 .attr("x", 290)
@@ -178,7 +208,6 @@ namespace view {
                 .text("Z trzema domami ")                        
                 .attr("fill", "black")
                 .attr("font-size", "medium");
-            // cena- trzy domy
             g.append("text")
                 .attr("text-anchor", "end")
                 .attr("x", 550)
@@ -186,7 +215,7 @@ namespace view {
                 .text(threeHouses)                      
                 .attr("fill", "black")
                 .attr("font-size", "medium");
-            // cztery domy
+            // four houses
             g.append("text")
                 .attr("text-anchor", "start")
                 .attr("x", 290)
@@ -194,7 +223,6 @@ namespace view {
                 .text("Z czterema domami ")                       
                 .attr("fill", "black")
                 .attr("font-size", "medium");
-            // cena - cztery domy
             g.append("text")
                 .attr("text-anchor", "end")
                 .attr("x", 550)
@@ -210,7 +238,6 @@ namespace view {
                 .text("Z HOTELEM ")                        
                 .attr("fill", "black")
                 .attr("font-size", "medium");
-            // cena - hotel
             g.append("text")
                 .attr("text-anchor", "end")
                 .attr("x", 550)
@@ -218,7 +245,7 @@ namespace view {
                 .text(hotel)                        
                 .attr("fill", "black")
                 .attr("font-size", "medium");
-            // napis - koszt budowy domu
+            // price - build house
             g.append("text")
                 .attr("text-anchor", "start")
                 .attr("x", 290)
@@ -226,7 +253,6 @@ namespace view {
                 .text("Koszt budowy domu ")
                 .attr("fill", "black")
                 .attr("font-size", "medium");
-            // cena - koszt budowy domu
             g.append("text")
                 .attr("text-anchor", "end")
                 .attr("x", 550)
@@ -235,7 +261,7 @@ namespace view {
                 .attr("fill", "black")
                 .attr("font-size", "medium");
 
-            // "guzik" do kupowania
+            // button to buy
             var buyButton = g.append("g").attr("id", "build-button");
             buyButton.append("rect")
                 .attr("x", 300)
@@ -246,8 +272,6 @@ namespace view {
                 .attr("height", 40)
                 .attr("fill", "white")
                 .attr("stroke", "black")
-
-            // tekst "Buduj"
             buyButton.append("text")
                 .attr("text-anchor", "middle")
                 .attr("x", 350)
@@ -256,7 +280,7 @@ namespace view {
                 .attr("fill", "black")
                 .attr("font-size", "medium");
 
-            // "guzik" do sprzedawania
+            // button to sell
             var sellButton = g.append("g").attr("id", "sell-button");
             sellButton.append("rect")
                     .attr("x", 440)
@@ -267,7 +291,6 @@ namespace view {
                     .attr("height", 40)
                     .attr("fill", "white")
                     .attr("stroke", "black")
-            // tekst "Sprzedaj"
             sellButton.append("text")
                 .attr("text-anchor", "middle")
                 .attr("x", 490)
@@ -276,7 +299,7 @@ namespace view {
                 .attr("fill", "black")
                 .attr("font-size", "medium");
 
-            // "guzik" do zastawiania
+            // button to mortgage
             var mortgageButton = g.append("g").attr("id", "mortgage-button");
             mortgageButton.append("rect")
                 .attr("x", 300)
@@ -287,7 +310,6 @@ namespace view {
                 .attr("height", 40)
                 .attr("fill", "white")
                 .attr("stroke", "black")
-            // tekst "Zastaw"
             mortgageButton.append("text")
                 .attr("text-anchor", "middle")
                 .attr("x", 350)
@@ -296,7 +318,7 @@ namespace view {
                 .attr("fill", "black")
                 .attr("font-size", "medium");
 
-            // "guzik" do wykupowania
+            // button to unmortgage
             var unmortgageButton = g.append("g").attr("id", "unmortgage-button");
             unmortgageButton.append("rect")
                 .attr("x", 440)
@@ -307,7 +329,6 @@ namespace view {
                 .attr("height", 40)
                 .attr("fill", "white")
                 .attr("stroke", "black")
-            // tekst "Wykup"
             unmortgageButton.append("text")
                 .attr("text-anchor", "middle")
                 .attr("x", 490)
@@ -317,17 +338,31 @@ namespace view {
                 .attr("font-size", "medium");
         }
 
-        public addPawn(pawnName: string, color: string)
-        {
+        /**
+         * Adds pawn to a player.
+         * @param pawnName pawn's name
+         * @param color pawn's color
+         */
+        addPawn(pawnName: string, color: string): void {
             this.pawns[pawnName] = new Pawn(this.fields[0], color);
         }
 
-        public removePawn(pawnName: string)
-        {
+        /**
+         * Removes a pawn
+         * @param pawnName pawn's name
+         */
+        removePawn(pawnName: string): void {
             delete this.pawns[pawnName];
         }
 
-        public movePawn(pawnName: string, fieldNumber: number, onMovingEnd: () => any, forward: boolean) {
+        /**
+         * Moves chosen pawn on chosen field.
+         * @param pawnName pawn's name
+         * @param fieldNumber field's number
+         * @param onMovingEnd callbac after moving
+         * @param forward check if move is forward or backward
+         */
+        movePawn(pawnName: string, fieldNumber: number, onMovingEnd: () => any, forward: boolean): void {
             let sequencenumber = 0;
             const step = forward ? 1 : -1;
 
@@ -345,7 +380,11 @@ namespace view {
             setTimeout(onMovingEnd, sequencenumber*200);
         }
 
-        public getField(fieldNumber: number): Field {
+        /**
+         * Returns chosen field.
+         * @param fieldNumber field's number
+         */
+        getField(fieldNumber: number): Field {
             return this.fields[fieldNumber];
         }
     }

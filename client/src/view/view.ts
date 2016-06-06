@@ -151,10 +151,6 @@ namespace view {
             this.board.getField(fieldNumber).unmortgageField(fieldNumber);
         }
 
-        public buyBackField(fieldNumber: number) {
-            this.board.getField(fieldNumber).buyBackField(fieldNumber);
-        }
-
         public addHistoryMessage(message: string) {
             $("#history-box").val(message + "\n" + $("#history-box").val());
         }
