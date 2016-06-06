@@ -97,11 +97,11 @@ namespace controller {
         }
 
         listMyFieldsToTrade(fieldsIds: Array<number>): void {
-            this.view_.selectOfferedFieldToTrade(fieldsIds);
+            //this.view_.selectOfferedFieldToTrade(fieldsIds);
         }
 
         listEnemyFieldsToTrade(fieldsIds: Array<number>): void {
-            this.view_.selectRequestedFieldToTrade(fieldsIds);
+            //this.view_.selectRequestedFieldToTrade(fieldsIds);
         }
 
         enemyChosenToTrade(): string {

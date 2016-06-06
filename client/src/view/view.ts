@@ -10,6 +10,7 @@ namespace view {
 
     export class View {
         private board: Board;
+        private dices: Dices;
 
         private buttonsIds: { [elem: number]: string } = { };
 
@@ -31,6 +32,7 @@ namespace view {
             this.showSignInWindow();
             this.initButtonsIds();
             this.initTabs();
+            this.dices = new Dices();
         }
 
         private initTabs() {
@@ -148,16 +150,6 @@ namespace view {
             this.selectValueFromDropdownMenu();
         }
 
-        public selectOfferedFieldToTrade(ids: Array<number>) {
-            //TODO
-            this.selectValueFromDropdownMenu();
-        }
-
-        public selectRequestedFieldToTrade(ids: Array<number>) {
-            //TODO
-            this.selectValueFromDropdownMenu();
-        }
-
         // getter - pole z wybranym graczem (przeciwnikiem)
         public getSelectedPlayer(): any {
             return $("#player-to-trade-button").val();
@@ -210,13 +202,17 @@ namespace view {
             $("#requested-field-button").text(requestedFieldName);
         }
 
-
+        // 
         public makeBidButtonOnClick() {
             $("#make-bid-button").on("click", () => {
                 var offeredMoney = this.getOfferedMoney;
                 var requestedMoney = this.getRequestedMoney;
                 // todo
             });
+        }
+
+        public showDices(firstDice: number, secondDice: number) {
+            this.dices.setValue(firstDice, secondDice);
         }
 	}
 }
