@@ -91,11 +91,14 @@ namespace view {
         }
   
         public initUserList(list: Array<view.PlayerDTO>) {
-            for (let i = 0; i < list.length; i++) {
-                $(".player-name")[i].innerHTML = "";
-                $(".player-money")[i].innerHTML = "";
-                $(".player-row")[i].style.backgroundColor = "white";
+            d3.selectAll(".player-row")
+                .attr("fill", "white");
+            d3.selectAll(".player-money")
+                .text("");
+            d3.selectAll(".player-name")
+                .text("");
 
+            for (let i = 0; i < list.length; i++) {
                 $(".player-name")[i].innerHTML = list[i].username;
                 $(".player-money")[i].innerHTML = (list[i].cash).toString();
                 $(".player-row")[i].style.backgroundColor = list[i].color;
