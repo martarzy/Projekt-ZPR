@@ -69,6 +69,10 @@ namespace view {
             $("#myModal").modal('hide');
         }
 
+        public showEndOfGameWindow() {
+            $("#game-end").modal('show');
+        }
+
         public enableInfoWindowButton(id: string, listener: () => any) {
             var info_button = d3.select("#" + id);
             info_button.select("text").attr("fill", "black");
