@@ -92,6 +92,10 @@ namespace view {
   
         public initUserList(list: Array<view.PlayerDTO>) {
             for (let i = 0; i < list.length; i++) {
+                $(".player-name")[i].innerHTML = "";
+                $(".player-money")[i].innerHTML = "";
+                $(".player-row")[i].style.backgroundColor = "white";
+
                 $(".player-name")[i].innerHTML = list[i].username;
                 $(".player-money")[i].innerHTML = (list[i].cash).toString();
                 $(".player-row")[i].style.backgroundColor = list[i].color;
@@ -149,7 +153,7 @@ namespace view {
         }
 
         public addHistoryMessage(message: string) {
-            $("#history-box").val();
+            $("#history-box").val(message + "\n" + $("#history-box").val());
         }
 
         public switchToTradePanel(): void {
