@@ -304,26 +304,36 @@ namespace controller {
             const activeUsername = this.model_.users.activeUsername();
             switch (furtherDispatchInfo) {
                 case "goto":
-                    this.moveTo(activeUsername, object[message.ChanceCard.field]);
+                    const field = object[message.ChanceCard.field];
+                    this.moveTo(activeUsername, field);
+                    this.logWithActiveUsername("Chance card: Go to " + field);
                     break;
                 case "move":
-                    this.performMovement(activeUsername, object[message.ChanceCard.move]);
+                    const move = object[message.ChanceCard.move];
+                    this.performMovement(activeUsername, move);
+                    this.logWithActiveUsername("Chance card: Move by " + move);
                     break;
                 case "getOut":
                     if (!this.isMyTurn())
                         return;
                     ++this.model_.users.get(activeUsername).jailExitCards;
+                    this.logWithActiveUsername("Chance card: You obtain free jail exit card.");
                     break;
                 case "cash":
-                    // Currently hadled by server. It sends setCash message.
+                    this.logWithActiveUsername("Chance card: Cash changed by " + object[message.ChanceCard.cash]);
                     break;
                 case "gotoJail":
                     if (this.isMyTurn())
                         this.model_.users.getMe().inJail = true;
                     this.moveTo(activeUsername, model.Board.JAIL_FIELD_NUMBER);
+                    this.logWithActiveUsername("Chance card: Go to jail");
                     break;
             }
             this.userActions_.updateVisibilityOfDynamicButtons();
+        }
+
+        private logWithActiveUsername(message: string) {
+            this.viewChanges_.logMessage(`[ ${this.model_.users.activeUsername()} ]: ${message}`);
         }
 
         private moveTo(username: string, fieldId: number) {

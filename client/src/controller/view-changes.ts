@@ -69,6 +69,10 @@ namespace controller {
             this.view_.initUserList(players);
         }
 
+        logMessage(message: string): void {
+            this.view_.addHistoryMessage(message);
+        }
+
         startGame(players: Array<view.PlayerDTO>) {
             this.view_.initPawnsDictionary(players);
         }
