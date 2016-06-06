@@ -11,7 +11,7 @@ class ChanceCard
 public:
     ChanceCard()
     {
-        message["message"] = "message";
+        message["message"] = "chance";
     }
 
     boost::python::dict getMessage() { return message; }

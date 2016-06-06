@@ -150,8 +150,13 @@ class GameManager:
                 elif msg['message'] == 'declareBankruptcy':
                     self.bankrupt(player)
 
+                else:
+                    raise KeyError
+
             else:
-                player.error('notAllowedMessage')
+                player.error('invalidMessage')
+
+
 
     def roll_dice(self, player):
         roll = [randint(1, 6), (randint(1, 6))]
@@ -364,6 +369,7 @@ class GameManager:
             self.chance(player)
         elif self.fields[player.field_no].group_name == 'Go to jail':
             player.goto_jail()
+            self.broadcast({'message': 'chance', 'action': 'gotoJail'})
 
     def broadcast_field_buy(self, player):
         self.broadcast({'message': 'userBought', 'username': player.name})
