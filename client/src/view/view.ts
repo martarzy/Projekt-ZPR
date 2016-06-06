@@ -69,8 +69,9 @@ namespace view {
             $("#myModal").modal('hide');
         }
 
-        public showEndOfGameWindow() {
+        public showEndOfGameWindow(messageGameEnd: string) {
             $("#game-end").modal('show');
+            $("#message-game-end").text(messageGameEnd);
         }
 
         public enableInfoWindowButton(id: string, listener: () => any) {
