@@ -3,12 +3,47 @@
 
 namespace controller {
 
+    /**
+     * Describes all actions that client needs to accomplish after specified
+     * user actions (events on DOM elements).
+     */
     export class UserActions {
         private recentlyOpenedField_ = 0;
 
+        /**
+         * Uses view parameter only in constructor and doesn't store it.
+         * It needs it only to assign callback triggered when field is clicked
+         * on the board.
+         * @param sender_ Function taking message to send as the parameter
+         * @param model_ 
+         * @param view
+         * @param viewChanges_ 
+         */
         constructor(private sender_: (arg: any) => void,
                     private model_: model.Model,
+                    view: view.View,
                     private viewChanges_: ViewChanges) {
+            this.bindDOMElements();
+            view.assignFieldClickedCallback(this.fieldClicked.bind(this));
+        }
+
+        bindDOMElements(): void {
+            const usernameField = this.byId("username");
+            this.byId("submit-username").onclick = () => this.chooseName(usernameField.value);
+            this.byId("ready-button").onclick = () => this.playerIsReady();
+            this.byId("roll-button").onclick = () => this.rollDice();
+            this.byId("buy-button").onclick = () => this.playerBuysField();
+            this.byId("end-turn-button").onclick = () => this.playerEndsTurn();
+            this.byId("jail-pay-button").onclick = () => this.exitJailPaying();
+            this.byId("jail-use-card-button").onclick = () => this.exitJailUsingChanceCard();
+            this.byId("bankruptcy-button").onclick = () => this.declareBankruptcy();
+            this.byId("make-bid-button").onclick = () => this.offerTrade();
+            this.byId("accept-offer-button").onclick = () => this.responseTrade(true);
+            this.byId("decline-offer-button").onclick = () => this.responseTrade(false);
+        }
+
+        byId(id: string): HTMLInputElement {
+            return document.getElementById(id) as HTMLInputElement;
         }
 
         /**

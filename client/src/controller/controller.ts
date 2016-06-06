@@ -22,29 +22,18 @@ namespace controller {
         /**
          * Connects with the websockets with uri given as a parameter.
          * Creates model, view and handlers of user's actions and server responses.
-         * Assigns onClick callback to the board fields.
          * @param serverUri uri string providing connection to server
          */
         constructor(serverUri: string) {
             this.createSocketConnection(serverUri);
 
             const viewChanges = new ViewChanges(this.view_);
-            this.userActions_ = new UserActions(this.sendMessage.bind(this), this.model_, viewChanges);
+            this.userActions_ = new UserActions(this.sendMessage.bind(this), this.model_, this.view_, viewChanges);
             this.serverHandler_ = new ServerHandler(this.model_, viewChanges, this.userActions_);
-
-            this.view_.assignFieldClickedCallback(this.userActions_.fieldClicked.bind(this.userActions_));
         }
 
         private createSocketConnection(uri: string): void {
             this.server_ = new SocketServer(uri, this.delegateMessageToHandler.bind(this));
-        }
-        
-        /**
-         * Exposes handlers of available user actions to allow bind
-         * them with view buttons.
-         */
-        get userActions(): UserActions {
-            return this.userActions_;
         }
 
         /**
