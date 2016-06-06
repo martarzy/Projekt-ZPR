@@ -92,7 +92,7 @@ namespace view {
   
         public initUserList(list: Array<view.PlayerDTO>) {
             d3.selectAll(".player-row")
-                .attr("fill", "white");
+                .style("background-color", "white");
             d3.selectAll(".player-money")
                 .text("");
             d3.selectAll(".player-name")
