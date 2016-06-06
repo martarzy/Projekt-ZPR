@@ -4,5 +4,5 @@ PYTHON_INCLUDE_PATH = '/usr/include/python' + PYTHON_VERSION
 
 env = Environment(CPPPATH=[PYTHON_INCLUDE_PATH], CXXFLAGS='-std=c++11')
 env['SHLIBPREFIX'] = ''
-env.SharedLibrary('chance', ['chance.cpp'], LIBS=['python' + PYTHON_VERSION, BOOST_LIB_NAME])
+env.SharedLibrary('chance', ['chance.cpp'], LIBS=['python' + PYTHON_VERSION, BOOST_PYTHON_LIB_NAME])
 

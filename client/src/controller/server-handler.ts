@@ -139,7 +139,7 @@ namespace controller {
             this.doIfMyTurn(() => this.model_.round.playerMoved = true);
             const field = this.model_.board.getField(username);
             this.viewChanges_.disableButtonsWhilePawnIsMoving();
-            this.viewChanges_.movePawn(username, field.id, this.doOnPawnMoveEnd.bind(this, field));
+            this.viewChanges_.movePawn(username, field.id, this.doOnPawnMoveEnd.bind(this, field), rollResult > 0);
         }
 
         private doOnPawnMoveEnd(field: model.Field): void {

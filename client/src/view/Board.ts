@@ -327,15 +327,21 @@ namespace view {
             delete this.pawns[pawnName];
         }
 
-        public movePawn(pawnName: string, fieldNumber: number, onMovingEnd: () => any) {
+        public movePawn(pawnName: string, fieldNumber: number, onMovingEnd: () => any, forward: boolean) {
             let sequencenumber = 0;
-            for (let i = (this.pawns[pawnName].getPawnField().getFieldId() + 1) % 40;
+            const step = forward ? 1 : -1;
+
+            for (let i = this.pawns[pawnName].getPawnField().getFieldId();
                 i != fieldNumber;
-                i = (i + 1) % 40)
+                )
             {
+                i += step;
+                if(i >= 40)
+                    i -= 40;
+                else if(i < 0)
+                    i += 40;
                 this.pawns[pawnName].move(this.fields[i], sequencenumber++);
             }
-            this.pawns[pawnName].move(this.fields[fieldNumber], sequencenumber++);
             setTimeout(onMovingEnd, sequencenumber*200);
         }
 

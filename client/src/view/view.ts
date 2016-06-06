@@ -116,8 +116,8 @@ namespace view {
                 this.board.addPawn(list[i].username, list[i].color);
         }
 
-        public movePawn(pawnName: string, fieldNumber: number, onMovingEnd: () => any) {
-            this.board.movePawn(pawnName, fieldNumber, onMovingEnd);
+        public movePawn(pawnName: string, fieldNumber: number, onMovingEnd: () => any, forward: boolean) {
+            this.board.movePawn(pawnName, fieldNumber, onMovingEnd, forward);
         }
 
         public setBoughtFieldColor(fieldNumber: number, color: string) {
