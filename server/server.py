@@ -30,6 +30,7 @@ class WSHandler(websocket.WebSocketHandler):
     def open(self):
         """
         Function invoked on opening websocket connection between server and client.
+        :return: None
         """
         self.player_name = ''
 
@@ -37,6 +38,8 @@ class WSHandler(websocket.WebSocketHandler):
         """
         Function invoked when message from client comes.
         Converts message from JSON to dict and parses it (if it is name negotiating message) or sends it to GameManager.
+        :param msg: Message from the client, JSON expected.
+        :return: None
         """
         msg = json.loads(msg)
 
@@ -64,6 +67,7 @@ class WSHandler(websocket.WebSocketHandler):
         """
         Function invoked when websocket connection between server and client is closed.
         Removes player from players list if necessary.
+        :return: None
         """
         if self.player_name != '':
             gm.remove_player(self.player_name)
@@ -74,6 +78,7 @@ class WSHandler(websocket.WebSocketHandler):
     def send_message(self, json_msg):
         """
         Takes dict message, converts it to JSON and sends it to the client.
+        :return: None
         """
         self.write_message(json.dumps(json_msg))
 
@@ -92,6 +97,7 @@ def _main_loop():
     """
     Game server main loop.
     Starts Tornado IOLoop on specified as command-line argument port (or on default port if not given)
+    :return: None
     """
     import sys
     port = sys.argv[1] if len(sys.argv) == 2 else 8888      # The first command-line argument is the server port
