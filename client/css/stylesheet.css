@@ -1,6 +1,6 @@
 ﻿.main-container
 {
-    background-color:aliceblue;
+    background-color: aliceblue;
 }
 
 .left-column
@@ -48,7 +48,7 @@
 }
 
 .player-color {
-    float:left;
+    float: left;
     width: 20px;
     height: 20px;
     border: 1px solid;

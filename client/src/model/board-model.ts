@@ -9,15 +9,24 @@ namespace model {
         private board_ = new Board();
         private pawns: { [username: string]: Field } = {};
 
-        userInJail(username: string) {
-            return this.pawns[username].id === Board.JAIL_FIELD_NUMBER;
+        placePawnsOnBoard(players: Array<Player>) {
+            players.forEach(player => this.pawns[player.username] = this.board_.startField());
         }
 
+        /**
+         * Checks if user can buy a field he currently stays on.
+         * @param username user to check
+         * @param cash user's cash
+         */
         enoughCashToBuyField(username: string, cash: number) {
             const field = this.pawns[username];
             return field.isBuyable() && field.fieldCost <= cash;
         }
 
+        /**
+         * Returns field the given player currently stays on.
+         * @param username
+         */
         getField(username: string): Field {
             return this.pawns[username];
         }
@@ -26,24 +35,33 @@ namespace model {
             return this.board_.getField(fieldId).houseCost;
         }
 
-        placePawnsOnBoard(players: Array<Player>) {
-            players.forEach(player => this.pawns[player.username] = this.board_.startField());
-        }
-
+        /**
+         * Checks if given user owns the field with given id.
+         */
         ownsField(username: string, fieldId: number): boolean {
             return this.field(fieldId).ownerUsername() === username;
         }
 
+        /**
+         * Moves the pawn of given user by specified amount of fields.
+         */
         movePawnBy(username: string, rollResult: number): void {
             const currentField = this.pawns[username];
             const targetField = this.board_.fieldInDistanceOf(currentField, rollResult);
             this.pawns[username] = targetField;
         }
 
+        /**
+         * Moves the pawn of given user on the field with specified id.
+         */
         movePawnOn(username: string, targetField: number): void {
             this.pawns[username] = this.field(targetField);
         }
 
+        /**
+         * Marks field the specified user stays on as bought by him.
+         * @param username
+         */
         buyField(username: string): void {
             this.getField(username).markAsBought(username);
         }
@@ -56,6 +74,12 @@ namespace model {
             return this.checkIfIdMatches(fieldId, this.buildableFields(username));
         }
 
+        /**
+         * Fields are buildable if the player owns whole district ( described by the
+         * group property of the field ) and the difference between the house number of the field
+         * A and minimal number of houses in the district is less than one.
+         * @param username
+         */
         buildableFields(username: string): Array<Field> {
             let fields = this.fieldsOwnedBy(username)
                 .filter(f => f.buildable());
@@ -114,6 +138,11 @@ namespace model {
             this.board_.getField(id).mortgage(false);
         }
 
+        private canBeUnmortgaged(field: Field, owner: string): boolean {
+            return field.isMortgaged
+                && this.matchingOwner(field, owner);
+        }
+
         fieldsToUnmortgage(owner: string): Array<Field> {
             return this.fieldsOwnedBy(owner)
                 .filter(f => this.canBeUnmortgaged(f, owner));
@@ -123,13 +152,11 @@ namespace model {
             return this.canBeUnmortgaged(this.field(fieldId), username);
         }
 
+        /**
+         * Changes the owner of the fields with given id numbers to specified player.
+         */
         changeOwner(fieldsIds: Array<number>, newOwner: string) {
             fieldsIds.forEach(id => this.field(id).markAsBought(newOwner));
-        }
-
-        private canBeUnmortgaged(field: Field, owner: string): boolean {
-            return field.isMortgaged
-                && this.matchingOwner(field, owner);
         }
 
         private checkIfIdMatches(fieldId: number, fields: Array<model.Field>): boolean {
@@ -163,10 +190,23 @@ namespace model {
             return this.board_.getField(id);
         }
 
+        /**
+         * Removes info about owner in the fields specified by the given ids.
+         * @param username
+         */
         clearOwner(username: string): Array<number> {
             const ownedBy = this.fieldsOwnedBy(username);
             ownedBy.forEach(f => f.markAsBought(""));
             return ownedBy.map(f => f.id);
+        }
+
+        /**
+         * Checks if specified player is on the jail field ( doesn't matter if as the
+         * prisoner or the visitor ).
+         * @param username
+         */
+        userInJail(username: string) {
+            return this.pawns[username].id === Board.JAIL_FIELD_NUMBER;
         }
     }
 

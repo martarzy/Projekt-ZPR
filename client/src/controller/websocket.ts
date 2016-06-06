@@ -2,6 +2,11 @@
 
     export type MessageConsumer = (message: any) => void;
 
+    /**
+     * Simple wrapper for WebSocket object. Provides sending messages
+     * method and possibility of installing method called after message
+     * receivement.
+     */
     export class SocketServer {
         private socket: WebSocket;
         private onMessageCallback: MessageConsumer;

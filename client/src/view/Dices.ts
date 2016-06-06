@@ -1,7 +1,16 @@
 ﻿namespace view {
+
+    /**
+    * The class which represents dices.
+    * Keeps d3 svg element.
+    */
     export class Dices {
         private dicesSvg: d3.Selection<any>;
 
+        /**
+        * Selects svg from index.html, which has been prepared for dice,
+        * and adds two dices images.
+        */
         constructor() {
             this.dicesSvg = d3.select("#dices-svg");
 
@@ -24,7 +33,12 @@
                 .attr("id", "second-dice");
         }
 
-        public setValue(firstDice: number, secondDice: number) {
+        /**
+         * Sets appropriate dices href attribute.
+         * @param firstDice   number on first dice
+         * @param secondDice  number on first dice
+         */
+        setValue(firstDice: number, secondDice: number): void {
             d3.select("#first-dice")
                 .attr("xlink:href", "images/dice" + firstDice + ".svg");
 
