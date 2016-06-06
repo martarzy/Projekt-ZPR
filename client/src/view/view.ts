@@ -42,6 +42,10 @@ namespace view {
             this.dices = new Dices();
         }
 
+        idOf(id: view.ID): string {
+            return this.buttonsIds[id];
+        }
+
         private initTabs() {
             $('.nav-tabs a').click(function(e) {
                 e.preventDefault();

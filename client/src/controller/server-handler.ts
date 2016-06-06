@@ -247,6 +247,7 @@ namespace controller {
             const requiredFields: Array<number> = object[message.Trade.demandedFields];
             this.model_.round.offeredFields = offeredFields;
             this.model_.round.demandedFields = requiredFields;
+            this.model_.round.tradingWith = targetUsername;
 
             if (this.model_.users.myUsername() !== targetUsername)
                 return;
@@ -262,7 +263,7 @@ namespace controller {
             const decision: boolean = object[message.TradeAnswer.decision];
             if (decision) {
                 this.changeOwnerAndRecolor(this.model_.round.offeredFields, this.model_.round.tradingWith);
-                this.changeOwnerAndRecolor(this.model_.round.demandedFields, this.model_.users.myUsername());
+                this.changeOwnerAndRecolor(this.model_.round.demandedFields, this.model_.users.activeUsername());
             }
             this.model_.round.offeredFields = [];
             this.model_.round.demandedFields = [];
