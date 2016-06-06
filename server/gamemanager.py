@@ -137,7 +137,7 @@ class GameManager:
                     self.next_turn()
 
                 elif msg['message'] == 'trade':
-                    other_player = self.pname_map[msg['other_username']]
+                    other_player = self.pname_map[msg['otherUsername']]
                     trade = Trade(player, other_player, msg['offeredFields'], msg['offeredCash'], msg['demandedFields'], msg['demandedCash'])
                     self.trade_offer(trade)
 
