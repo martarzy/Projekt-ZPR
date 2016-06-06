@@ -157,9 +157,12 @@ namespace view {
             });
         }
 
+        public removeDropdownMenuChildren(id: string) {
+            $("#" + id).children().remove();
+        }
+
         public selectPlayerToTrade(list: Array<string>) {
-            // pobierz wszystkich graczy
-            $("#players-menu").children().remove();
+            this.removeDropdownMenuChildren("players-menu");
             for (var i = 0; i < list.length; i++)
                 $("#players-menu").append('<li><a href="#">' + list[i] + '</a></li>');
             // wybierz odpowiedniego gracza i wyswietl na przycisku
@@ -167,7 +170,7 @@ namespace view {
         }
 
         public selectOfferedFieldsToTrade(list: Array<string>) {
-            $("#offered-menu").children().remove();
+            this.removeDropdownMenuChildren("offered-menu");
             for (var i = 0; i < list.length; i++)
                 $("#offered-menu").append('<li><a href="#">' + list[i] + '</a></li>');
             // dodatkowe puste pole
@@ -177,7 +180,8 @@ namespace view {
         }
 
         public selectRequestedFieldsToTrade(list: Array<string>) {
-            $("#requested-menu").children().remove();
+            this.removeDropdownMenuChildren("requested-menu");
+            $("#").children().remove();
             for (var i = 0; i < list.length; i++)
                 $("#requested-menu").append('<li><a href="#">' + list[i] + '</a></li>');
             $("#requested-menu").append('<li><a href="#">Brak</a></li>');
@@ -197,10 +201,15 @@ namespace view {
         public clearTradeWindow() {
             this.setOfferedMoney("");
             this.setRequestedMoney("");
+            /*
             this.setOfferedField("Wybierz pole");
             this.setRequestedField("Wybierz pole");
             this.setSelectedPlayer("Wybierz gracza");
+            */
 
+            this.removeDropdownMenuChildren("players-menu");
+            this.removeDropdownMenuChildren("offered-menu");
+            this.removeDropdownMenuChildren("requested-menu");
         }
 
         // getter - pole z wybranym graczem (przeciwnikiem)
