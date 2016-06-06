@@ -12,7 +12,7 @@ namespace view {
         private board: Board;
         private dices: Dices;
 
-        private buttonsIds: { [elem: number]: string } = { };
+        private buttonsIds: { [elem: number]: string } = {};
 
         private initButtonsIds(): void {
             this.buttonsIds[Button.ROLL] = "roll-button";
@@ -133,8 +133,8 @@ namespace view {
         }
 
         // Wybieranie z dropdown menu
-        public selectValueFromDropdownMenu() {
-            $(".dropdown-menu li").click(function (e) {
+        public selectValueFromDropdownMenu(dropdownId: string) {
+            $("#" + dropdownId).children("li").click(function (e) {
                 $(this).parents(".btn-group").find('.btn').html(
                     $(this).text() + " <span class=\"caret\"></span>"
                 );
@@ -144,10 +144,35 @@ namespace view {
 
         public selectPlayerToTrade(list: Array<string>) {
             // pobierz wszystkich graczy
+            $("#players-menu").remove("li");
             for (var i = 0; i < list.length; i++)
                 $("#players-menu").append('<li><a href="#">' + list[i] + '</a></li>');
             // wybierz odpowiedniego gracza i wyswietl na przycisku
-            this.selectValueFromDropdownMenu();
+            this.selectValueFromDropdownMenu("players-menu");
+        }
+
+        public selectOfferedFieldsToTrade(list: Array<string>) {
+            $("#offered-menu").remove("li");
+            for (var i = 0; i < list.length; i++)
+                $("#offered-menu").append('<li><a href="#">' + list[i] + '</a></li>');
+
+            this.selectValueFromDropdownMenu("offered-menu");
+        }
+
+        public selectRequestedFieldsToTrade(list: Array<string>) {
+            $("#requested-menu").remove("li");
+            for (var i = 0; i < list.length; i++)
+                $("#requested-menu").append('<li><a href="#">' + list[i] + '</a></li>');
+
+            this.selectValueFromDropdownMenu("requested-menu");
+        }
+
+        public onPlayerChosen(listener: () => any)
+        {
+            $("#players-menu").children("li").click(function (e) {
+                listener();
+                e.preventDefault();
+            });
         }
 
         // getter - pole z wybranym graczem (przeciwnikiem)
