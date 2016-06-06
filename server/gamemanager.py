@@ -65,12 +65,8 @@ class GameManager:
         Creates new Game Manager object with an empty table of new players and in state before start of the game.
         """
         self.players = []
-        self.turn = -1
         self.pname_map = {}
-        self.started = False
         self.fields = []
-        self.trade = None
-        self.chance_stack = ChanceStack()
 
         self.fields.append(Field("Go"))
         self.fields.append(Field("Brown", 60, 50, (2, 10, 30, 90, 160, 250)))
@@ -116,6 +112,8 @@ class GameManager:
         self.fields.append(Field("Luxury tax"))
         self.fields.append(Field("Blue", 350, 200, (50, 200, 600, 1400, 1700, 2000)))
 
+        self.reset()
+
     def add_player(self, name, handler):
         """
         Adds new player to list of players. The name must be unique.
@@ -146,11 +144,12 @@ class GameManager:
         self.broadcast_player_disconnection(player)
 
         if self.trade is not None:
+            self.trade = None
             self.broadcast_trade_acceptance(False)
 
         self.check_game_over()
 
-        if player.state is not None:
+        if player.state is not None and self.game_started():
             self.turn -= 1
             self.next_turn()
 
@@ -265,6 +264,9 @@ class GameManager:
             player.ready = False
         self.turn = -1
         self.started = False
+        self.trade = None
+        self.chance_stack = ChanceStack()
+
         self.broadcast_pnames()
 
     def ready(self, player):
