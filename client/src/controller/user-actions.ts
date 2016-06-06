@@ -241,8 +241,6 @@ namespace controller {
          */
         offerTrade(): void {
             const offer = this.viewChanges_.collectTradeInfo();
-            this.model_.round.offeredFields = offer.offeredFields;
-            this.model_.round.demandedFields = offer.requiredFields;
             const toSend = this.prepareMessage(message.Trade.message);
             toSend[message.Trade.otherUsername] = this.viewChanges_.enemyChosenToTrade();
             toSend[message.Trade.offeredCash] = offer.cashOffered;

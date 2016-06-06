@@ -118,21 +118,6 @@ namespace controller {
             // TODO
         }
 
-        tradeSuccessful(): void {
-            // TODO
-        }
-
-        tradeUnsuccessful(): void {
-            // TODO
-        }
-
-        showTradeOffer(offeredCash: number,
-            offeredFields: Array<number>,
-            demandedCash: number,
-            demandedFields: Array<number>): void {
-            // TODO
-        }
-
         /**
          * Collects trade info from view. In the current version of the game
          * cash is not considered to be a real number. Moreover view sends everything
@@ -154,7 +139,7 @@ namespace controller {
         /**
          * Displays offered trade on the screen of the target player the active
          * wants to trade with. 
-         * @param info
+         * @param info trade offer to display
          */
         displayTradeInfo(info: model.TradeOfferDTO): void {
             this.view_.setOfferedMoney(String(info.cashOffered));
