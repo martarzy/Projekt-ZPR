@@ -177,7 +177,7 @@ namespace view {
 
         // getter - pole z wybranym graczem (przeciwnikiem)
         public getSelectedPlayer(): any {
-            return $("#player-to-trade-button").val();
+            return $("#player-to-trade-button").text();
         }
 
         // getter - pole z oferowana kwota
@@ -194,12 +194,12 @@ namespace view {
 
         // getter - oferowane pole
         public getOfferedField(): any {
-            return $("#offered-field-button").val();
+            return $("#offered-field-button").text();
         }
 
         // getter - zadane pole
         public getRequestedField(): any {
-            return $("#requested-field-button").val();
+            return $("#requested-field-button").text();
         }
 
         // setter - wybrany gracz
@@ -225,15 +225,6 @@ namespace view {
         // setter - zadane pole
         public setRequestedField(requestedFieldName: string) {
             $("#requested-field-button").text(requestedFieldName);
-        }
-
-        // 
-        public makeBidButtonOnClick() {
-            $("#make-bid-button").on("click", () => {
-                var offeredMoney = this.getOfferedMoney;
-                var requestedMoney = this.getRequestedMoney;
-                // todo
-            });
         }
 
         public showDices(firstDice: number, secondDice: number) {
