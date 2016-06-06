@@ -13,7 +13,7 @@ class Player:
         Handler is a class which have implemented write_message() function.
         """
         self.name = name
-        self.handler = handler  #
+        self.handler = handler
         self.ready = False
         self.cash = 1500
         self.field_no = 0

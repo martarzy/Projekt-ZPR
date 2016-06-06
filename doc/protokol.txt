@@ -211,5 +211,13 @@ Serwer rozsyła tę wiadomość wszystkim.
 KONIEC GRY
 Serwer informuje o końcu gry:
 {
-    "message": "gameOver"
+    "message": "gameOver",
+    "player": <nazwa zwycięzcy>
 }
+-------------------------------------------------
+Serwer informuje o odłączeniu się użytkownika:
+{
+    "message": "playerDisconnected",
+    "player": <nazwa>
+}
+-------------------------------------------------

@@ -1,10 +1,25 @@
+"""
+Game manager module. Controls monopoly game on server side.
+"""
+
+
 from player import Player
 from chance import ChanceStack
 from random import randint
 
 
 class Field:
+    """
+    Represents game field and its properties.
+    """
     def __init__(self, group_name, price=0, house_price=0, visit_cost=(0,)):
+        """
+        Creates new field.
+        :param group_name: The name of the group the field belongs to.
+        :param price: Buy price. The default price is 0 - it means the field cannot be bought.
+        :param house_price: Cost of building one house.
+        :param visit_cost: Tuple represeting costs of staying on the field, depending on number of houses built.
+        """
         self.owner = None
         self.group_name = group_name
         self.price = price
@@ -20,7 +35,19 @@ class Field:
 
 
 class Trade:
+    """
+    Contains information about trade offer.
+    """
     def __init__(self, player, other_player, offered_fields_nos, offered_cash, demanded_fields_nos, demanded_cash):
+        """
+        Creates Trade object.
+        :param player: Name of the player who submitted offer.
+        :param other_player: Name of the player who will accept or reject the offer.
+        :param offered_fields_nos: Array with numbers of fields offered.
+        :param offered_cash: Offered cash.
+        :param demanded_fields_nos: Array with numbers of fields demanded.
+        :param demanded_cash: Demanded cash.
+        """
         self.player = player
         self.other_player = other_player
         self.offered_fields_nos = offered_fields_nos
@@ -30,7 +57,13 @@ class Trade:
 
 
 class GameManager:
+    """
+    Game Manager - manages the whole game.
+    """
     def __init__(self):
+        """
+        Creates new Game Manager object with an empty table of new players and in state before start of the game.
+        """
         self.players = []
         self.turn = -1
         self.pname_map = {}
@@ -84,17 +117,46 @@ class GameManager:
         self.fields.append(Field("Blue", 350, 200, (50, 200, 600, 1400, 1700, 2000)))
 
     def add_player(self, name, handler):
+        """
+        Adds new player to list of players. The name must be unique.
+        :param name: Unique player name.
+        :param handler: Handler object allowing sending messages to the client.
+        :return: None
+        """
         new_player = Player(name, handler)
         self.players.append(new_player)
         self.pname_map[name] = new_player
         self.reset()
 
     def remove_player(self, player_name):
+        """
+        Removes player from list of players.
+        :param player_name: Player name.
+        :return: None
+        """
+        player = self.pname_map[player_name]
+        if self.trade is not None:
+            self.broadcast_trade_acceptance(False)
+
+        for field in self.fields:
+            if field.owner is player:
+                field.owner = None
+                field.houses_no = 0
         self.players.remove(self.pname_map[player_name])
         del self.pname_map[player_name]
-        self.reset()
+
+        self.broadcast_player_disconnection(player)
+
+        if player.state is not None:
+            self.turn -= 1
+            self.next_turn()
 
     def is_valid(self, name):
+        """
+        Checks if name is valid (it means that it is unique and not empty)
+        :param name: Player name
+        :return: True if name is valid
+        """
         return name != '' and name not in [player.name for player in self.players]
 
     def game_started(self):
@@ -167,11 +229,20 @@ class GameManager:
 
     @staticmethod
     def generate_roll():
+        """
+        Generates roll dice result.
+        :return: Array of two integers from 1 to 6.
+        """
         first = randint(1, 6)
         second = randint(1, 6)
         return [first, second]
 
     def reset(self):
+        """
+        Sends update of list of users and resets their ready flags.
+        It is invoked, when new user incomes or somebody leaves the room (before starting the game).
+        :return: None
+        """
         for player in self.players:
             player.ready = False
         self.turn = -1
@@ -179,6 +250,12 @@ class GameManager:
         self.broadcast_pnames()
 
     def ready(self, player):
+        """
+        Marks the player as ready.
+        If everybody is ready, the game starts.
+        :param player:
+        :return: None
+        """
         player.ready = True
         unready = [player.name for player in self.players if player.ready is False]
         ready = [player.name for player in self.players if player.ready is True]
@@ -186,6 +263,10 @@ class GameManager:
             self.start_game()
 
     def start_game(self):
+        """
+        Broadcasts start info, sets cash for every player.
+        :return: None
+        """
         self.started = True
         self.broadcast({'message': 'start'})
         for player in self.players:
@@ -351,7 +432,9 @@ class GameManager:
             field.owner = field.owner if field.owner is not player else None
         self.broadcast({'message': 'declareBankruptcy'})
         if len([player for player in self.players if not player.bankrupt]) == 1:
-            self.broadcast({'message': 'gameOver'})
+            winner = [player for player in self.players if not player.bankrupt][0]
+            self.broadcast_game_over(winner)
+            self.reset()
 
     def add_cash(self, player, cash):
         player.cash += cash
@@ -400,6 +483,12 @@ class GameManager:
 
     def broadcast_trade_acceptance(self, accepted):
         self.broadcast({'message': 'tradeAcceptance', 'accepted': accepted})
+
+    def broadcast_game_over(self, winner):
+        self.broadcast({'message': 'gameOver', 'player': winner.name})
+
+    def broadcast_player_disconnection(self, player):
+        self.broadcast({'message': 'playerDisconnected', 'player': player.name})
 
     def broadcast(self, msg):
         for player in self.players:
