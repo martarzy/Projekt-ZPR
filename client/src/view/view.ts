@@ -2,10 +2,12 @@
 
 namespace view {
 
-    export enum Button {
+    export enum ID {
         ROLL, READY, END_TURN, BUY_FIELD,
         ACCEPT_TRADE, DECLINE_TRADE, OFFER_TRADE,
-        JAIL_PAY, JAIL_USE_CARD, BANKRUPTCY
+        JAIL_PAY, JAIL_USE_CARD, BANKRUPTCY,
+        CHOOSE_PLAYER_TO_TRADE, CHOOSE_FIELDS_TO_OFFER,
+        CHOOSE_FIELDS_TO_REQUIRE, OFFERED_MONEY, REQUESTED_MONEY
     }
 
     export class View {
@@ -15,16 +17,21 @@ namespace view {
         private buttonsIds: { [elem: number]: string } = {};
 
         private initButtonsIds(): void {
-            this.buttonsIds[Button.ROLL] = "roll-button";
-            this.buttonsIds[Button.READY] = "ready-button";
-            this.buttonsIds[Button.BUY_FIELD] = "buy-button";
-            this.buttonsIds[Button.END_TURN] = "end-turn-button";
-            this.buttonsIds[Button.ACCEPT_TRADE] = "accept-offer-button";
-            this.buttonsIds[Button.DECLINE_TRADE] = "decline-offer-button";
-            this.buttonsIds[Button.OFFER_TRADE] = "make-bid-button";
-            this.buttonsIds[Button.JAIL_PAY] = "jail-pay-button";
-            this.buttonsIds[Button.JAIL_USE_CARD] = "jail-use-card-button";
-            this.buttonsIds[Button.BANKRUPTCY] = "bankruptcy-button";
+            this.buttonsIds[ID.ROLL] = "roll-button";
+            this.buttonsIds[ID.READY] = "ready-button";
+            this.buttonsIds[ID.BUY_FIELD] = "buy-button";
+            this.buttonsIds[ID.END_TURN] = "end-turn-button";
+            this.buttonsIds[ID.ACCEPT_TRADE] = "accept-offer-button";
+            this.buttonsIds[ID.DECLINE_TRADE] = "decline-offer-button";
+            this.buttonsIds[ID.OFFER_TRADE] = "make-bid-button";
+            this.buttonsIds[ID.JAIL_PAY] = "jail-pay-button";
+            this.buttonsIds[ID.JAIL_USE_CARD] = "jail-use-card-button";
+            this.buttonsIds[ID.BANKRUPTCY] = "bankruptcy-button";
+            this.buttonsIds[ID.CHOOSE_PLAYER_TO_TRADE] = "player-to-trade-button";
+            this.buttonsIds[ID.CHOOSE_FIELDS_TO_OFFER] = "offered-field-button";
+            this.buttonsIds[ID.CHOOSE_FIELDS_TO_REQUIRE] = "orequested-field-button";
+            this.buttonsIds[ID.OFFERED_MONEY] = "offered-money";
+            this.buttonsIds[ID.REQUESTED_MONEY] = "requested-money";
         }
 
         constructor() {
@@ -42,11 +49,11 @@ namespace view {
             })
         }
 
-        public enableButton(id: Button | number) {
+        public enableButton(id: ID | number) {
             $("#" + this.buttonsIds[id]).removeAttr("disabled");
         }
 
-        public disableButton(id: Button | number) {
+        public disableButton(id: ID | number) {
             $("#" + this.buttonsIds[id]).attr("disabled", 1);
         }
 

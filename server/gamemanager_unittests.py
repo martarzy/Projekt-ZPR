@@ -16,6 +16,9 @@ class TodoName(unittest.TestCase):
         self.gm.add_player('krol_julian', MockHandler())
         self.gm.add_player('martarzy', MockHandler())
         self.gm.add_player('the_bad', MockHandler())
+        self.p0 = self.gm.players[0]
+        self.p1 = self.gm.players[1]
+        self.p2 = self.gm.players[2]
 
     def test_add_cash(self):
         self.gm.add_cash(self.gm.players[0], 200)
@@ -59,6 +62,20 @@ class TodoName(unittest.TestCase):
         self.assertEqual(self.gm.players[0].get_out_cards_no, 0)
         self.assertFalse(self.gm.players[0].in_jail)
 
+    def test_go_to_jail_after_staying_on_field_30(self):
+        self.gm.move(self.gm.players[0], 30)
+        self.assertTrue(self.gm.players[0].in_jail)
+        self.assertEqual(self.gm.players[0].field_no, 10)
+
+    def test_get_out_of_jail_paying(self):
+        self.gm.players[0].goto_jail()
+        self.gm.get_out_of_jail(self.gm.players[0], 'pay')
+        self.assertEqual(self.gm.players[0].cash, 1450)
+
+    def test_not_existing_message(self):
+        self.gm.next_turn()
+        self.gm.on_message('krol_julian', {'message': 'notExistingType'})
+        self.assertRaises(KeyError)
 
 if __name__ == '__main__':
     unittest.main()
