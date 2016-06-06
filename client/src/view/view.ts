@@ -92,6 +92,10 @@ namespace view {
   
         public initUserList(list: Array<view.PlayerDTO>) {
             for (let i = 0; i < list.length; i++) {
+                $(".player-name")[i].innerHTML = "";
+                $(".player-money")[i].innerHTML = "";
+                $(".player-row")[i].style.backgroundColor = "white";
+
                 $(".player-name")[i].innerHTML = list[i].username;
                 $(".player-money")[i].innerHTML = (list[i].cash).toString();
                 $(".player-row")[i].style.backgroundColor = list[i].color;
