@@ -96,12 +96,12 @@ namespace view {
         public updateUserList(list: Array<view.PlayerDTO>) {
             for (let i = 0; i < list.length; i++) {
                 if (list[i].active) {
-                    $(".player-name")[i].style.fontWeight = "bold";
-                    $(".player-money")[i].style.fontWeight = "bold";
+                    $(".player-name")[i].style.textDecoration = "underline";
+                    $(".player-money")[i].style.textDecoration = "underline";
                 }
                 else {
-                    $(".player-name")[i].style.fontWeight = "normal";
-                    $(".player-money")[i].style.fontWeight = "normal";
+                    $(".player-name")[i].style.textDecoration = "none";
+                    $(".player-money")[i].style.textDecoration = "none";
                 }
             }
         }
