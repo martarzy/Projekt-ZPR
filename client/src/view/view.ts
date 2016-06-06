@@ -69,6 +69,10 @@ namespace view {
             $("#myModal").modal('hide');
         }
 
+        public showError(msg: string) {
+            document.getElementById("message").innerHTML = msg;
+        }
+
         public showEndOfGameWindow(messageGameEnd: string) {
             $("#game-end").modal('show');
             $("#message-game-end").text(messageGameEnd);
@@ -84,10 +88,6 @@ namespace view {
             var info_button = d3.select("#" + id);
             info_button.select("text").attr("fill", "gray");
             info_button.on("click", null);
-        }
-
-        public showError(msg: string) {
-            document.getElementById("message").innerHTML = msg;
         }
 
         public initUserList(list: Array<view.PlayerDTO>) {
