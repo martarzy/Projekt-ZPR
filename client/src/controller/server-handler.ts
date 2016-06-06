@@ -306,27 +306,28 @@ namespace controller {
                 case "goto":
                     const field = object[message.ChanceCard.field];
                     this.moveTo(activeUsername, field);
-                    this.logWithActiveUsername("Chance card: Go to " + field);
+                    this.logWithActiveUsername(`Otrzymał kartę szansy "Idź na pole ${field}"`);
                     break;
                 case "move":
                     const move = object[message.ChanceCard.move];
                     this.performMovement(activeUsername, move);
-                    this.logWithActiveUsername("Chance card: Move by " + move);
+                    this.logWithActiveUsername(`Otrzymał kartę szansy przesuwającą go o ${move}`);
                     break;
                 case "getOut":
                     if (!this.isMyTurn())
                         return;
                     ++this.model_.users.get(activeUsername).jailExitCards;
-                    this.logWithActiveUsername("Chance card: You obtain free jail exit card.");
+                    this.logWithActiveUsername(`Otrzymał kartę szansy "Wyjdź z więzienia"`);
                     break;
                 case "cash":
-                    this.logWithActiveUsername("Chance card: Cash changed by " + object[message.ChanceCard.cash]);
+                    this.logWithActiveUsername(`Otrzymał kartę szansy zmieniającą jego stan konta o ${object[message.ChanceCard.cash]}`);
                     break;
                 case "gotoJail":
+                    if (this.model_.board.getField(this.model_.users.myUsername()).id !== 30)
+                        this.logWithActiveUsername(`Otrzymał kartę szansy "Idź do więzienia"`);
                     if (this.isMyTurn())
                         this.model_.users.getMe().inJail = true;
                     this.moveTo(activeUsername, model.Board.JAIL_FIELD_NUMBER);
-                    this.logWithActiveUsername("Chance card: Go to jail");
                     break;
             }
             this.userActions_.updateVisibilityOfDynamicButtons();
@@ -354,7 +355,7 @@ namespace controller {
         }
 
         private gameOver(object: any) {
-            this.viewChanges_.showGameOverScreen("Winner is " + object[message.GameOver.winner] + " !");
+            this.viewChanges_.showGameOverScreen("Zwycięzcą został " + object[message.GameOver.winner] + "!");
         }
 
         private removeUser(object: any) {
