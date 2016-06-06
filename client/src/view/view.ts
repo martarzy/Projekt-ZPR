@@ -149,7 +149,7 @@ namespace view {
         }
 
         public addHistoryMessage(message: string) {
-            $("#history-box").val();
+            $("#history-box").val(message + "\n" + $("#history-box").val());
         }
 
         public switchToTradePanel(): void {
