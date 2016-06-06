@@ -78,8 +78,8 @@ namespace controller {
             this.disable(view.ID.END_TURN);
         }
 
-        movePawn(player: string, targetField: number, onPawnMoveEnd: () => void) {
-            this.view_.movePawn(player, targetField, onPawnMoveEnd);
+        movePawn(player: string, targetField: number, onPawnMoveEnd: () => void, forward: boolean = true) {
+            this.view_.movePawn(player, targetField, onPawnMoveEnd, forward);
         }
 
         colorField(fieldNumber: number, color: string) {
