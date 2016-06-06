@@ -270,8 +270,10 @@ namespace controller {
             if (!this.isMyTurn())
                 return;
             this.viewChanges_.enableButtonsOnRoundStart();
-            if (this.model_.round.playerMoved)
+            if (this.model_.round.playerMoved) {
                 this.viewChanges_.disable(view.ID.ROLL);
+                this.viewChanges_.enable(view.ID.END_TURN);
+            }                
         }
 
         private changeOwnerAndRecolor(ids: Array<number>, username: string): void {
