@@ -173,11 +173,11 @@ namespace controller {
         chooseEnemyFieldsToTrade(): void {
             const enemy = this.viewChanges_.enemyChosenToTrade();
             if (enemy === undefined || enemy === "") {
-                this.viewChanges_.listMyFieldsToTrade([]);
+                this.viewChanges_.listEnemyFieldsToTrade([]);
                 return;
             }                
             const myFields = this.model_.board.fieldsToMortgage(enemy);
-            this.viewChanges_.listMyFieldsToTrade(myFields.map(f => String(f.id)));
+            this.viewChanges_.listEnemyFieldsToTrade(myFields.map(f => String(f.id)));
         }
 
         /**
